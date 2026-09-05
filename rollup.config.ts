@@ -27,16 +27,22 @@ function script(name: string, input: string): RollupOptions {
       babel({
         babelHelpers: "bundled",
         extensions,
+        babelrc: false,
         presets: [
           [
             "@babel/preset-env",
             {
               targets: { rhino: "1.8.0" },
-              useBuiltIns: "usage",
-              corejs: 3,
             },
           ],
           "@babel/preset-typescript",
+        ],
+        // Rhino chokes on core-js's polyfills (which useBuiltIns: "usage"
+        // would pull in) -- see InstantSCCS, which targets the same runtime
+        // and skips them too. These two transforms are what it uses instead.
+        plugins: [
+          "@babel/plugin-transform-property-literals",
+          "@babel/plugin-transform-member-expression-literals",
         ],
       }),
     ],
