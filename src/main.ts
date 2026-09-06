@@ -1,8 +1,12 @@
 import { Args } from "grimoire-kolmafia";
 import { cliExecute, print, runChoice, visitUrl } from "kolmafia";
 import { get } from "libram";
+import { aftercoreActions, trickOrTreat } from "./lib/aftercore";
+import { run } from "./lib/cliRun";
 import { DAY_TOLERANCE, NIGHT_TOLERANCE, VALUE_NIGHTCAP } from "./lib/constants";
 import { dayAhead } from "./lib/day";
+import { endOfDay } from "./lib/endOfDay";
+import { doPvp } from "./lib/pvp";
 
 export const args = Args.create("cap", "Captain Yaksworth's daily turns.", {
   path: Args.string({
@@ -34,33 +38,21 @@ export const args = Args.create("cap", "Captain Yaksworth's daily turns.", {
   }),
 });
 
-/** Run a cliExecute step that used to be a direct ASH function call -- an
- * abort() inside it no longer unwinds this whole script the way it did when
- * everything lived in one ASH file, so we have to check and rethrow by hand. */
-function run(command: string): void {
-  if (!cliExecute(command)) {
-    throw new Error(`${command} failed`);
-  }
-}
-
 /** Ported from daily-cap.ash's trick_or_treat/crimbone/aftercore_actions
- * dispatch, which all return a boolean success flag main() checks. */
+ * dispatch. crimbone is still ASH -- there's no real logic in it to port,
+ * the actual crimbo behavior is commented out in the source. */
 function runAftercoreLoop(isMorning: boolean, farmingWeen: boolean, farmingCrimbo: boolean): void {
   const half = isMorning ? "morning" : "evening";
-  let succeeded: boolean;
   if (farmingWeen) {
-    succeeded = cliExecute(`trick_or_treat ${half}`);
+    trickOrTreat(isMorning);
   } else if (farmingCrimbo) {
-    succeeded = cliExecute(`crimbone ${half}`);
+    if (!cliExecute(`crimbone ${half}`)) {
+      throw new Error(`Failed to perform aftercore actions (${half})`);
+    }
   } else {
-    succeeded = cliExecute(`aftercore_actions ${half}`);
+    aftercoreActions(isMorning);
   }
-
-  if (succeeded) {
-    print(`Successfully executed aftercore actions (${half})`, "green");
-  } else {
-    throw new Error(`Failed to perform aftercore actions (${half})`);
-  }
+  print(`Successfully executed aftercore actions (${half})`, "green");
 }
 
 export function main(command?: string): void {
@@ -94,7 +86,7 @@ export function main(command?: string): void {
       print("No day available", "red");
     }
 
-    run("do_pvp");
+    doPvp();
 
     // smol has no specific prep yet, so it just grabs the same food as sccs;
     // boris and standard need no prep at all.
@@ -176,16 +168,10 @@ export function main(command?: string): void {
     print("No day available", "red");
   }
 
-  run("do_pvp");
+  doPvp();
 
   // Last bits
-  //
-  // Parens+comma, not space-separated: cliExecute only splits "scriptname
-  // arg1 arg2" into multiple arguments when it's wrapped in parens. Bare
-  // space-separated args are passed through as a single string, which is
-  // why every other call here gets away with one token but this one (the
-  // only multi-parameter script we call) needs the explicit form.
-  run(`end_of_day(${VALUE_NIGHTCAP}, ${NIGHT_TOLERANCE})`);
+  endOfDay(VALUE_NIGHTCAP, NIGHT_TOLERANCE);
 
   print("taking a daily photo");
   cliExecute("av-snapshot");
@@ -195,7 +181,7 @@ export function main(command?: string): void {
 
   print("one last philter for the day");
   cliExecute("philter");
-  run("pvp_safety");
+  run("pvp-safety");
 
   run("check_mall_prices");
 }

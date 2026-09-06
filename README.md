@@ -45,13 +45,27 @@ Ported:
 
 - `general/day_ahead.ash` -> `src/lib/day.ts`
 - `realms/go_to_piraterealm.ash`, `realms/go_to_fantasyrealm.ash` -> `src/lib/realms.ts`
-  (not yet called from `main.ts` -- they're only consumed by `safe_garbo`,
-  which is still ASH; wire them in when that gets ported in phase 3)
 - tuning constants from `daily-cap.ash` -> `src/lib/constants.ts`
 - `check_for_input()` argument parsing -> grimoire `Args` in `src/main.ts`
-- `main()` from `daily-cap.ash`, transcribed into `src/main.ts`. `cap` now runs
-  the whole day; every action step is a `cliExecute` of the ASH file it used to
-  call directly.
+- `main()` from `daily-cap.ash`, transcribed into `src/main.ts`
+- `safe_garbo` -> `src/lib/garbo.ts` (now calls `goToPirateRealm`/
+  `goToFantasyRealm` from `src/lib/realms.ts` directly instead of the ASH
+  versions)
+- `aftercore_actions`, `trick_or_treat` -> `src/lib/aftercore.ts`
+- `generic_loop_stuff` -> `src/lib/loop.ts`
+- `do_pvp` -> `src/lib/pvp.ts`
+- `end_of_day` -> `src/lib/endOfDay.ts` (folding in its local
+  `buy_meat_golem`/`join_raffle` helpers)
+
+`cap` runs the whole day natively in TypeScript now. What's left ASH-side and
+still reached via `cliExecute` (phase 4): `check_prism`, `set_sit_course`,
+`clear_pledge`, `use_censer`, `pick_lock`, `take_meteorite_ade`,
+`break_hippy_stone`, `stooper_drink`, `drink_nightcap`, `open_beach`,
+`check_tickets`, `crimbone` (nothing to port there yet -- its real logic is
+commented out in the source), plus the mall/ascension scripts
+(`check_mall_prices`, `store_mall_data`, `sccs_preparation`,
+`trigger_*_ascension`, `run_sccs_ascension`, `pvp_safety`) which were always
+separate files and probably don't need porting at all.
 
 To make that possible, the dozen functions that used to live only inside
 `daily-cap.ash` (`aftercore_actions`, `trick_or_treat`, `crimbone`, `safe_garbo`,
@@ -81,10 +95,19 @@ a row right before the ascension-trigger check (once to `print()` it, once to
 branch on it) -- clearly a debug leftover, since `day_ahead()` has no side
 effects besides printing. Dropped the redundant call in `src/main.ts`.
 
-Next (phase 3): port the orchestration bodies now sitting in `general/*.ash` --
-`safe_garbo`, `aftercore_actions`, `trick_or_treat`, `generic_loop_stuff`,
-`do_pvp` -- into TypeScript, calling `goToPirateRealm`/`goToFantasyRealm` from
-`src/lib/realms.ts` instead of the ASH versions along the way.
+Two more non-obvious things that turned up porting `safe_garbo`:
+`_lastPirateRealmIsland` comes back from libram's `get()` as a real
+`Location` object, not a string (it's typed that way in libram's property
+tables) -- comparing it to the ASH original's `"Trash Island"` string would
+silently always be false, so it's compared with `` $location`Trash Island` ``
+instead. `_frHoursLeft` is the opposite surprise: typed as a string, so it
+needs `Number(get(...))` before the `!== 0` check the ASH did directly.
+
+Next (phase 4): the small helpers -- `pick_lock`, `use_censer`,
+`take_meteorite_ade`, `set_sit_course`, `clear_pledge`, `drink_nightcap`,
+`stooper_drink`, `open_beach`, `check_tickets`. Leave `store_mall_data.ash`
+for last; its `file_to_map`/`map_to_file` round-trip is the fiddliest thing
+in the codebase and the least urgent.
 
 Note when porting: ASH truncates `int / int`, JavaScript does not. Check every
 division as it crosses.
