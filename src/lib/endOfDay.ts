@@ -1,7 +1,10 @@
 import { buy, cliExecute, create, itemAmount, mallPrice, print, use } from "kolmafia";
 import { $item } from "libram";
-import { run } from "./cliRun";
 import { dayAhead } from "./day";
+import { drinkNightcap } from "./drinkNightcap";
+import { openBeach } from "./openBeach";
+import { stooperDrink } from "./stooperDrink";
+import { checkTickets } from "./tickets";
 
 function buyMeatGolem(): void {
   const golemMax = 15000;
@@ -21,7 +24,7 @@ function buyMeatGolem(): void {
 }
 
 function joinRaffle(): void {
-  run("open_beach");
+  openBeach();
   cliExecute("raffle 1");
 }
 
@@ -32,13 +35,13 @@ export function endOfDay(valueOfAdventure: number, adventureTolerance: number): 
   }
 
   // todo if we ever gen >200 adventures a rollover, may need to shift this
-  run("stooper_drink");
-  run(`drink_nightcap ${valueOfAdventure}`);
+  stooperDrink();
+  drinkNightcap(valueOfAdventure, true);
 
   buyMeatGolem();
   joinRaffle();
   cliExecute("maximize 5 adventures, 1 pvp fights");
   cliExecute("clanhop old cw");
 
-  run("check_tickets true");
+  checkTickets(true);
 }

@@ -1,5 +1,6 @@
 import { cliExecute, print, pvpAttacksLeft } from "kolmafia";
 import { run } from "./cliRun";
+import { takeMeteoriteAde } from "./takeMeteoriteAde";
 
 /**
  * Ported from daily-cap.ash's do_pvp(). UberPVPOptimizer and the loot
@@ -12,7 +13,7 @@ export function doPvp(): void {
     print("Doin' PVP", "blue");
     run("break_hippy_stone");
     // todo put meteorite-ade back in during a real pvp season
-    run("take_meteorite_ade");
+    takeMeteoriteAde();
 
     cliExecute("UberPVPOptimizer");
     cliExecute("pvp loot Barely Dressed");

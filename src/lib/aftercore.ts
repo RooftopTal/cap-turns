@@ -7,9 +7,11 @@ import {
   VALUE_OVERDRUNK,
   WORTHWHILE_ADVS,
 } from "./constants";
-import { run } from "./cliRun";
 import { safeGarbo } from "./cap_garbo";
+import { drinkNightcap } from "./drinkNightcap";
 import { genericLoopStuff } from "./loop";
+import { stooperDrink } from "./stooperDrink";
+import { useCenser } from "./useCenser";
 
 /** Ported from daily-cap.ash's aftercore_actions(). */
 export function aftercoreActions(isMorning: boolean): void {
@@ -43,13 +45,13 @@ export function aftercoreActions(isMorning: boolean): void {
     // we only do this in the morning to eke out a few more garbo turns; in
     // the evening we do this as part of the nightcap, since the turns are
     // better spent garbo'ing with a real familiar the next day
-    run("stooper_drink");
-    run(`drink_nightcap ${VALUE_OVERDRUNK}`);
+    stooperDrink();
+    drinkNightcap(VALUE_OVERDRUNK, true);
 
     cliExecute("garbo ascend");
   }
 
-  run("use_censer");
+  useCenser();
 }
 
 /**
@@ -89,11 +91,11 @@ export function trickOrTreat(isMorning: boolean): void {
     // we only do this in the morning to eke out a few more WEEN turns; in
     // the evening we do this as part of the nightcap, since the turns are
     // better spent garbo'ing with a real familiar the next day
-    run("stooper_drink");
-    run(`drink_nightcap ${loopValue}`);
+    stooperDrink();
+    drinkNightcap(loopValue, true);
 
     cliExecute(weenCommand);
   }
 
-  run("use_censer");
+  useCenser();
 }

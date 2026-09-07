@@ -2,11 +2,14 @@ import { Args } from "grimoire-kolmafia";
 import { cliExecute, print, runChoice, visitUrl } from "kolmafia";
 import { get } from "libram";
 import { aftercoreActions, trickOrTreat } from "./lib/aftercore";
+import { clearPledge } from "./lib/clearPledge";
 import { run } from "./lib/cliRun";
 import { DAY_TOLERANCE, NIGHT_TOLERANCE, VALUE_NIGHTCAP } from "./lib/constants";
 import { dayAhead } from "./lib/day";
 import { endOfDay } from "./lib/endOfDay";
 import { doPvp } from "./lib/pvp";
+import { setSitCourse } from "./lib/setSitCourse";
+import { checkTickets } from "./lib/tickets";
 
 export const args = Args.create("cap", "Captain Yaksworth's daily turns.", {
   path: Args.string({
@@ -78,7 +81,7 @@ export function main(command?: string): void {
   if (!ascendedAlready) {
     print("Running first part of loop", "blue");
     run("check_prism");
-    run("check_tickets false");
+    checkTickets(false);
 
     if (dayAhead(DAY_TOLERANCE)) {
       runAftercoreLoop(true, farmingWeen, farmingCrimbo);
@@ -126,7 +129,7 @@ export function main(command?: string): void {
   }
 
   // Lunch
-  run("set_sit_course");
+  setSitCourse();
 
   const kingLiberated = get("kingLiberated");
   print(`King state: ${kingLiberated}`);
@@ -159,7 +162,7 @@ export function main(command?: string): void {
   }
 
   run("check_prism");
-  run("clear_pledge");
+  clearPledge();
 
   // Evening
   if (dayAhead(NIGHT_TOLERANCE)) {

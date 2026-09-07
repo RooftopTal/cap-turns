@@ -48,24 +48,35 @@ Ported:
 - tuning constants from `daily-cap.ash` -> `src/lib/constants.ts`
 - `check_for_input()` argument parsing -> grimoire `Args` in `src/main.ts`
 - `main()` from `daily-cap.ash`, transcribed into `src/main.ts`
-- `safe_garbo` -> `src/lib/garbo.ts` (now calls `goToPirateRealm`/
-  `goToFantasyRealm` from `src/lib/realms.ts` directly instead of the ASH
-  versions)
+- `safe_garbo` -> `src/lib/cap_garbo.ts` (named to avoid confusion with the
+  actual `garbo` script/library referenced constantly via `cliExecute`; now
+  calls `goToPirateRealm`/`goToFantasyRealm` from `src/lib/realms.ts`
+  directly instead of the ASH versions)
 - `aftercore_actions`, `trick_or_treat` -> `src/lib/aftercore.ts`
 - `generic_loop_stuff` -> `src/lib/loop.ts`
 - `do_pvp` -> `src/lib/pvp.ts`
 - `end_of_day` -> `src/lib/endOfDay.ts` (folding in its local
   `buy_meat_golem`/`join_raffle` helpers)
+- `pick_lock` -> `src/lib/pickLock.ts`, `set_sit_course` ->
+  `src/lib/setSitCourse.ts` (both now use libram's `withChoice` instead of
+  manual save/set/restore of the choice preference -- see the pick_lock bug
+  below, which withChoice makes structurally impossible to repeat)
+- `use_censer` -> `src/lib/useCenser.ts`
+- `take_meteorite_ade` -> `src/lib/takeMeteoriteAde.ts`
+- `clear_pledge` -> `src/lib/clearPledge.ts`
+- `drink_nightcap` -> `src/lib/drinkNightcap.ts`, `stooper_drink` ->
+  `src/lib/stooperDrink.ts`
+- `open_beach` -> `src/lib/openBeach.ts`
+- `check_tickets` -> `src/lib/tickets.ts`
 
 `cap` runs the whole day natively in TypeScript now. What's left ASH-side and
-still reached via `cliExecute` (phase 4): `check_prism`, `set_sit_course`,
-`clear_pledge`, `use_censer`, `pick_lock`, `take_meteorite_ade`,
-`break_hippy_stone`, `stooper_drink`, `drink_nightcap`, `open_beach`,
-`check_tickets`, `crimbone` (nothing to port there yet -- its real logic is
+still reached via `cliExecute`: `check_prism`, `break_hippy_stone`, `psychic`,
+`clan_peridot`, `crimbone` (nothing to port there yet -- its real logic is
 commented out in the source), plus the mall/ascension scripts
 (`check_mall_prices`, `store_mall_data`, `sccs_preparation`,
-`trigger_*_ascension`, `run_sccs_ascension`, `pvp_safety`) which were always
-separate files and probably don't need porting at all.
+`trigger_*_ascension`, `run_sccs_ascension`, `pvp-safety`) which were always
+separate files and probably don't need porting at all. `store_mall_data` is
+deliberately still last -- see below.
 
 To make that possible, the dozen functions that used to live only inside
 `daily-cap.ash` (`aftercore_actions`, `trick_or_treat`, `crimbone`, `safe_garbo`,
@@ -103,11 +114,30 @@ silently always be false, so it's compared with `` $location`Trash Island` ``
 instead. `_frHoursLeft` is the opposite surprise: typed as a string, so it
 needs `Number(get(...))` before the `!== 0` check the ASH did directly.
 
-Next (phase 4): the small helpers -- `pick_lock`, `use_censer`,
-`take_meteorite_ade`, `set_sit_course`, `clear_pledge`, `drink_nightcap`,
-`stooper_drink`, `open_beach`, `check_tickets`. Leave `store_mall_data.ash`
-for last; its `file_to_map`/`map_to_file` round-trip is the fiddliest thing
-in the codebase and the least urgent.
+A real bug turned up testing phase 3, unrelated to the port itself:
+`realms/keepStatsLow.ash` (and `PirateRealm_cap.ash`'s own `statCheck()`,
+not yet fixed) checked `my_buffedstat(st) > 100` when PirateRealm actually
+requires stats strictly under 100 -- a stat sitting at exactly 100 was
+treated as fine, so PirateRealm's sail-away step looped forever. Fixed
+ASH-side (not part of this port). Also, `main.ts` had its own bug: it
+called `run("pvp_safety")` (the function name) instead of `run("pvp-safety")`
+(the actual filename, hyphenated) -- `cliExecute` resolves by filename, not
+by the function inside it. Fixed, and cross-checked every other
+`cliExecute`/`run` target against the files on disk afterward.
+
+`check_tickets` porting note: the ASH source writes `$item[Rubee&trade;]`
+and `$item[FunFunds&trade;]` using the HTML entity for ™. libram's `$item`
+tag wants the actual Unicode ™ character, not the entity text -- confirmed
+against the InstantSCCS reference project's own usage
+(`` $item`Lil' Doctor™ bag` ``, etc.) before assuming so.
+
+Next (phase 5, whenever it's worth revisiting): `store_mall_data.ash`'s
+`file_to_map`/`map_to_file` round-trip is the fiddliest thing in the
+codebase and the least urgent -- left for last on purpose, same as the
+original plan called out. Otherwise the day-to-day logic is fully ported;
+what's left ASH-side is either trivial delegation (`check_prism`,
+`break_hippy_stone`) or other people's scripts this was never going to own
+(`psychic`, `clan_peridot`, the mall/ascension scripts, `crimbone`).
 
 Note when porting: ASH truncates `int / int`, JavaScript does not. Check every
 division as it crosses.

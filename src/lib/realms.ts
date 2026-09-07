@@ -1,5 +1,6 @@
 import { mallPrice, print } from "kolmafia";
 import { $item, get } from "libram";
+import { LYLECO_GUIDE_OVERRIDE } from "./constants";
 
 /**
  * Ported from realms/go_to_piraterealm.ash. The two `Math.trunc` calls
@@ -69,15 +70,12 @@ export function goToFantasyRealm(): boolean {
   print(`meat_per_rubee (tix): ${tixMeatPerRubee}`);
   print(`expected value of FR adv (tix): ${tixMeatPerAdventure}/${voaTolerance}`, "blue");
 
-  // lyleco_guide_override from mall_overrides.ash -- a fixed ceiling rather
-  // than the live mall price, which the ASH deliberately doesn't trust here.
   const lylecoRubeePrice = 3000;
-  const lylecoGuideOverride = 2_000_000;
-  const lylecoMeatPerRubee = Math.trunc(lylecoGuideOverride / lylecoRubeePrice);
+  const lylecoMeatPerRubee = Math.trunc(LYLECO_GUIDE_OVERRIDE / lylecoRubeePrice);
   const lylecoMeatPerAdventure = lylecoMeatPerRubee * rubeesPerAdv;
 
   const lylecoActualPrice = mallPrice($item`LyleCo Contractor's Manual`);
-  print(`lyleco guide price: ${lylecoGuideOverride} (Actual: ${lylecoActualPrice})`);
+  print(`lyleco guide price: ${LYLECO_GUIDE_OVERRIDE} (Actual: ${lylecoActualPrice})`);
   print(`meat_per_rubee (lyleco): ${lylecoMeatPerRubee}`);
   print(`expected value of FR adv (lyleco): ${lylecoMeatPerAdventure}/${voaTolerance}`, "blue");
 
