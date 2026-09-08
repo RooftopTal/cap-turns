@@ -69,14 +69,29 @@ Ported:
 - `open_beach` -> `src/lib/openBeach.ts`
 - `check_tickets` -> `src/lib/tickets.ts`
 
-`cap` runs the whole day natively in TypeScript now. What's left ASH-side and
-still reached via `cliExecute`: `check_prism`, `break_hippy_stone`, `psychic`,
-`clan_peridot`, `crimbone` (nothing to port there yet -- its real logic is
-commented out in the source), plus the mall/ascension scripts
-(`check_mall_prices`, `store_mall_data`, `sccs_preparation`,
-`trigger_*_ascension`, `run_sccs_ascension`, `pvp-safety`) which were always
-separate files and probably don't need porting at all. `store_mall_data` is
-deliberately still last -- see below.
+`cap` runs the whole day natively in TypeScript now. **The migration is
+functionally complete.** What's left ASH-side and reached via `cliExecute`,
+staying that way permanently:
+
+- `store_mall_data.ash` -- deliberately never ported. Its `file_to_map`/
+  `map_to_file` round-trip reads and rewrites a real accumulated data file
+  (`store log <name>.txt`, 70k+ lines and growing) with key-preserving
+  tab-separated semantics that KoLmafia's JS-exposed `fileToArray` does
+  *not* replicate (`fileToArray` assigns fresh sequential keys and never
+  splits on tab -- see the note below). There's a `fileToMap`/`mapToFile`
+  pair that calls the same underlying Java as the ASH functions and would
+  likely work, but the payoff (porting a pure logging/tracking function)
+  didn't justify the residual risk to real historical data. Decided
+  2026-09-07 to leave this ASH forever, same treatment as `realms/`.
+- `realms/` (`FantasyRealm.ash`, `PirateRealm_cap.ash`) -- 2,600+ lines of
+  forked community combat automation, never in scope to own. Called via
+  `cliExecute` indefinitely.
+- Trivial delegation with nothing to gain from porting: `check_prism`,
+  `break_hippy_stone`, `psychic`, `clan_peridot`, `crimbone` (its real logic
+  is commented out in the source -- nothing there yet to port).
+- The mall/ascension scripts (`check_mall_prices`, `sccs_preparation`,
+  `trigger_*_ascension`, `run_sccs_ascension`, `pvp-safety`) -- always
+  separate files, no reason to move them.
 
 To make that possible, the dozen functions that used to live only inside
 `daily-cap.ash` (`aftercore_actions`, `trick_or_treat`, `crimbone`, `safe_garbo`,
@@ -131,13 +146,91 @@ tag wants the actual Unicode ™ character, not the entity text -- confirmed
 against the InstantSCCS reference project's own usage
 (`` $item`Lil' Doctor™ bag` ``, etc.) before assuming so.
 
-Next (phase 5, whenever it's worth revisiting): `store_mall_data.ash`'s
-`file_to_map`/`map_to_file` round-trip is the fiddliest thing in the
-codebase and the least urgent -- left for last on purpose, same as the
-original plan called out. Otherwise the day-to-day logic is fully ported;
-what's left ASH-side is either trivial delegation (`check_prism`,
-`break_hippy_stone`) or other people's scripts this was never going to own
-(`psychic`, `clan_peridot`, the mall/ascension scripts, `crimbone`).
+`file_to_map` vs `fileToArray`, if `store_mall_data` ever gets revisited:
+ASH's `file_to_map` (`RuntimeLibrary.java`, `file_to_map`) parses each line
+as tab-separated `key\tvalue` and preserves the file's real keys. The
+naive-looking JS equivalent, `fileToArray`, is a *different* Java method
+(`file_to_array`) that just reads raw lines and assigns fresh sequential
+keys starting at 1, with no tab-splitting -- using it on this file would
+silently corrupt the merge logic. The real equivalent is `fileToMap`/
+`mapToFile`, untested here.
 
 Note when porting: ASH truncates `int / int`, JavaScript does not. Check every
 division as it crosses.
+
+## Status: migration done, now improving on the original
+
+Every day-to-day decision `daily-cap.ash` used to make -- what to run, in
+what order, whether to ascend, how much to garbo, when to stop -- now
+happens natively in `cap`'s TypeScript. `daily-cap` still exists, untouched,
+and both can run side by side. The migration itself has no more open items;
+what follows is improvements beyond what the ASH version ever did.
+
+### Multi-day ascensions (2026-09-07)
+
+The ASH version assumed an ascension always finishes inside a single day's
+run: trigger it, play it out, and if it isn't done by the time `main()`
+reaches `check_prism()`, that's treated as an error and the whole script
+aborts. Fine for `sccs`/`smol`, which are expected to always finish same-day
+-- if one doesn't, that's a bug worth surfacing loudly, not silently working
+around. Not fine for `boris`/`standard`, which run on `autoscend` and
+routinely span multiple days; `autoscend` breaks cleanly on turn-exhaustion
+rather than erroring.
+
+`main.ts` now distinguishes three states instead of two: already ascended
+today, a fresh day (run the normal morning-aftercore-then-trigger flow), or
+an ascension already in progress from a previous day (`ascensionsToday ==
+0` and `kingLiberated == false` at the very start -- `kingLiberated` flips
+true only when the prism breaks, right at the *end* of a run, not the
+start).
+
+That third state doesn't trust `--path` to say which ascension is actually
+in progress -- you might have run `cap boris` on day 1 and just typed bare
+`cap` on day 2, which would default `--path` back to `sccs`. Instead it
+reads `myPath()` (the character's real current path, live from game state)
+and, if that's `boris` or `standard`, shows a blocking `userConfirm()`
+Yes/No dialog: *"cap detected an ascension already in progress: Avatar of
+Boris. Resume it automatically?"* Yes resumes automatically; No throws and
+forces you to sort it out by hand. If `myPath()` comes back as something
+other than boris/standard while ascensionsToday is 0 (i.e. sccs/smol
+mid-run -- the bug case above), there's no prompt at all; it falls through
+to the normal flow and `check_prism()`'s abort, same as always.
+
+Once confirmed, the detected path (not `--path`) drives everything else for
+the rest of the run -- skips morning aftercore, `do_pvp`,
+`sccs_preparation` and `trigger_*_ascension` entirely (no starting a second
+ascension on top of the stalled one) and jumps straight to re-running
+`autoscend` to continue it.
+
+After the ascension-content block runs (whether freshly triggered this run
+or resumed), `boris`/`standard` get one more check before the old
+unconditional `check_prism()` assertion: if `ascensionsToday` is still `0`,
+that's a normal "ran out of turns again" outcome, not a bug -- stop cleanly
+as a rest day (skipping the S.I.T. course, aftercore, `do_pvp`, and
+`end_of_day`, none of which make sense for a low-level mid-ascension
+character) rather than letting `check_prism()` abort. The closing
+`store_mall_data`/`check_mall_prices` pair still runs even on a rest day --
+purely informational, no reason to skip it. `sccs`/`smol` keep the original
+unconditional-abort behavior unchanged.
+
+Confirmed working 2026-09-08: a real Boris ascension spanned multiple days
+and resumed correctly.
+
+### Standard-path class selection (2026-09-08)
+
+`paths/standard/trigger_standard_ascension.ash` hardcoded `whichclass=1`
+(Seal Clubber). Ported it to `src/lib/triggerStandardAscension.ts` and added
+a `--class` CLI option (`seal-clubber`, `turtle-tamer`, `pastamancer`,
+`sauceror`, `disco-bandit`, `accordion-thief`, defaulting to
+`seal-clubber`) so it's selectable per run, validated by grimoire's `Args`
+the same way `--path`/`--farm` are -- a typo is rejected before `main()`
+runs, not silently sent to `ascend.php` as class 0 or similar. Only wired
+up for `standard`; `sccs`/`boris`/`smol` stay exactly as hardcoded as they
+were, per explicit request -- no need to generalize further than asked.
+
+The class-name-to-id mapping (`STANDARD_CLASS_IDS` in
+`triggerStandardAscension.ts`) came directly from the user, not guessed --
+the ASH source's own comment on this (`// SC=1, TT=2, PM=3, SA=4, ???`) was
+incomplete and not a trustworthy source of truth. Its keys must stay in
+sync with the `class` Args option in `main.ts`; there's a comment at each
+pointing to the other, but nothing enforces it mechanically.
