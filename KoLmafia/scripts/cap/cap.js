@@ -5352,6 +5352,15 @@ var VALUE_EVENING = 6000;
 /** Can be set separately if we don't just want to base this on tomorrow's turns. */
 var VALUE_OVERDRUNK = VALUE_EVENING;
 var VALUE_NIGHTCAP = VALUE_MORNING;
+
+/**
+ * Halfway between the two halves of the loop, for a leg that is neither: the
+ * farming that follows a multi-day ascension finishing. It runs in the
+ * evening slot, but it's the day's first farming -- that day's morning leg
+ * was skipped to resume the ascension -- so its turns are worth more than an
+ * evening's and less than a full morning's. See main.ts.
+ */
+var VALUE_POST_ASCENSION = Math.round((VALUE_MORNING + VALUE_EVENING) / 2);
 var TURNS_FOR_PIRATEREALM = 20;
 var TURNS_FOR_FANTASYREALM = 44;
 var TURNS_FLEX = 5;
@@ -5776,8 +5785,17 @@ function useCenser() {
 
 var _templateObject$6;
 
-/** Ported from daily-cap.ash's aftercore_actions(). */
-function aftercoreActions(isMorning) {
+/**
+ * Ported from daily-cap.ash's aftercore_actions().
+ *
+ * `valueOverride` replaces the leg's usual valueOfAdventure. It exists for
+ * the leg that follows a multi-day ascension finishing: that runs in the
+ * evening slot, but it's the day's first farming, so main.ts values it
+ * between the two halves instead of at the evening rate. Nothing else about
+ * the leg changes -- it still holds back the overnight turns and ends at the
+ * nightcap.
+ */
+function aftercoreActions(isMorning, valueOverride) {
   kolmafia.print("Starting aftercore actions");
 
   // TODO make this more sensible
@@ -5786,12 +5804,15 @@ function aftercoreActions(isMorning) {
   kolmafia.cliExecute("cast generate irony");
   var turnsToSave;
   if (isMorning) {
-    kolmafia.print("first half of loop; value is: ".concat(VALUE_MORNING));
-    _set("valueOfAdventure", VALUE_MORNING);
+    var value = valueOverride ?? VALUE_MORNING;
+    kolmafia.print("first half of loop; value is: ".concat(value));
+    _set("valueOfAdventure", value);
     turnsToSave = 0; // use all turns in the first half of loop
   } else {
-    kolmafia.print("second half of loop; value is: ".concat(VALUE_EVENING));
-    _set("valueOfAdventure", VALUE_EVENING);
+    var _value = valueOverride ?? VALUE_EVENING;
+    var half = valueOverride === undefined ? "second half of loop" : "first farming of the day, in the evening slot";
+    kolmafia.print("".concat(half, "; value is: ").concat(_value));
+    _set("valueOfAdventure", _value);
     turnsToSave = TURNS_TO_SAVE_OVERNIGHT; // save turns overnight to start day closer to 200 advs
   }
   genericLoopStuff();
@@ -6107,16 +6128,18 @@ var args = Args.create("cap", "Captain Yaksworth's daily turns.", {
 /** Ported from daily-cap.ash's trick_or_treat/crimbone/aftercore_actions
  * dispatch. crimbone is still ASH -- there's no real logic in it to port,
  * the actual crimbo behavior is commented out in the source. */
-function runAftercoreLoop(isMorning, farmingWeen, farmingCrimbo) {
+function runAftercoreLoop(isMorning, farmingWeen, farmingCrimbo, valueOverride) {
   var half = isMorning ? "morning" : "evening";
   if (farmingWeen) {
+    // The seasonal farm modes set their own value and are left alone --
+    // valueOverride only applies to a normal aftercore day.
     trickOrTreat(isMorning);
   } else if (farmingCrimbo) {
     if (!kolmafia.cliExecute("crimbone ".concat(half))) {
       throw new Error("Failed to perform aftercore actions (".concat(half, ")"));
     }
   } else {
-    aftercoreActions(isMorning);
+    aftercoreActions(isMorning, valueOverride);
   }
   kolmafia.print("Successfully executed aftercore actions (".concat(half, ")"), "green");
 }
@@ -6288,9 +6311,14 @@ function main(command) {
   run("check_prism");
   clearPledge();
 
-  // Evening
+  // Evening. When we've just finished a multi-day ascension, this is the
+  // day's *first* farming rather than its second -- the morning leg was
+  // skipped at the top to resume the ascension instead -- so the turns are
+  // worth more than an evening's. Value them between the two halves.
+  // Everything else about the leg is unchanged: it still holds back the
+  // overnight turns and ends at the nightcap.
   if (dayAhead(NIGHT_TOLERANCE)) {
-    runAftercoreLoop(false, farmingWeen, farmingCrimbo);
+    runAftercoreLoop(false, farmingWeen, farmingCrimbo, resumingAscension ? VALUE_POST_ASCENSION : undefined);
   } else {
     kolmafia.print("No day available", "red");
   }

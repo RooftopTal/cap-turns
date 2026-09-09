@@ -13,8 +13,17 @@ import { genericLoopStuff } from "./loop";
 import { stooperDrink } from "./stooperDrink";
 import { useCenser } from "./useCenser";
 
-/** Ported from daily-cap.ash's aftercore_actions(). */
-export function aftercoreActions(isMorning: boolean): void {
+/**
+ * Ported from daily-cap.ash's aftercore_actions().
+ *
+ * `valueOverride` replaces the leg's usual valueOfAdventure. It exists for
+ * the leg that follows a multi-day ascension finishing: that runs in the
+ * evening slot, but it's the day's first farming, so main.ts values it
+ * between the two halves instead of at the evening rate. Nothing else about
+ * the leg changes -- it still holds back the overnight turns and ends at the
+ * nightcap.
+ */
+export function aftercoreActions(isMorning: boolean, valueOverride?: number): void {
   print("Starting aftercore actions");
 
   // TODO make this more sensible
@@ -24,12 +33,15 @@ export function aftercoreActions(isMorning: boolean): void {
 
   let turnsToSave: number;
   if (isMorning) {
-    print(`first half of loop; value is: ${VALUE_MORNING}`);
-    set("valueOfAdventure", VALUE_MORNING);
+    const value = valueOverride ?? VALUE_MORNING;
+    print(`first half of loop; value is: ${value}`);
+    set("valueOfAdventure", value);
     turnsToSave = 0; // use all turns in the first half of loop
   } else {
-    print(`second half of loop; value is: ${VALUE_EVENING}`);
-    set("valueOfAdventure", VALUE_EVENING);
+    const value = valueOverride ?? VALUE_EVENING;
+    const half = valueOverride === undefined ? "second half of loop" : "first farming of the day, in the evening slot";
+    print(`${half}; value is: ${value}`);
+    set("valueOfAdventure", value);
     turnsToSave = TURNS_TO_SAVE_OVERNIGHT; // save turns overnight to start day closer to 200 advs
   }
 

@@ -17,6 +17,15 @@ export const VALUE_OVERDRUNK = VALUE_EVENING;
 
 export const VALUE_NIGHTCAP = VALUE_MORNING;
 
+/**
+ * Halfway between the two halves of the loop, for a leg that is neither: the
+ * farming that follows a multi-day ascension finishing. It runs in the
+ * evening slot, but it's the day's first farming -- that day's morning leg
+ * was skipped to resume the ascension -- so its turns are worth more than an
+ * evening's and less than a full morning's. See main.ts.
+ */
+export const VALUE_POST_ASCENSION = Math.round((VALUE_MORNING + VALUE_EVENING) / 2);
+
 export const TURNS_FOR_PIRATEREALM = 20;
 export const TURNS_FOR_FANTASYREALM = 44;
 export const TURNS_FLEX = 5;

@@ -4,7 +4,7 @@ import { $path, get } from "libram";
 import { aftercoreActions, trickOrTreat } from "./lib/aftercore";
 import { clearPledge } from "./lib/clearPledge";
 import { run } from "./lib/cliRun";
-import { DAY_TOLERANCE, NIGHT_TOLERANCE, VALUE_NIGHTCAP } from "./lib/constants";
+import { DAY_TOLERANCE, NIGHT_TOLERANCE, VALUE_NIGHTCAP, VALUE_POST_ASCENSION } from "./lib/constants";
 import { dayAhead } from "./lib/day";
 import { endOfDay } from "./lib/endOfDay";
 import { doPvp } from "./lib/pvp";
@@ -58,16 +58,23 @@ export const args = Args.create("cap", "Captain Yaksworth's daily turns.", {
 /** Ported from daily-cap.ash's trick_or_treat/crimbone/aftercore_actions
  * dispatch. crimbone is still ASH -- there's no real logic in it to port,
  * the actual crimbo behavior is commented out in the source. */
-function runAftercoreLoop(isMorning: boolean, farmingWeen: boolean, farmingCrimbo: boolean): void {
+function runAftercoreLoop(
+  isMorning: boolean,
+  farmingWeen: boolean,
+  farmingCrimbo: boolean,
+  valueOverride?: number,
+): void {
   const half = isMorning ? "morning" : "evening";
   if (farmingWeen) {
+    // The seasonal farm modes set their own value and are left alone --
+    // valueOverride only applies to a normal aftercore day.
     trickOrTreat(isMorning);
   } else if (farmingCrimbo) {
     if (!cliExecute(`crimbone ${half}`)) {
       throw new Error(`Failed to perform aftercore actions (${half})`);
     }
   } else {
-    aftercoreActions(isMorning);
+    aftercoreActions(isMorning, valueOverride);
   }
   print(`Successfully executed aftercore actions (${half})`, "green");
 }
@@ -257,9 +264,14 @@ export function main(command?: string): void {
   run("check_prism");
   clearPledge();
 
-  // Evening
+  // Evening. When we've just finished a multi-day ascension, this is the
+  // day's *first* farming rather than its second -- the morning leg was
+  // skipped at the top to resume the ascension instead -- so the turns are
+  // worth more than an evening's. Value them between the two halves.
+  // Everything else about the leg is unchanged: it still holds back the
+  // overnight turns and ends at the nightcap.
   if (dayAhead(NIGHT_TOLERANCE)) {
-    runAftercoreLoop(false, farmingWeen, farmingCrimbo);
+    runAftercoreLoop(false, farmingWeen, farmingCrimbo, resumingAscension ? VALUE_POST_ASCENSION : undefined);
   } else {
     print("No day available", "red");
   }

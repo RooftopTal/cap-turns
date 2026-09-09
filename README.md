@@ -322,3 +322,26 @@ is left alone in that case.
 The only "impractical" tests are the two above -- no stomach space, or no
 food worth its price. There's no cap on how many bites it'll take, because
 each one is re-checked and the loop stops the moment 40 is in hand.
+
+### Post-ascension adventure value (2026-09-09)
+
+The loop values a turn at `VALUE_MORNING` (6500) in the first half of the
+day and `VALUE_EVENING` (6000) in the second. A day that finishes a
+multi-day ascension fits neither: `main()` skips the morning leg entirely to
+resume the ascension, so the leg that runs afterwards is the day's *first*
+farming even though it occupies the evening slot -- full day's turns ahead
+of it, but it still ends at the nightcap.
+
+`VALUE_POST_ASCENSION` (the midpoint, 6250) is used for exactly that leg.
+`resumingAscension` is the test: reaching the evening leg with it set means
+the ascension we resumed from a previous day also *finished* this run, since
+an unfinished one returns early at the rest-day check above. A normal day
+exits its ascension into the genuine second half and keeps 6000; the
+following day's morning leg isn't exiting an ascension at all and keeps
+6500.
+
+Value only. The leg still holds back `TURNS_TO_SAVE_OVERNIGHT` and still
+ends with the nightcap at `VALUE_NIGHTCAP`; `valueOverride` threads through
+`runAftercoreLoop` into `aftercoreActions` and touches nothing else. The
+seasonal farm modes (`--farm ween`/`crimbo`) set their own value and ignore
+it.
