@@ -15,6 +15,7 @@ import {
 } from "kolmafia";
 import { $coinmaster, $familiar, $item, $location, get } from "libram";
 import { TURNS_FLEX, TURNS_FOR_FANTASYREALM, TURNS_FOR_PIRATEREALM, WORTHWHILE_ADVS } from "./constants";
+import { ensureAdventuresForPirateRealm } from "./pirateRealmTurns";
 import { goToFantasyRealm, goToPirateRealm } from "./realms";
 
 /**
@@ -46,15 +47,27 @@ export function safeGarbo(stopAfterRoach: boolean, turnsToSave: number): void {
     const onTrashIsland = get("_lastPirateRealmIsland") === $location`Trash Island`;
     const prQuestFinished = get("_questPirateRealm") === "finished";
 
+    // Set when we can't start a voyage at all today (see
+    // ensureAdventuresForPirateRealm): PirateRealm is then off entirely --
+    // no Trash Island run, no turns reserved for it, no second visit later.
+    let pirateRealmBlocked = false;
+
     // Farm realm tickets
     if (!onTrashIsland && !prQuestFinished) {
-      useFamiliar($familiar`Cookbookbat`);
-      cliExecute("PirateRealm_cap crab trashonly");
-      if (get("_lastPirateRealmIsland") !== $location`Trash Island`) {
-        throw new Error("Trash failed somehow?");
+      // Starting a voyage needs 40 adventures, which we may not have coming
+      // straight out of an ascension. Top up the diet early if that'll do
+      // it; otherwise give PirateRealm a miss for the day.
+      if (ensureAdventuresForPirateRealm()) {
+        useFamiliar($familiar`Cookbookbat`);
+        cliExecute("PirateRealm_cap crab trashonly");
+        if (get("_lastPirateRealmIsland") !== $location`Trash Island`) {
+          throw new Error("Trash failed somehow?");
+        }
+        // Clear any effects that reduce our strength before garbo/other
+        cliExecute("hottub");
+      } else {
+        pirateRealmBlocked = true;
       }
-      // Clear any effects that reduce our strength before garbo/other
-      cliExecute("hottub");
     }
     outfit("birthday suit");
 
@@ -63,9 +76,10 @@ export function safeGarbo(stopAfterRoach: boolean, turnsToSave: number): void {
     }
 
     const frHoursLeft = Number(get("_frHoursLeft"));
+    const doPirateRealm = shouldGoPirateRealm && !prQuestFinished && !pirateRealmBlocked;
     const expectedGarboTurns =
       -1 *
-      ((shouldGoPirateRealm && !prQuestFinished ? TURNS_FOR_PIRATEREALM : 0) +
+      ((doPirateRealm ? TURNS_FOR_PIRATEREALM : 0) +
         (shouldGoFantasyRealm && frHoursLeft !== 0 ? TURNS_FOR_FANTASYREALM : 0) +
         turnsToSave +
         TURNS_FLEX);
@@ -83,7 +97,7 @@ export function safeGarbo(stopAfterRoach: boolean, turnsToSave: number): void {
     // Attempt to leave as few turns as possible
     print(`Turns after garbo finished: ${myAdventures()}`);
 
-    if (shouldGoPirateRealm && !prQuestFinished) {
+    if (doPirateRealm) {
       useFamiliar($familiar`Jill-of-All-Trades`);
       if (shopAmount($item`windicle`) < 100) {
         print("Need to restock windicles!");

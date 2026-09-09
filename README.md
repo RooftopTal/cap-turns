@@ -13,15 +13,20 @@ Captain Yaksworth's daily turns, in TypeScript. Successor to the ASH scripts in
 
 Build straight into the mafia scripts folder and leave it watching:
 
-    CAP_OUT="C:/Users/TimLedsam/Dropbox/kolmafia-data/scripts/cap-turns" npm run watch
+    CAP_OUT="C:/work/kolmafia/scripts/cap-turns" npm run watch
 
 Then in the gCLI, `cap --help`. The old ASH is still invocable as `daily-cap`,
 so you can run both side by side.
 
 Windows cmd:
 
-    set CAP_OUT=C:\Users\TimLedsam\Dropbox\kolmafia-data\scripts\cap-turns
+    set CAP_OUT=C:\work\kolmafia\scripts\cap-turns
     npm run watch
+
+`CAP_OUT` must be the folder mafia actually loads `cap.js` from -- check a
+stack trace in the gCLI if in doubt, it prints the real path. Without it the
+build lands in `KoLmafia/` below and the game happily keeps running whatever
+was last written to the scripts folder, so a fix looks like it did nothing.
 
 ## Other commands
 
@@ -204,17 +209,45 @@ ascension on top of the stalled one) and jumps straight to re-running
 
 After the ascension-content block runs (whether freshly triggered this run
 or resumed), `boris`/`standard` get one more check before the old
-unconditional `check_prism()` assertion: if `ascensionsToday` is still `0`,
-that's a normal "ran out of turns again" outcome, not a bug -- stop cleanly
-as a rest day (skipping the S.I.T. course, aftercore, `do_pvp`, and
-`end_of_day`, none of which make sense for a low-level mid-ascension
-character) rather than letting `check_prism()` abort. The closing
-`store_mall_data`/`check_mall_prices` pair still runs even on a rest day --
-purely informational, no reason to skip it. `sccs`/`smol` keep the original
-unconditional-abort behavior unchanged.
+unconditional `check_prism()` assertion: if `kingLiberated` is still
+`false`, that's a normal "ran out of turns again" outcome, not a bug --
+stop cleanly as a rest day (skipping the S.I.T. course, aftercore,
+`do_pvp`, and `end_of_day`, none of which make sense for a low-level
+mid-ascension character) rather than letting `check_prism()` abort. The
+closing `store_mall_data`/`check_mall_prices` pair still runs even on a
+rest day -- purely informational, no reason to skip it. `sccs`/`smol` keep
+the original unconditional-abort behavior unchanged.
 
 Confirmed working 2026-09-08: a real Boris ascension spanned multiple days
-and resumed correctly.
+and resumed correctly. Same day, a second bug turned up and got fixed: this
+rest-day check originally read `ascensionsToday === 0`, not
+`!kingLiberated`. That's wrong -- confirmed straight from
+`trigger_boris_ascension.ash`, every `trigger_*_ascension` function's first
+action is submitting the *previous* run's ascend button, which sends the
+character through Valhalla and increments `ascensionsToday`
+(`ValhallaManager.onAscension()` in mafia's own source) *before* the newly
+triggered run has done anything. So `ascensionsToday` goes nonzero the
+instant any trigger fires, whether or not that run ever finishes, making it
+useless for telling "just started" apart from "actually done" within the
+same script run. Caught because the character had completed an earlier,
+unrelated ascension the same real-world day before running `cap path
+boris` -- `ascensionsToday` was already 1 by the time the Boris run's own
+completion was being checked, so the rest-day check saw "nonzero" and
+(wrongly) fell through to `check_prism()`'s abort. `kingLiberated` doesn't
+have this problem -- it tracks the ascension actually in progress, not a
+same-day cumulative count.
+
+That same discovery exposed one more gap: the resume-detection block
+(`myPath()` check + `userConfirm()` popup) was gated behind `!ascendedAlready`
+too, so on a same-day rerun after an earlier unrelated ascension already
+completed (`ascendedAlready` true), it would never even fire -- you'd have
+had to remember to pass `--path boris` explicitly again to get back into the
+right branch, defeating the point of auto-detecting via `myPath()` in the
+first place. Decoupled: the resume check now runs whenever `kingLiberated`
+is false, full stop, and `resumingAscension` takes priority over
+`ascendedAlready` in the top-level branch. A bare `cap` now correctly
+detects and offers to resume an in-progress boris/standard ascension
+regardless of what else ascended earlier that day.
 
 ### Standard-path class selection (2026-09-08)
 
@@ -234,3 +267,58 @@ the ASH source's own comment on this (`// SC=1, TT=2, PM=3, SA=4, ???`) was
 incomplete and not a trustworthy source of truth. Its keys must stay in
 sync with the `class` Args option in `main.ts`; there's a comment at each
 pointing to the other, but nothing enforces it mechanically.
+
+### PirateRealm's 40-adventure floor (2026-09-09)
+
+A voyage can't be started below 40 adventures, which is easy to be under
+coming straight out of an ascension. `PirateRealm_cap.ash`'s run loop
+handles this by printing "You'll need forty adventures to start" and
+returning *silently* -- no abort, no false return -- so `safe_garbo`'s
+Trash Island run looked like it had happened and then blew up on the
+`_lastPirateRealmIsland` assertion (`"Trash failed somehow?"`) instead of
+saying what was actually wrong.
+
+`src/lib/pirateRealmTurns.ts` now gates the voyage on the real turn count.
+`safeGarbo` calls `ensureAdventuresForPirateRealm()` before the
+`crab trashonly` run, and it either gets us over the line or says PirateRealm
+is off for the day.
+
+The Trash Island run happens *before* garbo, so none of the day's diet has
+been eaten yet -- and garbo wants that diet for its own early, high-value
+turns. So the top-up eats as little as gets us to sea: one `mini kiwi aioli`
+(worth +1 adventure per point of fullness) followed by one food, re-checking
+the turn count after each, until we clear 40 or run out of sensible options.
+`TOP_UP_FOODS` is tried in order -- `roasted vegetable focaccia`, then
+`baked veggie ricotta casserole`, both 2 fullness for 15-17 adventures and
+both staples of this character's real diets. A food is skipped if it won't
+fit in the remaining stomach, or if it plus its aioli costs more than
+`getAverageAdventures() * valueOfAdventure`. A 22-turn gap costs about two
+of them, ie 4 fullness.
+
+**Do not reach for CONSUME here.** Its `ORGANS x y z` argument is a
+*starting* budget, not a cap: `get_diet()` (CONSUME.ash:1113) is handed the
+real `fullness_limit()/inebriety_limit()/spleen_limit()` as its `max`, and
+the expander and cleaner passes (`sweet tooth`, `distention pill`,
+`mojo filter`, `spice melange`, `synthetic dog hair pill`, `Sweat Out Some
+Booze`, `Aug. 16th: Roller Coaster Day!`) grow the request up to *that*, not
+up to what was asked for. The first version of this code asked for
+`ORGANS 9 0 10` and got a plan filling "15 fullness, 7 liver, and 13 spleen"
+-- the entire day's diet, 714k meat, 18 -> 181 adventures -- with liver
+filled to 7 despite an explicit 0, because liver cleaners manufacture space
+from zero (session log 2026-09-09, line 47558).
+
+Failing to reach 40 (or having no stomach space to begin with) means
+PirateRealm is skipped *entirely* for the day rather than half-attempted:
+`pirateRealmBlocked` suppresses the Trash Island run, drops
+`TURNS_FOR_PIRATEREALM` from garbo's turn budget, and skips the later
+`storm`/`any` visit. The `target=cockroach` garbo flag turns itself off for
+free, since it keys off `_lastPirateRealmIsland`, which stays unset.
+
+The gate only fires where a voyage is actually *started* (not on Trash
+Island and `_questPirateRealm` unfinished). Continuing a voyage already in
+progress has no turn floor, so the later `PirateRealm_cap storm`/`any` call
+is left alone in that case.
+
+The only "impractical" tests are the two above -- no stomach space, or no
+food worth its price. There's no cap on how many bites it'll take, because
+each one is re-checked and the loop stops the moment 40 is in hand.

@@ -5,8 +5,12 @@ import type { RollupOptions } from "rollup";
 
 const extensions = [".js", ".ts"];
 
-// Set CAP_OUT to your mafia scripts folder to build straight into the game:
-//   CAP_OUT="C:/Users/TimLedsam/Dropbox/kolmafia-data/scripts/cap-turns" npm run watch
+// Set CAP_OUT to your mafia scripts folder to build straight into the game.
+// That is the folder mafia actually loads cap.js from -- currently:
+//   CAP_OUT="C:/work/kolmafia/scripts/cap-turns" npm run watch
+// Forgetting it is the classic "my fix didn't do anything" bug: the build
+// succeeds, but into the repo tree below, and the game keeps running the
+// last copy that was written to the scripts folder.
 // Left unset, it builds into the committed KoLmafia/ tree that `git checkout`
 // installs from.
 const outDir = process.env.CAP_OUT ?? "KoLmafia/scripts/cap";

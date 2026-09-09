@@ -93,10 +93,14 @@ export function main(command?: string): void {
 
   const ascendedAlready = get("ascensionsToday") > 0;
   // kingLiberated is false while an ascension is in progress (it flips true
-  // when the prism breaks, right at the end of a run) -- so "not ascended
-  // yet, and not liberated" means an ascension is already under way from a
-  // previous day, not that today hasn't started one yet.
-  const ascensionInProgress = !ascendedAlready && !get("kingLiberated");
+  // when the prism breaks, right at the end of a run). Deliberately NOT
+  // gated on ascendedAlready: ascensionsToday goes nonzero the instant any
+  // trigger_*_ascension fires (see the rest-day check below), including one
+  // that already finished earlier the same real-world day -- so
+  // ascendedAlready being true doesn't mean the ascension actually in
+  // progress now is done, or even that it's the same one. kingLiberated is
+  // the only reliable "is there something to resume" signal.
+  const ascensionInProgress = !get("kingLiberated");
 
   // Effective path flags for everything past this point. Normally these
   // just mirror args.path, but get overridden below when resuming: myPath()
@@ -132,55 +136,57 @@ export function main(command?: string): void {
     }
   }
 
-  if (!ascendedAlready) {
-    if (resumingAscension) {
-      print("Ascension already in progress from a previous day; resuming it", "blue");
+  if (resumingAscension) {
+    // Takes priority over ascendedAlready: an unfinished boris/standard
+    // ascension needs resuming regardless of whether something else
+    // (today's or a stalled previous one) already pushed ascensionsToday
+    // above 0.
+    print("Ascension already in progress; resuming it", "blue");
+  } else if (!ascendedAlready) {
+    print("Running first part of loop", "blue");
+    run("check_prism");
+    checkTickets(false);
+
+    if (dayAhead(DAY_TOLERANCE)) {
+      runAftercoreLoop(true, farmingWeen, farmingCrimbo);
     } else {
-      print("Running first part of loop", "blue");
-      run("check_prism");
-      checkTickets(false);
+      print("No day available", "red");
+    }
 
-      if (dayAhead(DAY_TOLERANCE)) {
-        runAftercoreLoop(true, farmingWeen, farmingCrimbo);
-      } else {
-        print("No day available", "red");
-      }
+    doPvp();
 
-      doPvp();
+    // smol has no specific prep yet, so it just grabs the same food as sccs;
+    // boris and standard need no prep at all.
+    if (!(runningBoris || runningStandard)) {
+      run("sccs_preparation");
+    }
 
-      // smol has no specific prep yet, so it just grabs the same food as sccs;
-      // boris and standard need no prep at all.
-      if (!(runningBoris || runningStandard)) {
-        run("sccs_preparation");
-      }
+    if (args.manual) {
+      throw new Error("Manual ascension requested");
+    }
 
-      if (args.manual) {
-        throw new Error("Manual ascension requested");
-      }
+    if (dayAhead(DAY_TOLERANCE)) {
+      throw new Error("There's still time in the day");
+    }
 
-      if (dayAhead(DAY_TOLERANCE)) {
-        throw new Error("There's still time in the day");
-      }
+    let triggerAscension: boolean;
+    if (runningSccs) {
+      triggerAscension = cliExecute("trigger_sccs_ascension");
+    } else if (runningBoris) {
+      triggerAscension = cliExecute("trigger_boris_ascension");
+    } else if (runningSmol) {
+      triggerAscension = cliExecute("trigger_smol_ascension");
+    } else if (runningStandard) {
+      triggerAscension = triggerStandardAscension(Boolean(args.hardcore), args.class);
+    } else {
+      // Default to sccs on no-input var
+      triggerAscension = cliExecute("trigger_sccs_ascension");
+    }
 
-      let triggerAscension: boolean;
-      if (runningSccs) {
-        triggerAscension = cliExecute("trigger_sccs_ascension");
-      } else if (runningBoris) {
-        triggerAscension = cliExecute("trigger_boris_ascension");
-      } else if (runningSmol) {
-        triggerAscension = cliExecute("trigger_smol_ascension");
-      } else if (runningStandard) {
-        triggerAscension = triggerStandardAscension(Boolean(args.hardcore), args.class);
-      } else {
-        // Default to sccs on no-input var
-        triggerAscension = cliExecute("trigger_sccs_ascension");
-      }
-
-      if (triggerAscension) {
-        print("Successfully ascended!", "blue");
-      } else {
-        throw new Error("Failed to ascend");
-      }
+    if (triggerAscension) {
+      print("Successfully ascended!", "blue");
+    } else {
+      throw new Error("Failed to ascend");
     }
   } else {
     print("Running second part of loop", "blue");
@@ -231,7 +237,16 @@ export function main(command?: string): void {
   // of letting check_prism's assertion below abort. Everything past this
   // point (S.I.T. course, aftercore, do_pvp, end_of_day, ...) assumes a
   // fully-built aftercore character, which we don't have mid-ascension.
-  if ((effectiveBoris || effectiveStandard) && get("ascensionsToday") === 0) {
+  //
+  // Re-check kingLiberated here, not ascensionsToday: every trigger_*_ascension
+  // starts by submitting the *previous* run's ascend button, which sends the
+  // character through Valhalla and increments ascensionsToday immediately --
+  // before the newly-triggered run has done anything at all. So
+  // ascensionsToday is already nonzero the instant a trigger fires, whether
+  // or not that run ever finishes, and can't be used to tell "just started"
+  // from "actually done". kingLiberated flips true only when the run
+  // currently in progress completes, which is the signal we actually want.
+  if ((effectiveBoris || effectiveStandard) && !get("kingLiberated")) {
     print("Ascension still in progress; resting for today", "purple");
     print("storing mall data");
     run("store_mall_data");

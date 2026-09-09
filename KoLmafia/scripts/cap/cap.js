@@ -1920,7 +1920,7 @@ createSingleConstant(kolmafia.Thrall, kolmafia.toThrall);
  */
 createPluralConstant(kolmafia.Thrall);
 
-var _templateObject$g, _templateObject10$3, _templateObject11$3, _templateObject12$3, _templateObject13$3, _templateObject14$3, _templateObject15$2, _templateObject16$2, _templateObject17$2, _templateObject18$2, _templateObject19$2, _templateObject20$2, _templateObject21$2, _templateObject22$2, _templateObject23$2, _templateObject24$2, _templateObject25$2, _templateObject26$2, _templateObject27$2, _templateObject28$2, _templateObject29$2, _templateObject30$2, _templateObject31$2, _templateObject32$2, _templateObject33$2, _templateObject34$2, _templateObject35$2, _templateObject48$2, _templateObject49$1, _templateObject50$1, _templateObject51$1, _templateObject52$1, _templateObject53$1;
+var _templateObject$h, _templateObject10$3, _templateObject11$3, _templateObject12$3, _templateObject13$3, _templateObject14$3, _templateObject15$2, _templateObject16$2, _templateObject17$2, _templateObject18$2, _templateObject19$2, _templateObject20$2, _templateObject21$2, _templateObject22$2, _templateObject23$2, _templateObject24$2, _templateObject25$2, _templateObject26$2, _templateObject27$2, _templateObject28$2, _templateObject29$2, _templateObject30$2, _templateObject31$2, _templateObject32$2, _templateObject33$2, _templateObject34$2, _templateObject35$2, _templateObject48$2, _templateObject49$1, _templateObject50$1, _templateObject51$1, _templateObject52$1, _templateObject53$1;
 /**
  * Determine whether the Skill or Effect provided is an Accordion Thief song
  *
@@ -1933,7 +1933,7 @@ function isSong(skillOrEffect) {
     return true;
   } else {
     var skill = skillOrEffect instanceof kolmafia.Effect ? kolmafia.toSkill(skillOrEffect) : skillOrEffect;
-    return skill["class"] === $class(_templateObject$g || (_templateObject$g = _taggedTemplateLiteral(["Accordion Thief"]))) && skill.buff;
+    return skill["class"] === $class(_templateObject$h || (_templateObject$h = _taggedTemplateLiteral(["Accordion Thief"]))) && skill.buff;
   }
 }
 /**
@@ -1980,6 +1980,43 @@ var Wanderer;
   Wanderer["Vote"] = "Vote Monster";
 })(Wanderer || (Wanderer = {}));
 [Wanderer.Digitize, Wanderer.Portscan];
+/**
+ * Parse the sort of range that KoLmafia encodes as a string
+ * @param range KoLmafia-style range string
+ * @returns Tuple of integers representing range
+ */
+function getRange(range) {
+  var _range$match;
+  var _ref9 = ((_range$match = range.match(/^(-?\d+)(?:-(-?\d+))?$/)) === null || _range$match === void 0 ? void 0 : _range$match.slice(1, 3).map(v => parseInt(v))) ?? [0],
+    _ref0 = _slicedToArray(_ref9, 2),
+    lower = _ref0[0],
+    upper = _ref0[1];
+  return [lower, Number.isNaN(upper) || upper === undefined ? lower : upper];
+}
+/**
+ * Determine the average value from the sort of range that KoLmafia encodes as a string
+ *
+ * @param range KoLmafia-style range string
+ * @returns Average value for range
+ */
+function getAverage(range) {
+  var _getRange = getRange(range),
+    _getRange2 = _slicedToArray(_getRange, 2),
+    min = _getRange2[0],
+    max = _getRange2[1];
+  return (min + max) / 2;
+}
+/**
+ * Determine the average adventures expected from consuming an Item
+ *
+ * If item is not a consumable, will just return "0".
+ *
+ * @param item Consumable item
+ * @returns Average aventures from consumable
+ */
+function getAverageAdventures(item) {
+  return getAverage(item.adventures);
+}
 /**
  * Remove an effect
  *
@@ -2823,7 +2860,7 @@ _defineProperty(Macro, "SAVED_MACRO_PROPERTY", "libram_savedMacro");
 _defineProperty(Macro, "cachedMacroIds", new Map());
 _defineProperty(Macro, "cachedAutoAttacks", new Map());
 
-var _templateObject$f, _templateObject2$a, _templateObject3$7, _templateObject4$6, _templateObject5$5, _templateObject6$4, _templateObject7$4, _templateObject8$2, _templateObject9$2, _templateObject0$2, _templateObject1$2, _templateObject10$2, _templateObject11$2, _templateObject12$2, _templateObject13$2, _templateObject14$2, _templateObject15$1, _templateObject16$1, _templateObject17$1, _templateObject18$1, _templateObject19$1, _templateObject20$1, _templateObject21$1, _templateObject22$1, _templateObject23$1, _templateObject24$1, _templateObject25$1, _templateObject26$1, _templateObject27$1, _templateObject28$1, _templateObject29$1, _templateObject30$1, _templateObject31$1, _templateObject32$1, _templateObject33$1, _templateObject34$1, _templateObject35$1, _templateObject36$1, _templateObject37$1, _templateObject38$1, _templateObject39$1, _templateObject40$1, _templateObject41$1, _templateObject42$1, _templateObject43$1, _templateObject44$1, _templateObject45$1, _templateObject46$1, _templateObject47$1, _templateObject48$1;
+var _templateObject$g, _templateObject2$b, _templateObject3$8, _templateObject4$6, _templateObject5$5, _templateObject6$4, _templateObject7$4, _templateObject8$2, _templateObject9$2, _templateObject0$2, _templateObject1$2, _templateObject10$2, _templateObject11$2, _templateObject12$2, _templateObject13$2, _templateObject14$2, _templateObject15$1, _templateObject16$1, _templateObject17$1, _templateObject18$1, _templateObject19$1, _templateObject20$1, _templateObject21$1, _templateObject22$1, _templateObject23$1, _templateObject24$1, _templateObject25$1, _templateObject26$1, _templateObject27$1, _templateObject28$1, _templateObject29$1, _templateObject30$1, _templateObject31$1, _templateObject32$1, _templateObject33$1, _templateObject34$1, _templateObject35$1, _templateObject36$1, _templateObject37$1, _templateObject38$1, _templateObject39$1, _templateObject40$1, _templateObject41$1, _templateObject42$1, _templateObject43$1, _templateObject44$1, _templateObject45$1, _templateObject46$1, _templateObject47$1, _templateObject48$1;
 function toMaximizerName(_ref) {
   var name = _ref.name,
     id = _ref.id;
@@ -2869,9 +2906,9 @@ var defaultMaximizeOptions = {
 };
 var modeableCommands$1 = ["backupcamera", "umbrella", "snowsuit", "edpiece", "retrocape", "parka", "jillcandle"];
 var modeableItems = {
-  backupcamera: $item(_templateObject$f || (_templateObject$f = _taggedTemplateLiteral(["backup camera"]))),
-  umbrella: $item(_templateObject2$a || (_templateObject2$a = _taggedTemplateLiteral(["unbreakable umbrella"]))),
-  snowsuit: $item(_templateObject3$7 || (_templateObject3$7 = _taggedTemplateLiteral(["Snow Suit"]))),
+  backupcamera: $item(_templateObject$g || (_templateObject$g = _taggedTemplateLiteral(["backup camera"]))),
+  umbrella: $item(_templateObject2$b || (_templateObject2$b = _taggedTemplateLiteral(["unbreakable umbrella"]))),
+  snowsuit: $item(_templateObject3$8 || (_templateObject3$8 = _taggedTemplateLiteral(["Snow Suit"]))),
   edpiece: $item(_templateObject4$6 || (_templateObject4$6 = _taggedTemplateLiteral(["The Crown of Ed the Undying"]))),
   retrocape: $item(_templateObject5$5 || (_templateObject5$5 = _taggedTemplateLiteral(["unwrapped knock-off retro superhero cape"]))),
   parka: $item(_templateObject6$4 || (_templateObject6$4 = _taggedTemplateLiteral(["Jurassic Parka"]))),
@@ -3916,7 +3953,7 @@ var CombatResources = /*#__PURE__*/function () {
   }]);
 }();
 
-var _templateObject$e, _templateObject2$9, _templateObject3$6, _templateObject4$5, _templateObject5$4, _templateObject6$3, _templateObject7$3, _templateObject8$1, _templateObject9$1, _templateObject0$1, _templateObject1$1, _templateObject10$1, _templateObject11$1, _templateObject12$1, _templateObject13$1, _templateObject14$1, _templateObject15, _templateObject16, _templateObject17, _templateObject18, _templateObject19, _templateObject20, _templateObject21, _templateObject22, _templateObject23, _templateObject24, _templateObject25, _templateObject26, _templateObject27, _templateObject28, _templateObject29, _templateObject30, _templateObject31, _templateObject32, _templateObject33, _templateObject34, _templateObject35, _templateObject36, _templateObject37, _templateObject38, _templateObject39, _templateObject40, _templateObject41, _templateObject42, _templateObject43, _templateObject44, _templateObject45, _templateObject46, _templateObject47, _templateObject48, _templateObject49, _templateObject50, _templateObject51, _templateObject52, _templateObject53, _templateObject54, _templateObject55, _templateObject56, _templateObject57, _templateObject58, _templateObject59, _templateObject60, _templateObject61, _templateObject62, _templateObject63, _templateObject64, _templateObject65, _templateObject66, _templateObject67, _templateObject68, _templateObject69, _templateObject70, _templateObject71, _templateObject72, _templateObject73, _templateObject74, _templateObject75, _templateObject76, _templateObject77, _templateObject78, _templateObject79, _templateObject80;
+var _templateObject$f, _templateObject2$a, _templateObject3$7, _templateObject4$5, _templateObject5$4, _templateObject6$3, _templateObject7$3, _templateObject8$1, _templateObject9$1, _templateObject0$1, _templateObject1$1, _templateObject10$1, _templateObject11$1, _templateObject12$1, _templateObject13$1, _templateObject14$1, _templateObject15, _templateObject16, _templateObject17, _templateObject18, _templateObject19, _templateObject20, _templateObject21, _templateObject22, _templateObject23, _templateObject24, _templateObject25, _templateObject26, _templateObject27, _templateObject28, _templateObject29, _templateObject30, _templateObject31, _templateObject32, _templateObject33, _templateObject34, _templateObject35, _templateObject36, _templateObject37, _templateObject38, _templateObject39, _templateObject40, _templateObject41, _templateObject42, _templateObject43, _templateObject44, _templateObject45, _templateObject46, _templateObject47, _templateObject48, _templateObject49, _templateObject50, _templateObject51, _templateObject52, _templateObject53, _templateObject54, _templateObject55, _templateObject56, _templateObject57, _templateObject58, _templateObject59, _templateObject60, _templateObject61, _templateObject62, _templateObject63, _templateObject64, _templateObject65, _templateObject66, _templateObject67, _templateObject68, _templateObject69, _templateObject70, _templateObject71, _templateObject72, _templateObject73, _templateObject74, _templateObject75, _templateObject76, _templateObject77, _templateObject78, _templateObject79, _templateObject80;
 var FORCE_REFRESH_REQUIREMENT = new Requirement([], {
   forceUpdate: true
 });
@@ -3978,12 +4015,12 @@ var Outfit = /*#__PURE__*/function () {
   }, {
     key: "equipNonAccessory",
     value: function equipNonAccessory(item, slot) {
-      if ($slots(_templateObject$e || (_templateObject$e = _taggedTemplateLiteral(["acc1, acc2, acc3"]))).includes(kolmafia.toSlot(item))) return false;
+      if ($slots(_templateObject$f || (_templateObject$f = _taggedTemplateLiteral(["acc1, acc2, acc3"]))).includes(kolmafia.toSlot(item))) return false;
       if (slot !== undefined && slot !== kolmafia.toSlot(item)) return false;
       if (this.equips.has(kolmafia.toSlot(item))) return false;
       switch (kolmafia.toSlot(item)) {
-        case $slot(_templateObject2$9 || (_templateObject2$9 = _taggedTemplateLiteral(["off-hand"]))):
-          if (this.equips.has($slot(_templateObject3$6 || (_templateObject3$6 = _taggedTemplateLiteral(["weapon"])))) && weaponHands(this.equips.get($slot(_templateObject4$5 || (_templateObject4$5 = _taggedTemplateLiteral(["weapon"]))))) !== 1) {
+        case $slot(_templateObject2$a || (_templateObject2$a = _taggedTemplateLiteral(["off-hand"]))):
+          if (this.equips.has($slot(_templateObject3$7 || (_templateObject3$7 = _taggedTemplateLiteral(["weapon"])))) && weaponHands(this.equips.get($slot(_templateObject4$5 || (_templateObject4$5 = _taggedTemplateLiteral(["weapon"]))))) !== 1) {
             return false;
           }
           break;
@@ -4793,7 +4830,7 @@ function weaponsCompatible(weapon, offhand) {
   return true;
 }
 
-var _templateObject$d;
+var _templateObject$e;
 var grimoireCCS = "grimoire_macro";
 /**
  * An Engine which allows for custom engine state. Most beginning users should
@@ -5253,7 +5290,7 @@ ContextualEngine.defaultSettings = {
   libramSkillsSoftcore: "none"
 };
 function maxSongs() {
-  return have($skill(_templateObject$d || (_templateObject$d = _taggedTemplateLiteral(["Mariachi Memory"])))) ? 4 : 3;
+  return have($skill(_templateObject$e || (_templateObject$e = _taggedTemplateLiteral(["Mariachi Memory"])))) ? 4 : 3;
 }
 var wanderingNCs = new Set([
 // Halloweener dog noncombats
@@ -5330,6 +5367,130 @@ var NIGHT_TOLERANCE = TURNS_TO_SAVE_OVERNIGHT + DAY_TOLERANCE;
 /** From mall_overrides.ash. A fixed ceiling rather than the live mall
  * price, which go_to_fantasyrealm/check_tickets deliberately don't trust. */
 var LYLECO_GUIDE_OVERRIDE = 2_000_000;
+
+var _templateObject$d, _templateObject2$9, _templateObject3$6;
+
+/**
+ * PirateRealm refuses to start a voyage below this many adventures --
+ * PirateRealm_cap.ash's run loop prints "You'll need forty adventures to
+ * start" and *returns silently* rather than failing, so a short character
+ * looks like a successful run that never left port.
+ */
+var PIRATEREALM_MIN_ADVENTURES = 40;
+
+/**
+ * Foods the top-up is allowed to eat, best first. Both are 2 fullness for
+ * 15-17 adventures and both turn up in this character's real CONSUME diets
+ * (focaccia after an ascension, casserole in the morning), so we try them in
+ * order and take the first that's available at a sane price.
+ *
+ * Deliberately NOT CONSUME: its ORGANS argument is a *starting* budget, not
+ * a cap -- get_diet() is handed the real organ limits as its max and the
+ * expander/cleaner passes (sweet tooth, distention pill, mojo filter, spice
+ * melange, Sweat Out Some Booze...) grow the request up to them. Asking it
+ * for `ORGANS 9 0 10` on 2026-09-09 ate 15 fullness, 7 liver and 13 spleen
+ * -- the whole day's diet -- which is precisely what we're trying not to do
+ * to garbo.
+ */
+var TOP_UP_FOODS = [$item(_templateObject$d || (_templateObject$d = _taggedTemplateLiteral(["roasted vegetable focaccia"]))), $item(_templateObject2$9 || (_templateObject2$9 = _taggedTemplateLiteral(["baked veggie ricotta casserole"])))];
+
+/** Used once before each food: worth +1 adventure per point of fullness. */
+var TOP_UP_HELPER = $item(_templateObject3$6 || (_templateObject3$6 = _taggedTemplateLiteral(["mini kiwi aioli"])));
+function spareFullness() {
+  return kolmafia.fullnessLimit() - kolmafia.myFullness();
+}
+function enoughToSail() {
+  return kolmafia.myAdventures() >= PIRATEREALM_MIN_ADVENTURES;
+}
+
+/**
+ * Cheapest food we're willing to eat right now: it has to fit in what's left
+ * of the stomach, and the adventures it buys have to be worth more than it
+ * and its aioli cost.
+ */
+function nextTopUpFood() {
+  var voa = get("valueOfAdventure");
+  var _iterator = _createForOfIteratorHelper(TOP_UP_FOODS),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var food = _step.value;
+      if (food.fullness > spareFullness()) {
+        continue;
+      }
+      var worth = getAverageAdventures(food) * voa;
+      var cost = kolmafia.mallPrice(food) + kolmafia.mallPrice(TOP_UP_HELPER);
+      if (cost > worth) {
+        kolmafia.print("".concat(food, " costs ").concat(cost, " for ~").concat(worth, " of adventures; not worth it"), "purple");
+        continue;
+      }
+      return food;
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  return null;
+}
+
+/** One aioli, one food. Returns false if anything didn't actually happen. */
+function eatOne(food) {
+  if (kolmafia.retrieveItem(TOP_UP_HELPER) && kolmafia.itemAmount(TOP_UP_HELPER) > 0) {
+    kolmafia.use(TOP_UP_HELPER, 1);
+  } else {
+    kolmafia.print("Couldn't get a ".concat(TOP_UP_HELPER, "; eating ").concat(food, " without it"), "purple");
+  }
+  if (!kolmafia.retrieveItem(food)) {
+    kolmafia.print("Couldn't get a ".concat(food), "purple");
+    return false;
+  }
+  return kolmafia.eat(food, 1);
+}
+
+/**
+ * Make sure we can actually start a PirateRealm voyage, topping up the diet
+ * if we're short.
+ *
+ * The case this exists for: coming out of an ascension into aftercore with
+ * fewer than 40 adventures. safe_garbo does the Trash Island run *before*
+ * garbo, so no diet has happened yet -- but the answer is to eat as little
+ * as gets us to sea, leaving garbo's own diet (and the good consumables it
+ * wants for its early, high-value turns) alone.
+ *
+ * Returns true if we're clear to sail, false if PirateRealm should be
+ * skipped entirely for the day.
+ */
+function ensureAdventuresForPirateRealm() {
+  if (enoughToSail()) {
+    return true;
+  }
+  kolmafia.print("Only ".concat(kolmafia.myAdventures(), " adventures; PirateRealm needs ").concat(PIRATEREALM_MIN_ADVENTURES, " to set sail"), "blue");
+  while (!enoughToSail()) {
+    var food = nextTopUpFood();
+    if (!food) {
+      kolmafia.print("Nothing worth eating to make up the difference", "red");
+      break;
+    }
+    var before = kolmafia.myAdventures();
+    if (!eatOne(food)) {
+      kolmafia.print("Failed to eat ".concat(food), "red");
+      break;
+    }
+    kolmafia.print("Ate ".concat(food, ": ").concat(before, " -> ").concat(kolmafia.myAdventures(), " adventures"));
+    if (kolmafia.myAdventures() <= before) {
+      // Belt and braces: an eat that reports success but yields nothing
+      // would otherwise loop until the stomach filled up.
+      kolmafia.print("That didn't gain any adventures; stopping", "red");
+      break;
+    }
+  }
+  if (enoughToSail()) {
+    return true;
+  }
+  kolmafia.print("Can't reach ".concat(PIRATEREALM_MIN_ADVENTURES, " adventures (").concat(kolmafia.myAdventures(), "); skipping PirateRealm today"), "red");
+  return false;
+}
 
 var _templateObject$c, _templateObject2$8, _templateObject3$5;
 
@@ -5435,22 +5596,35 @@ function safeGarbo(stopAfterRoach, turnsToSave) {
     var onTrashIsland = get("_lastPirateRealmIsland") === $location(_templateObject2$7 || (_templateObject2$7 = _taggedTemplateLiteral(["Trash Island"])));
     var prQuestFinished = get("_questPirateRealm") === "finished";
 
+    // Set when we can't start a voyage at all today (see
+    // ensureAdventuresForPirateRealm): PirateRealm is then off entirely --
+    // no Trash Island run, no turns reserved for it, no second visit later.
+    var pirateRealmBlocked = false;
+
     // Farm realm tickets
     if (!onTrashIsland && !prQuestFinished) {
-      kolmafia.useFamiliar($familiar(_templateObject3$4 || (_templateObject3$4 = _taggedTemplateLiteral(["Cookbookbat"]))));
-      kolmafia.cliExecute("PirateRealm_cap crab trashonly");
-      if (get("_lastPirateRealmIsland") !== $location(_templateObject4$4 || (_templateObject4$4 = _taggedTemplateLiteral(["Trash Island"])))) {
-        throw new Error("Trash failed somehow?");
+      // Starting a voyage needs 40 adventures, which we may not have coming
+      // straight out of an ascension. Top up the diet early if that'll do
+      // it; otherwise give PirateRealm a miss for the day.
+      if (ensureAdventuresForPirateRealm()) {
+        kolmafia.useFamiliar($familiar(_templateObject3$4 || (_templateObject3$4 = _taggedTemplateLiteral(["Cookbookbat"]))));
+        kolmafia.cliExecute("PirateRealm_cap crab trashonly");
+        if (get("_lastPirateRealmIsland") !== $location(_templateObject4$4 || (_templateObject4$4 = _taggedTemplateLiteral(["Trash Island"])))) {
+          throw new Error("Trash failed somehow?");
+        }
+        // Clear any effects that reduce our strength before garbo/other
+        kolmafia.cliExecute("hottub");
+      } else {
+        pirateRealmBlocked = true;
       }
-      // Clear any effects that reduce our strength before garbo/other
-      kolmafia.cliExecute("hottub");
     }
     kolmafia.outfit("birthday suit");
     if (stopAfterRoach) {
       return;
     }
     var frHoursLeft = Number(get("_frHoursLeft"));
-    var expectedGarboTurns = -1 * ((shouldGoPirateRealm && !prQuestFinished ? TURNS_FOR_PIRATEREALM : 0) + (shouldGoFantasyRealm && frHoursLeft !== 0 ? TURNS_FOR_FANTASYREALM : 0) + turnsToSave + TURNS_FLEX);
+    var doPirateRealm = shouldGoPirateRealm && !prQuestFinished && !pirateRealmBlocked;
+    var expectedGarboTurns = -1 * ((doPirateRealm ? TURNS_FOR_PIRATEREALM : 0) + (shouldGoFantasyRealm && frHoursLeft !== 0 ? TURNS_FOR_FANTASYREALM : 0) + turnsToSave + TURNS_FLEX);
     var garboTarget = get("_lastPirateRealmIsland") === $location(_templateObject5$3 || (_templateObject5$3 = _taggedTemplateLiteral(["Trash Island"]))) ? "target=cockroach " : "";
     var garboCommand = "garbo ".concat(garboTarget, "turns=").concat(expectedGarboTurns);
     kolmafia.print("Current garbo command: ".concat(garboCommand));
@@ -5463,7 +5637,7 @@ function safeGarbo(stopAfterRoach, turnsToSave) {
 
     // Attempt to leave as few turns as possible
     kolmafia.print("Turns after garbo finished: ".concat(kolmafia.myAdventures()));
-    if (shouldGoPirateRealm && !prQuestFinished) {
+    if (doPirateRealm) {
       kolmafia.useFamiliar($familiar(_templateObject6$2 || (_templateObject6$2 = _taggedTemplateLiteral(["Jill-of-All-Trades"]))));
       if (kolmafia.shopAmount($item(_templateObject7$2 || (_templateObject7$2 = _taggedTemplateLiteral(["windicle"])))) < 100) {
         kolmafia.print("Need to restock windicles!");
@@ -5963,10 +6137,14 @@ function main(command) {
   kolmafia.print("Running Captain Yaksworth's daily turns", "green");
   var ascendedAlready = get("ascensionsToday") > 0;
   // kingLiberated is false while an ascension is in progress (it flips true
-  // when the prism breaks, right at the end of a run) -- so "not ascended
-  // yet, and not liberated" means an ascension is already under way from a
-  // previous day, not that today hasn't started one yet.
-  var ascensionInProgress = !ascendedAlready && !get("kingLiberated");
+  // when the prism breaks, right at the end of a run). Deliberately NOT
+  // gated on ascendedAlready: ascensionsToday goes nonzero the instant any
+  // trigger_*_ascension fires (see the rest-day check below), including one
+  // that already finished earlier the same real-world day -- so
+  // ascendedAlready being true doesn't mean the ascension actually in
+  // progress now is done, or even that it's the same one. kingLiberated is
+  // the only reliable "is there something to resume" signal.
+  var ascensionInProgress = !get("kingLiberated");
 
   // Effective path flags for everything past this point. Normally these
   // just mirror args.path, but get overridden below when resuming: myPath()
@@ -5998,49 +6176,51 @@ function main(command) {
       effectiveStandard = isStandardPath;
     }
   }
-  if (!ascendedAlready) {
-    if (resumingAscension) {
-      kolmafia.print("Ascension already in progress from a previous day; resuming it", "blue");
+  if (resumingAscension) {
+    // Takes priority over ascendedAlready: an unfinished boris/standard
+    // ascension needs resuming regardless of whether something else
+    // (today's or a stalled previous one) already pushed ascensionsToday
+    // above 0.
+    kolmafia.print("Ascension already in progress; resuming it", "blue");
+  } else if (!ascendedAlready) {
+    kolmafia.print("Running first part of loop", "blue");
+    run("check_prism");
+    checkTickets(false);
+    if (dayAhead(DAY_TOLERANCE)) {
+      runAftercoreLoop(true, farmingWeen, farmingCrimbo);
     } else {
-      kolmafia.print("Running first part of loop", "blue");
-      run("check_prism");
-      checkTickets(false);
-      if (dayAhead(DAY_TOLERANCE)) {
-        runAftercoreLoop(true, farmingWeen, farmingCrimbo);
-      } else {
-        kolmafia.print("No day available", "red");
-      }
-      doPvp();
+      kolmafia.print("No day available", "red");
+    }
+    doPvp();
 
-      // smol has no specific prep yet, so it just grabs the same food as sccs;
-      // boris and standard need no prep at all.
-      if (!(runningBoris || runningStandard)) {
-        run("sccs_preparation");
-      }
-      if (args.manual) {
-        throw new Error("Manual ascension requested");
-      }
-      if (dayAhead(DAY_TOLERANCE)) {
-        throw new Error("There's still time in the day");
-      }
-      var triggerAscension;
-      if (runningSccs) {
-        triggerAscension = kolmafia.cliExecute("trigger_sccs_ascension");
-      } else if (runningBoris) {
-        triggerAscension = kolmafia.cliExecute("trigger_boris_ascension");
-      } else if (runningSmol) {
-        triggerAscension = kolmafia.cliExecute("trigger_smol_ascension");
-      } else if (runningStandard) {
-        triggerAscension = triggerStandardAscension(Boolean(args.hardcore), args["class"]);
-      } else {
-        // Default to sccs on no-input var
-        triggerAscension = kolmafia.cliExecute("trigger_sccs_ascension");
-      }
-      if (triggerAscension) {
-        kolmafia.print("Successfully ascended!", "blue");
-      } else {
-        throw new Error("Failed to ascend");
-      }
+    // smol has no specific prep yet, so it just grabs the same food as sccs;
+    // boris and standard need no prep at all.
+    if (!(runningBoris || runningStandard)) {
+      run("sccs_preparation");
+    }
+    if (args.manual) {
+      throw new Error("Manual ascension requested");
+    }
+    if (dayAhead(DAY_TOLERANCE)) {
+      throw new Error("There's still time in the day");
+    }
+    var triggerAscension;
+    if (runningSccs) {
+      triggerAscension = kolmafia.cliExecute("trigger_sccs_ascension");
+    } else if (runningBoris) {
+      triggerAscension = kolmafia.cliExecute("trigger_boris_ascension");
+    } else if (runningSmol) {
+      triggerAscension = kolmafia.cliExecute("trigger_smol_ascension");
+    } else if (runningStandard) {
+      triggerAscension = triggerStandardAscension(Boolean(args.hardcore), args["class"]);
+    } else {
+      // Default to sccs on no-input var
+      triggerAscension = kolmafia.cliExecute("trigger_sccs_ascension");
+    }
+    if (triggerAscension) {
+      kolmafia.print("Successfully ascended!", "blue");
+    } else {
+      throw new Error("Failed to ascend");
     }
   } else {
     kolmafia.print("Running second part of loop", "blue");
@@ -6089,7 +6269,16 @@ function main(command) {
   // of letting check_prism's assertion below abort. Everything past this
   // point (S.I.T. course, aftercore, do_pvp, end_of_day, ...) assumes a
   // fully-built aftercore character, which we don't have mid-ascension.
-  if ((effectiveBoris || effectiveStandard) && get("ascensionsToday") === 0) {
+  //
+  // Re-check kingLiberated here, not ascensionsToday: every trigger_*_ascension
+  // starts by submitting the *previous* run's ascend button, which sends the
+  // character through Valhalla and increments ascensionsToday immediately --
+  // before the newly-triggered run has done anything at all. So
+  // ascensionsToday is already nonzero the instant a trigger fires, whether
+  // or not that run ever finishes, and can't be used to tell "just started"
+  // from "actually done". kingLiberated flips true only when the run
+  // currently in progress completes, which is the signal we actually want.
+  if ((effectiveBoris || effectiveStandard) && !get("kingLiberated")) {
     kolmafia.print("Ascension still in progress; resting for today", "purple");
     kolmafia.print("storing mall data");
     run("store_mall_data");
