@@ -35,7 +35,7 @@ function checkKeepPrices(): void {
 }
 
 function checkSalesPrices(): void {
-  const items = $items`boxed Heartstone, boxed bat wings, assemble-it-yourself Leprecondo, lab-grown blood cubic zirconia, shrink-wrapped Cup of 13s, scabbarded Sword of S Words`;
+  const items = $items`boxed Heartstone, boxed bat wings, assemble-it-yourself Leprecondo, lab-grown blood cubic zirconia, shrink-wrapped Cup of 13s, scabbarded Sword of S Words, Meat shield toddler`;
   for (const it of items) printPrice(it, "black");
 }
 
