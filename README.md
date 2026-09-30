@@ -5,9 +5,16 @@ Captain Yaksworth's daily turns, in TypeScript. Successor to the ASH scripts in
 
 ## Layout
 
-    src/            what you edit
-    src/lib/        ported helpers
-    KoLmafia/       build output, committed -- this is what mafia installs
+    src/              what you edit
+    src/lib/          shared helpers (cliRun, constants)
+    src/ascensions/   triggering/running ascensions
+    src/consumption/  diet bits outside CONSUME (nightcap, stooper)
+    src/daily/        daily chores and end-of-day
+    src/farming/      aftercore loop and garbo wrapper
+    src/mall/         mall pricing/data (empty for now)
+    src/pvp/          PvP
+    src/realms/       PirateRealm/FantasyRealm and their tickets
+    KoLmafia/         build output, committed -- this is what mafia installs
 
 ## Developing
 
@@ -48,31 +55,31 @@ merge them.
 
 Ported:
 
-- `general/day_ahead.ash` -> `src/lib/day.ts`
-- `realms/go_to_piraterealm.ash`, `realms/go_to_fantasyrealm.ash` -> `src/lib/realms.ts`
+- `general/day_ahead.ash` -> `src/daily/day.ts`
+- `realms/go_to_piraterealm.ash`, `realms/go_to_fantasyrealm.ash` -> `src/realms/realms.ts`
 - tuning constants from `daily-cap.ash` -> `src/lib/constants.ts`
 - `check_for_input()` argument parsing -> grimoire `Args` in `src/main.ts`
 - `main()` from `daily-cap.ash`, transcribed into `src/main.ts`
-- `safe_garbo` -> `src/lib/cap_garbo.ts` (named to avoid confusion with the
+- `safe_garbo` -> `src/farming/cap_garbo.ts` (named to avoid confusion with the
   actual `garbo` script/library referenced constantly via `cliExecute`; now
-  calls `goToPirateRealm`/`goToFantasyRealm` from `src/lib/realms.ts`
+  calls `goToPirateRealm`/`goToFantasyRealm` from `src/realms/realms.ts`
   directly instead of the ASH versions)
-- `aftercore_actions`, `trick_or_treat` -> `src/lib/aftercore.ts`
-- `generic_loop_stuff` -> `src/lib/loop.ts`
-- `do_pvp` -> `src/lib/pvp.ts`
-- `end_of_day` -> `src/lib/endOfDay.ts` (folding in its local
+- `aftercore_actions`, `trick_or_treat` -> `src/farming/aftercore.ts`
+- `generic_loop_stuff` -> `src/farming/loop.ts`
+- `do_pvp` -> `src/pvp/pvp.ts`
+- `end_of_day` -> `src/daily/endOfDay.ts` (folding in its local
   `buy_meat_golem`/`join_raffle` helpers)
-- `pick_lock` -> `src/lib/pickLock.ts`, `set_sit_course` ->
-  `src/lib/setSitCourse.ts` (both now use libram's `withChoice` instead of
+- `pick_lock` -> `src/daily/pickLock.ts`, `set_sit_course` ->
+  `src/daily/setSitCourse.ts` (both now use libram's `withChoice` instead of
   manual save/set/restore of the choice preference -- see the pick_lock bug
   below, which withChoice makes structurally impossible to repeat)
-- `use_censer` -> `src/lib/useCenser.ts`
-- `take_meteorite_ade` -> `src/lib/takeMeteoriteAde.ts`
-- `clear_pledge` -> `src/lib/clearPledge.ts`
-- `drink_nightcap` -> `src/lib/drinkNightcap.ts`, `stooper_drink` ->
-  `src/lib/stooperDrink.ts`
-- `open_beach` -> `src/lib/openBeach.ts`
-- `check_tickets` -> `src/lib/tickets.ts`
+- `use_censer` -> `src/daily/useCenser.ts`
+- `take_meteorite_ade` -> `src/pvp/takeMeteoriteAde.ts`
+- `clear_pledge` -> `src/daily/clearPledge.ts`
+- `drink_nightcap` -> `src/consumption/drinkNightcap.ts`, `stooper_drink` ->
+  `src/consumption/stooperDrink.ts`
+- `open_beach` -> `src/daily/openBeach.ts`
+- `check_tickets` -> `src/realms/tickets.ts`
 
 `cap` runs the whole day natively in TypeScript now. **The migration is
 functionally complete.** What's left ASH-side and reached via `cliExecute`,
@@ -252,7 +259,7 @@ regardless of what else ascended earlier that day.
 ### Standard-path class selection (2026-09-08)
 
 `paths/standard/trigger_standard_ascension.ash` hardcoded `whichclass=1`
-(Seal Clubber). Ported it to `src/lib/triggerStandardAscension.ts` and added
+(Seal Clubber). Ported it to `src/ascensions/triggerStandardAscension.ts` and added
 a `--class` CLI option (`seal-clubber`, `turtle-tamer`, `pastamancer`,
 `sauceror`, `disco-bandit`, `accordion-thief`, defaulting to
 `seal-clubber`) so it's selectable per run, validated by grimoire's `Args`
@@ -278,7 +285,7 @@ Trash Island run looked like it had happened and then blew up on the
 `_lastPirateRealmIsland` assertion (`"Trash failed somehow?"`) instead of
 saying what was actually wrong.
 
-`src/lib/pirateRealmTurns.ts` now gates the voyage on the real turn count.
+`src/realms/pirateRealmTurns.ts` now gates the voyage on the real turn count.
 `safeGarbo` calls `ensureAdventuresForPirateRealm()` before the
 `crab trashonly` run, and it either gets us over the line or says PirateRealm
 is off for the day.

@@ -14,9 +14,9 @@ import {
   useFamiliar,
 } from "kolmafia";
 import { $coinmaster, $familiar, $item, $location, get } from "libram";
-import { TURNS_FLEX, TURNS_FOR_FANTASYREALM, TURNS_FOR_PIRATEREALM, WORTHWHILE_ADVS } from "./constants";
-import { ensureAdventuresForPirateRealm } from "./pirateRealmTurns";
-import { goToFantasyRealm, goToPirateRealm } from "./realms";
+import { TURNS_FLEX, TURNS_FOR_FANTASYREALM, TURNS_FOR_PIRATEREALM, WORTHWHILE_ADVS } from "../lib/constants";
+import { ensureAdventuresForPirateRealm } from "../realms/pirateRealmTurns";
+import { goToFantasyRealm, goToPirateRealm } from "../realms/realms";
 
 /**
  * Ported from daily-cap.ash's safe_garbo(). `_lastPirateRealmIsland` comes

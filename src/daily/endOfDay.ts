@@ -1,10 +1,10 @@
 import { buy, cliExecute, create, itemAmount, mallPrice, print, use, visitUrl } from "kolmafia";
 import { $item } from "libram";
 import { dayAhead } from "./day";
-import { drinkNightcap } from "./drinkNightcap";
+import { drinkNightcap } from "../consumption/drinkNightcap";
 import { openBeach } from "./openBeach";
-import { stooperDrink } from "./stooperDrink";
-import { checkTickets } from "./tickets";
+import { stooperDrink } from "../consumption/stooperDrink";
+import { checkTickets } from "../realms/tickets";
 
 function buyMeatGolem(): void {
   const golemMax = 15000;

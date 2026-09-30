@@ -1,16 +1,16 @@
 import { Args } from "grimoire-kolmafia";
 import { cliExecute, myPath, print, runChoice, userConfirm, visitUrl } from "kolmafia";
 import { $path, get } from "libram";
-import { aftercoreActions, trickOrTreat } from "./lib/aftercore";
-import { clearPledge } from "./lib/clearPledge";
+import { aftercoreActions, trickOrTreat } from "./farming/aftercore";
+import { clearPledge } from "./daily/clearPledge";
 import { run } from "./lib/cliRun";
 import { DAY_TOLERANCE, NIGHT_TOLERANCE, VALUE_NIGHTCAP, VALUE_POST_ASCENSION } from "./lib/constants";
-import { dayAhead } from "./lib/day";
-import { endOfDay } from "./lib/endOfDay";
-import { doPvp } from "./lib/pvp";
-import { setSitCourse } from "./lib/setSitCourse";
-import { checkTickets } from "./lib/tickets";
-import { triggerStandardAscension } from "./lib/triggerStandardAscension";
+import { dayAhead } from "./daily/day";
+import { endOfDay } from "./daily/endOfDay";
+import { doPvp } from "./pvp/pvp";
+import { setSitCourse } from "./daily/setSitCourse";
+import { checkTickets } from "./realms/tickets";
+import { triggerStandardAscension } from "./ascensions/triggerStandardAscension";
 
 export const args = Args.create("cap", "Captain Yaksworth's daily turns.", {
   path: Args.string({

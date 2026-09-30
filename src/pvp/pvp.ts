@@ -1,5 +1,5 @@
 import { cliExecute, print, pvpAttacksLeft } from "kolmafia";
-import { run } from "./cliRun";
+import { run } from "../lib/cliRun";
 import { takeMeteoriteAde } from "./takeMeteoriteAde";
 
 /**

@@ -1,7 +1,7 @@
 import { cliExecute, print } from "kolmafia";
-import { run } from "./cliRun";
-import { openBeach } from "./openBeach";
-import { pickLock } from "./pickLock";
+import { run } from "../lib/cliRun";
+import { openBeach } from "../daily/openBeach";
+import { pickLock } from "../daily/pickLock";
 
 /**
  * Ported from general/generic_loop_stuff.ash. break_hippy_stone, psychic

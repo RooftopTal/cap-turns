@@ -1,6 +1,6 @@
 import { availableAmount, buy, closetAmount, itemAmount, mallPrice, print, takeCloset } from "kolmafia";
 import { $coinmaster, $item, get } from "libram";
-import { LYLECO_GUIDE_OVERRIDE } from "./constants";
+import { LYLECO_GUIDE_OVERRIDE } from "../lib/constants";
 
 // The ASH source writes these item names with the HTML entity "&trade;"
 // ($item[Rubee&trade;]) -- libram's $item wants the real Unicode ™

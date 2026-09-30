@@ -6,12 +6,12 @@ import {
   VALUE_MORNING,
   VALUE_OVERDRUNK,
   WORTHWHILE_ADVS,
-} from "./constants";
+} from "../lib/constants";
 import { safeGarbo } from "./cap_garbo";
-import { drinkNightcap } from "./drinkNightcap";
+import { drinkNightcap } from "../consumption/drinkNightcap";
 import { genericLoopStuff } from "./loop";
-import { stooperDrink } from "./stooperDrink";
-import { useCenser } from "./useCenser";
+import { stooperDrink } from "../consumption/stooperDrink";
+import { useCenser } from "../daily/useCenser";
 
 /**
  * Ported from daily-cap.ash's aftercore_actions().
