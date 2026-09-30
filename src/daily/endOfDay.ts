@@ -4,7 +4,7 @@ import { dayAhead } from "./day";
 import { drinkNightcap } from "../consumption/drinkNightcap";
 import { openBeach } from "./openBeach";
 import { stooperDrink } from "../consumption/stooperDrink";
-import { checkTickets } from "../realms/tickets";
+import { checkTickets } from "../mall/tickets";
 
 function buyMeatGolem(): void {
   const golemMax = 15000;

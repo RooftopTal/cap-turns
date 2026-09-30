@@ -9,7 +9,8 @@ import { dayAhead } from "./daily/day";
 import { endOfDay } from "./daily/endOfDay";
 import { doPvp } from "./pvp/pvp";
 import { setSitCourse } from "./daily/setSitCourse";
-import { checkTickets } from "./realms/tickets";
+import { checkMallPrices } from "./mall/checkMallPrices";
+import { checkTickets } from "./mall/tickets";
 import { triggerStandardAscension } from "./ascensions/triggerStandardAscension";
 
 export const args = Args.create("cap", "Captain Yaksworth's daily turns.", {
@@ -86,7 +87,7 @@ export function main(command?: string): void {
     return;
   }
 
-  run("check_mall_prices");
+  checkMallPrices();
   run("store_mall_data");
 
   const runningSccs = args.path === "sccs";
@@ -257,7 +258,7 @@ export function main(command?: string): void {
     print("Ascension still in progress; resting for today", "purple");
     print("storing mall data");
     run("store_mall_data");
-    run("check_mall_prices");
+    checkMallPrices();
     return;
   }
 
@@ -291,5 +292,5 @@ export function main(command?: string): void {
   cliExecute("philter");
   run("pvp-safety");
 
-  run("check_mall_prices");
+  checkMallPrices();
 }

@@ -11,9 +11,9 @@ Captain Yaksworth's daily turns, in TypeScript. Successor to the ASH scripts in
     src/consumption/  diet bits outside CONSUME (nightcap, stooper)
     src/daily/        daily chores and end-of-day
     src/farming/      aftercore loop and garbo wrapper
-    src/mall/         mall pricing/data (empty for now)
+    src/mall/         mall prices, coinmaster tickets, price overrides
     src/pvp/          PvP
-    src/realms/       PirateRealm/FantasyRealm and their tickets
+    src/realms/       PirateRealm/FantasyRealm
     KoLmafia/         build output, committed -- this is what mafia installs
 
 ## Developing
@@ -79,7 +79,9 @@ Ported:
 - `drink_nightcap` -> `src/consumption/drinkNightcap.ts`, `stooper_drink` ->
   `src/consumption/stooperDrink.ts`
 - `open_beach` -> `src/daily/openBeach.ts`
-- `check_tickets` -> `src/realms/tickets.ts`
+- `check_tickets` -> `src/mall/tickets.ts`
+- `check_mall_prices` -> `src/mall/checkMallPrices.ts` (2026-09-30)
+- `mall_overrides.ash` -> `src/mall/overrides.ts`
 
 `cap` runs the whole day natively in TypeScript now. **The migration is
 functionally complete.** What's left ASH-side and reached via `cliExecute`,
@@ -101,7 +103,7 @@ staying that way permanently:
 - Trivial delegation with nothing to gain from porting: `check_prism`,
   `break_hippy_stone`, `psychic`, `clan_peridot`, `crimbone` (its real logic
   is commented out in the source -- nothing there yet to port).
-- The mall/ascension scripts (`check_mall_prices`, `sccs_preparation`,
+- The ascension scripts (`sccs_preparation`,
   `trigger_*_ascension`, `run_sccs_ascension`, `pvp-safety`) -- always
   separate files, no reason to move them.
 

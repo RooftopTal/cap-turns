@@ -1,6 +1,6 @@
 import { mallPrice, print } from "kolmafia";
 import { $item, get } from "libram";
-import { LYLECO_GUIDE_OVERRIDE } from "../lib/constants";
+import { LYLECO_GUIDE_OVERRIDE } from "../mall/overrides";
 
 /**
  * Ported from realms/go_to_piraterealm.ash. The two `Math.trunc` calls
