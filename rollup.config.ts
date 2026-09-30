@@ -53,4 +53,4 @@ function script(name: string, input: string): RollupOptions {
   };
 }
 
-export default [script("cap", "src/main.ts")];
+export default [script("cap", "src/main.ts"), script("mall-prices", "src/mallPrices.ts")];

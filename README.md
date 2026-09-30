@@ -25,6 +25,10 @@ Build straight into the mafia scripts folder and leave it watching:
 Then in the gCLI, `cap --help`. The old ASH is still invocable as `daily-cap`,
 so you can run both side by side.
 
+`mall-prices` runs just the mall price report (`src/mall/checkMallPrices.ts`)
+without a whole day. Typing `check_mall_prices` still runs the old ASH copy in
+`scripts/cap/mall/`, which no longer gets updates.
+
 Windows cmd:
 
     set CAP_OUT=C:\work\kolmafia\scripts\cap-turns
