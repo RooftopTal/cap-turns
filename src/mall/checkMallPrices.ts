@@ -1,4 +1,4 @@
-import { Item, mallPrice, print, toItem, visitUrl } from "kolmafia";
+import { Item, mallPrice, myMeat, print, toItem, visitUrl } from "kolmafia";
 import { $item, $items } from "libram";
 import { LYLECO_GUIDE_OVERRIDE } from "./overrides";
 
@@ -35,7 +35,7 @@ function checkKeepPrices(): void {
 }
 
 function checkSalesPrices(): void {
-  const items = $items`boxed Heartstone, boxed bat wings, assemble-it-yourself Leprecondo, lab-grown blood cubic zirconia, shrink-wrapped Cup of 13s, scabbarded Sword of S Words, Meat shield toddler`;
+  const items = $items`boxed Heartstone, boxed bat wings, assemble-it-yourself Leprecondo, lab-grown blood cubic zirconia, shrink-wrapped Cup of 13s, scabbarded Sword of S Words, Meat shield toddler, black rosebud`;
   for (const it of items) printPrice(it, "black");
 }
 
@@ -78,4 +78,7 @@ export function checkMallPrices(): void {
   checkFantasyCalibration();
   print("===", "black");
   checkKnuckleboneStore();
+  print("===", "black");
+  // Rhino's toLocaleString can't be trusted to add separators, so do it by hand.
+  print(`Meat: ${myMeat().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
 }
