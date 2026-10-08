@@ -11,9 +11,9 @@ const extensions = [".js", ".ts"];
 // Forgetting it is the classic "my fix didn't do anything" bug: the build
 // succeeds, but into the repo tree below, and the game keeps running the
 // last copy that was written to the scripts folder.
-// Left unset, it builds into the committed KoLmafia/ tree that `git checkout`
-// installs from.
-const outDir = process.env.CAP_OUT ?? "KoLmafia/scripts/cap";
+// Left unset, it builds into KoLmafia/ (gitignored). CI builds the same way and
+// publishes that tree to the `release` branch, which is what mafia installs.
+const outDir = process.env.CAP_OUT ?? "KoLmafia/scripts/cap-turns";
 
 function script(name: string, input: string): RollupOptions {
   return {

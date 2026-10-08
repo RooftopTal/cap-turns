@@ -1,0 +1,43 @@
+name: Release
+
+# Builds on every push to main and publishes just the built scripts to the
+# `release` branch, which is what mafia installs:
+#   git checkout https://github.com/RooftopTal/cap-turns release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build
+
+      # The release branch holds only the freshly built scripts/cap-turns/, at
+      # its root, so mafia copies cap.js etc. straight into its scripts folder.
+      # Copied out on its own so nothing else under KoLmafia/ can ride along.
+      - name: Publish to release branch
+        run: |
+          mkdir -p ../release/scripts
+          cp -r KoLmafia/scripts/cap-turns ../release/scripts/
+          cd ../release
+          git init -q -b release
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Build ${GITHUB_SHA::7}: $(git -C .. log -1 --format=%s)"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git" release

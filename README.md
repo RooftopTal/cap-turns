@@ -14,7 +14,8 @@ Captain Yaksworth's daily turns, in TypeScript. Successor to the ASH scripts in
     src/mall/         mall prices, coinmaster tickets, price overrides
     src/pvp/          PvP
     src/realms/       PirateRealm/FantasyRealm
-    KoLmafia/         build output, committed -- this is what mafia installs
+    KoLmafia/         local build output (gitignored)
+    .github/          CI: builds main and publishes it to the `release` branch
 
 ## Developing
 
@@ -42,18 +43,23 @@ was last written to the scripts folder, so a fix looks like it did nothing.
 ## Other commands
 
     npm run check     tsc, no emit
-    npm run build     build into KoLmafia/ for committing
+    npm run build     build into KoLmafia/ (what CI does before publishing)
 
 ## Installing via mafia
 
-Commit `KoLmafia/scripts/cap/cap.js`, push, then in the gCLI:
+Every push to `main` triggers `.github/workflows/release.yml`, which typechecks,
+builds, and force-pushes just `scripts/cap-turns/` to the `release` branch. Mafia
+installs from that branch, once, in the gCLI:
 
-    git checkout https://github.com/RooftopTal/cap-turns
-    git update
+    git checkout https://github.com/RooftopTal/cap-turns release
 
-`manifest.json` points mafia at the `KoLmafia/` subtree. Don't run this against
-the same folder `CAP_OUT` writes to -- mafia will see local changes and try to
-merge them.
+After that, `git update` (or `gitUpdateOnLogin`, already on) keeps it current --
+no copying. If a push doesn't show up, check the Actions tab: a failed `check`
+or build means nothing was published.
+
+`CAP_OUT` dev builds still write into the same `scripts/cap-turns` folder, so
+for quick iteration nothing changes; the next update from `release` simply
+overwrites them with the pushed version.
 
 ## Migration status
 
