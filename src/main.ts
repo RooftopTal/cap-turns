@@ -54,6 +54,12 @@ export const args = Args.create("cap", "Captain Yaksworth's daily turns.", {
     help: "Do the prep, then stop before ascending.",
     setting: "",
   }),
+  // Persisted via the cap_realms setting: `set cap_realms = false` to keep
+  // them off without typing it every day.
+  realms: Args.boolean({
+    help: "Run PirateRealm/FantasyRealm after garbo, holding back turns for them. false gives garbo every turn.",
+    default: true,
+  }),
 });
 
 /** Ported from daily-cap.ash's trick_or_treat/crimbone/aftercore_actions
@@ -75,7 +81,7 @@ function runAftercoreLoop(
       throw new Error(`Failed to perform aftercore actions (${half})`);
     }
   } else {
-    aftercoreActions(isMorning, valueOverride);
+    aftercoreActions(isMorning, args.realms, valueOverride);
   }
   print(`Successfully executed aftercore actions (${half})`, "green");
 }

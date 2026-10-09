@@ -1,5 +1,5 @@
 import { cliExecute, myAdventures, print } from "kolmafia";
-import { $location, get, set } from "libram";
+import { set } from "libram";
 import {
   TURNS_TO_SAVE_OVERNIGHT,
   VALUE_EVENING,
@@ -7,7 +7,7 @@ import {
   VALUE_OVERDRUNK,
   WORTHWHILE_ADVS,
 } from "../lib/constants";
-import { safeGarbo } from "./cap_garbo";
+import { assertReachedTrashIsland, checkWorthGarboing, garboTarget, safeGarbo } from "./cap_garbo";
 import { drinkNightcap } from "../consumption/drinkNightcap";
 import { genericLoopStuff } from "./loop";
 import { stooperDrink } from "../consumption/stooperDrink";
@@ -22,8 +22,10 @@ import { useCenser } from "../daily/useCenser";
  * between the two halves instead of at the evening rate. Nothing else about
  * the leg changes -- it still holds back the overnight turns and ends at the
  * nightcap.
+ *
+ * `doRealms` false skips PirateRealm/FantasyRealm after garbo; see safeGarbo.
  */
-export function aftercoreActions(isMorning: boolean, valueOverride?: number): void {
+export function aftercoreActions(isMorning: boolean, doRealms: boolean, valueOverride?: number): void {
   print("Starting aftercore actions");
 
   // TODO make this more sensible
@@ -46,7 +48,7 @@ export function aftercoreActions(isMorning: boolean, valueOverride?: number): vo
   }
 
   genericLoopStuff();
-  safeGarbo(false, turnsToSave);
+  safeGarbo(turnsToSave, doRealms);
 
   if (isMorning) {
     if (myAdventures() > WORTHWHILE_ADVS) {
@@ -78,12 +80,13 @@ export function trickOrTreat(isMorning: boolean): void {
 
   genericLoopStuff();
 
-  // Cockroach farm
-  safeGarbo(true, 0);
-  const garboTarget = get("_lastPirateRealmIsland") === $location`Trash Island` ? "target=cockroach " : "";
-  const garboCommand = `garbo ${garboTarget}nobarf`;
+  // Cockroach farm -- garbo sets up the PirateRealm side itself
+  checkWorthGarboing();
+  const target = garboTarget();
+  const garboCommand = `garbo ${target}nobarf`;
   print(`Garbo command: ${garboCommand}`);
   cliExecute(garboCommand);
+  assertReachedTrashIsland(target);
 
   // If garbo didn't diet, diy
   cliExecute("CONSUME ALL");

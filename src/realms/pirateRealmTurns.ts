@@ -43,8 +43,11 @@ function spareFullness(): number {
   return fullnessLimit() - myFullness();
 }
 
+// Strictly more than 40: garbo starts the voyage now, and its "40 Adventure
+// Failsafe" (tasks/cockroach/prep.ts) swaps the copy target away from
+// cockroach at myAdventures() <= 40.
 function enoughToSail(): boolean {
-  return myAdventures() >= PIRATEREALM_MIN_ADVENTURES;
+  return myAdventures() > PIRATEREALM_MIN_ADVENTURES;
 }
 
 /**
