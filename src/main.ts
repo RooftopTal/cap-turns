@@ -1,5 +1,5 @@
 import { Args } from "grimoire-kolmafia";
-import { cliExecute, myPath, print, runChoice, userConfirm, visitUrl } from "kolmafia";
+import { cliExecute, holiday, myPath, print, runChoice, userConfirm, visitUrl } from "kolmafia";
 import { $path, get } from "libram";
 import { aftercoreActions, trickOrTreat } from "./farming/aftercore";
 import { clearPledge } from "./daily/clearPledge";
@@ -54,6 +54,10 @@ export const args = Args.create("cap", "Captain Yaksworth's daily turns.", {
     help: "Do the prep, then stop before ascending.",
     setting: "",
   }),
+  skipween: Args.flag({
+    help: "Run a normal day on Halloween instead of aborting (without farm=ween, cap refuses to run on Halloween).",
+    setting: "",
+  }),
   // Persisted via the cap_realms setting: `set cap_realms = false` to keep
   // them off without typing it every day.
   realms: Args.boolean({
@@ -91,6 +95,14 @@ export function main(command?: string): void {
   if (args.help) {
     Args.showHelp(args);
     return;
+  }
+
+  // holiday() lists the game holiday (Porktober 8) and the real-life one
+  // (October 31) together, " / "-separated, both as "Halloween", and goes by
+  // the rollover date rather than the wall clock.
+  const isHalloween = holiday().split(" / ").includes("Halloween");
+  if (isHalloween && args.farm !== "ween" && !args.skipween) {
+    throw new Error("It's Halloween! Run `cap farm=ween`, or `cap skipween` to skip trick-or-treating today.");
   }
 
   checkMallPrices();
