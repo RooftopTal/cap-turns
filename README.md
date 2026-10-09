@@ -78,7 +78,7 @@ Ported:
 - `generic_loop_stuff` -> `src/farming/loop.ts`
 - `do_pvp` -> `src/pvp/pvp.ts`
 - `end_of_day` -> `src/daily/endOfDay.ts` (folding in its local
-  `buy_meat_golem`/`join_raffle` helpers)
+  `buy_meat_golem` helper; `join_raffle` lives in `src/daily/raffle.ts`)
 - `pick_lock` -> `src/daily/pickLock.ts`, `set_sit_course` ->
   `src/daily/setSitCourse.ts` (both now use libram's `withChoice` instead of
   manual save/set/restore of the choice preference -- see the pick_lock bug
