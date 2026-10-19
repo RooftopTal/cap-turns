@@ -30,14 +30,25 @@ jobs:
       # The release branch holds only the freshly built scripts/cap-turns/, at
       # its root, so mafia copies cap.js etc. straight into its scripts folder.
       # Copied out on its own so nothing else under KoLmafia/ can ride along.
+      # Each build is committed on top of the existing release history: mafia
+      # updates with `git pull --rebase`, which breaks if the branch is
+      # replaced by an unrelated commit every time.
       - name: Publish to release branch
         run: |
-          mkdir -p ../release/scripts
-          cp -r KoLmafia/scripts/cap-turns ../release/scripts/
+          remote="https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git"
+          if ! git clone -q --branch release --single-branch "$remote" ../release; then
+            git init -q -b release ../release
+          fi
           cd ../release
-          git init -q -b release
+          git rm -rq --ignore-unmatch .
+          mkdir -p scripts
+          cp -r "$GITHUB_WORKSPACE/KoLmafia/scripts/cap-turns" scripts/
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -q -m "Build ${GITHUB_SHA::7}: $(git -C .. log -1 --format=%s)"
-          git push -f "https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git" release
+          if git diff --cached --quiet; then
+            echo "Build unchanged, nothing to publish."
+            exit 0
+          fi
+          git commit -q -m "Build ${GITHUB_SHA::7}: $(git -C "$GITHUB_WORKSPACE" log -1 --format=%s)"
+          git push "$remote" release
