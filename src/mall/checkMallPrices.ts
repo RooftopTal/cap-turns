@@ -8,15 +8,19 @@ import { LYLECO_GUIDE_OVERRIDE } from "./overrides";
  */
 
 // ASH did int/int division here, which truncates; JS needs it spelled out.
-function printPrice(it: Item, colour: string): void {
+function printPrice(it: Item, colour?: string): void {
   const price = mallPrice(it);
+  let text: string;
   if (price > 1_000_000) {
-    print(`${it.name} price: ${Math.trunc(price / 1_000_000)}M`, colour);
+    text = `${it.name} price: ${Math.trunc(price / 1_000_000)}M`;
   } else if (price > 1000) {
-    print(`${it.name} price: ${Math.trunc(price / 1000)}k`, colour);
+    text = `${it.name} price: ${Math.trunc(price / 1000)}k`;
   } else {
-    print(`${it.name} price: ${price} meat`, colour);
+    text = `${it.name} price: ${price} meat`;
   }
+  // No colour means mafia's default, which follows the light/dark theme.
+  if (colour) print(text, colour);
+  else print(text);
 }
 
 function checkDesirePrices(): void {
@@ -36,7 +40,7 @@ function checkKeepPrices(): void {
 
 function checkSalesPrices(): void {
   const items = $items`boxed Heartstone, boxed bat wings, assemble-it-yourself Leprecondo, lab-grown blood cubic zirconia, shrink-wrapped Cup of 13s, scabbarded Sword of S Words, Meat shield toddler, black rosebud`;
-  for (const it of items) printPrice(it, "black");
+  for (const it of items) printPrice(it);
 }
 
 function checkGarbage(): void {
@@ -76,9 +80,9 @@ export function checkMallPrices(): void {
   checkGarbage();
   print("===", "gray");
   checkFantasyCalibration();
-  print("===", "black");
+  print("===");
   checkKnuckleboneStore();
-  print("===", "black");
+  print("===");
   // Rhino's toLocaleString can't be trusted to add separators, so do it by hand.
   print(`Meat: ${myMeat().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
 }
