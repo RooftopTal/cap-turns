@@ -397,13 +397,16 @@ var _templateObject, _templateObject2, _templateObject3, _templateObject4, _temp
 // ASH did int/int division here, which truncates; JS needs it spelled out.
 function printPrice(it, colour) {
   var price = kolmafia.mallPrice(it);
+  var text;
   if (price > 1_000_000) {
-    kolmafia.print("".concat(it.name, " price: ").concat(Math.trunc(price / 1_000_000), "M"), colour);
+    text = "".concat(it.name, " price: ").concat(Math.trunc(price / 1_000_000), "M");
   } else if (price > 1000) {
-    kolmafia.print("".concat(it.name, " price: ").concat(Math.trunc(price / 1000), "k"), colour);
+    text = "".concat(it.name, " price: ").concat(Math.trunc(price / 1000), "k");
   } else {
-    kolmafia.print("".concat(it.name, " price: ").concat(price, " meat"), colour);
+    text = "".concat(it.name, " price: ").concat(price, " meat");
   }
+  // No colour means mafia's default, which follows the light/dark theme.
+  if (colour) kolmafia.print(text, colour);else kolmafia.print(text);
 }
 function checkDesirePrices() {
   printPrice($item(_templateObject || (_templateObject = _taggedTemplateLiteral(["Mr. Accessory"]))), "red");
@@ -436,7 +439,7 @@ function checkSalesPrices() {
   try {
     for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
       var it = _step2.value;
-      printPrice(it, "black");
+      printPrice(it);
     }
   } catch (err) {
     _iterator2.e(err);
@@ -477,9 +480,9 @@ function checkMallPrices() {
   checkGarbage();
   kolmafia.print("===", "gray");
   checkFantasyCalibration();
-  kolmafia.print("===", "black");
+  kolmafia.print("===");
   checkKnuckleboneStore();
-  kolmafia.print("===", "black");
+  kolmafia.print("===");
   // Rhino's toLocaleString can't be trusted to add separators, so do it by hand.
   kolmafia.print("Meat: ".concat(kolmafia.myMeat().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")));
 }
