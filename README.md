@@ -75,7 +75,7 @@ count to an Apps Script web app (`sheets/Code.gs`), which:
 What's tracked, and how, is `src/mall/tracked.ts` -- the one list both the
 gCLI report and the sheet come from. Wanted items are in priority order (the
 first is the sheet's "next purchase") and get rainbow colours in that order,
-cycling after seven. Owned counts include inventory, closet, Hagnk's and
+cycling after nine. Owned counts include inventory, closet, Hagnk's and
 equipped and your mall store, not the display case.
 
 - Once a day: `_capSheetUpdated` is set on success and mafia clears it at
