@@ -61,15 +61,26 @@ Mafia runs the installed copy under `git/RooftopTal-cap-turns-release/`, not
 `scripts/cap-turns`, so a `CAP_OUT` build no longer reaches the game. Push and
 `git update` instead.
 
-## Wealth sheet
+## Google Sheet
 
-`mall-prices` (run at login) also logs today's meat to the wealth tab of the
-"Limited resources" Google Sheet, once per day. It POSTs `?meat=<n>` to an Apps
-Script web app (`sheets/Code.gs`), which drops it in H3 and appends G3:H3 --
-exactly what the tab's save button does.
+`mall-prices` (run at login) also updates the "Limited resources" Google Sheet,
+once per day. It POSTs today's meat and every tracked item's price and owned
+count to an Apps Script web app (`sheets/Code.gs`), which:
 
-- Once a day: `_capWealthLogged` is set on success and mafia clears it at
-  rollover. The script also refuses a second row for the same date.
+- drops the meat in the wealth tab's H3 and appends G3:H3 -- exactly what the
+  tab's save button does;
+- rewrites the "Purchasing power (auto)" tab (creating it the first time):
+  wanted items with days to afford, owned assets with values, and a summary.
+
+What's tracked, and how, is `src/mall/tracked.ts` -- the one list both the
+gCLI report and the sheet come from. Wanted items are in priority order (the
+first is the sheet's "next purchase") and get rainbow colours in that order,
+cycling after seven. Owned counts include inventory, closet, Hagnk's and
+equipped, not the display case.
+
+- Once a day: `_capSheetUpdated` is set on success and mafia clears it at
+  rollover. The script also refuses a second wealth row for the same date.
+  `set _capSheetUpdated = false` and rerun `mall-prices` to push again.
 - The web-app URL is a write key for the sheet, so it lives in a preference,
   not in this public repo. Unset means no logging.
 

@@ -1,55 +1,80 @@
-import { Item, mallPrice, myMeat, print, toItem, visitUrl } from "kolmafia";
-import { $item, $items } from "libram";
+import {
+  closetAmount,
+  equippedAmount,
+  Item,
+  itemAmount,
+  mallPrice,
+  myMeat,
+  print,
+  storageAmount,
+  toItem,
+  visitUrl,
+} from "kolmafia";
+import { $item } from "libram";
 import { LYLECO_GUIDE_OVERRIDE } from "./overrides";
+import { Kind, TRACKED } from "./tracked";
 
 /**
  * Ported from mall/check_mall_prices.ash. Purely informational -- prints
  * today's prices for things worth tracking, never buys or sells anything.
  */
 
+/** One tracked item's numbers, for the sheet. */
+export type PriceRow = { name: string; kind: Kind; have: number; price: number };
+
+/** Wanted items cycle through these, in list order. */
+const RAINBOW = ["red", "orange", "DAA520", "green", "blue", "purple", "4B0082"];
+
 // ASH did int/int division here, which truncates; JS needs it spelled out.
-function printPrice(it: Item, colour?: string): void {
-  const price = mallPrice(it);
-  let text: string;
-  if (price > 1_000_000) {
-    text = `${it.name} price: ${Math.trunc(price / 1_000_000)}M`;
-  } else if (price > 1000) {
-    text = `${it.name} price: ${Math.trunc(price / 1000)}k`;
-  } else {
-    text = `${it.name} price: ${price} meat`;
-  }
+function formatPrice(price: number): string {
+  if (price > 1_000_000) return `${Math.trunc(price / 1_000_000)}M`;
+  if (price > 1000) return `${Math.trunc(price / 1000)}k`;
+  return `${price} meat`;
+}
+
+function printLine(text: string, colour?: string): void {
   // No colour means mafia's default, which follows the light/dark theme.
   if (colour) print(text, colour);
   else print(text);
 }
 
-function checkDesirePrices(): void {
-  printPrice($item`Mr. Accessory`, "red");
-  printPrice($item`Booke of Vampyric Knowledge`, "orange");
-  // printPrice($item`moveable feast`, "DAA520");
-  printPrice($item`Comprehensive Cartographic Compendium`, "DAA520");
-  printPrice($item`Order of the Green Thumb Order Form`, "green");
-  printPrice($item`meteorite fragment`, "blue");
-  printPrice($item`Pokéfam Guide to Capturing All of Them`, "purple");
-  printPrice($item`kneecapping contract`, "4B0082");
-  printPrice($item`Old Country cookbook`, "4B0082");
+function printPrice(it: Item, colour?: string): void {
+  printLine(`${it.name} price: ${formatPrice(mallPrice(it))}`, colour);
 }
 
-function checkKeepPrices(): void {
-  for (const it of $items`ice sickle, haiku katana`) printPrice(it, "gray");
+/** Anywhere a sellable copy could be sitting. Not the display case. */
+function owned(it: Item): number {
+  return itemAmount(it) + closetAmount(it) + storageAmount(it) + equippedAmount(it);
 }
 
-function checkSalesPrices(): void {
-  const items = $items`boxed Heartstone, boxed bat wings, assemble-it-yourself Leprecondo, lab-grown blood cubic zirconia, shrink-wrapped Cup of 13s, scabbarded Sword of S Words, Meat shield toddler, black rosebud`;
-  for (const it of items) printPrice(it);
+const SECTIONS: { kind: Kind; title: string }[] = [
+  { kind: "currency", title: "CURRENCY" },
+  { kind: "want", title: "WANTED" },
+  { kind: "sell", title: "FOR SALE" },
+  { kind: "keep", title: "MIGHT SELL" },
+];
+
+function checkTracked(): PriceRow[] {
+  const rows: PriceRow[] = [];
+  for (const { kind, title } of SECTIONS) {
+    print(" ");
+    print(`=== ${title} ===`);
+    TRACKED.filter((t) => t.kind === kind).forEach(({ item }, i) => {
+      const row = { name: item.name, kind, have: owned(item), price: mallPrice(item) };
+      rows.push(row);
+      const have = kind !== "want" && row.have > 0 ? ` (have ${row.have})` : "";
+      const colour = kind === "want" ? RAINBOW[i % RAINBOW.length] : kind === "keep" ? "gray" : undefined;
+      printLine(`${item.name} price: ${formatPrice(row.price)}${have}`, colour);
+    });
+  }
+  return rows;
 }
 
-function checkGarbage(): void {
+/** Prices that only matter if they cross a line -- red means go change something. */
+function checkReminders(): void {
   const garbagePrice = mallPrice($item`bag of park garbage`);
   print(`Garbage price: ${garbagePrice} meat`, garbagePrice > 200 ? "red" : "gray");
-}
 
-function checkFantasyCalibration(): void {
   const guide = $item`LyleCo Contractor's Manual`;
   const guideTolerance = 500_000;
   printPrice(guide, mallPrice(guide) > LYLECO_GUIDE_OVERRIDE + guideTolerance ? "red" : "gray");
@@ -69,21 +94,16 @@ function checkKnuckleboneStore(): void {
   }
 }
 
-export function checkMallPrices(): void {
-  print(" ");
-  print("=== DESIRE tracker for today ===");
-  checkDesirePrices();
+export function checkMallPrices(): PriceRow[] {
+  const rows = checkTracked();
 
   print(" ");
-  print("=== SALES tracker for today ===");
-  checkKeepPrices();
-  checkSalesPrices();
-  checkGarbage();
-  print("===", "gray");
-  checkFantasyCalibration();
+  print("=== REMINDERS ===");
+  checkReminders();
   print("===");
   checkKnuckleboneStore();
   print("===");
   // Rhino's toLocaleString can't be trusted to add separators, so do it by hand.
   print(`Meat: ${myMeat().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
+  return rows;
 }
