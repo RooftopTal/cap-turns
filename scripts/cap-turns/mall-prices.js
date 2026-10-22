@@ -300,8 +300,27 @@ var _templateObject, _templateObject2, _templateObject3;
 
 /** One tracked item's numbers, for the sheet. */
 
-/** Wanted items cycle through these, in list order. */
-var RAINBOW = ["red", "orange", "DAA520", "green", "blue", "purple", "4B0082"];
+/** Wanted items cycle through these, in list order. Mid-brightness so they
+ * read on the dark gCLI theme as well as the light one, and in hue order so
+ * the wrap from pink back to red is just another step round the wheel. */
+var RAINBOW = ["E06666",
+// red
+"F09A4A",
+// orange
+"D4AC2B",
+// gold
+"8BC34A",
+// green
+"26A69A",
+// teal
+"4FA3E0",
+// blue
+"8C9EFF",
+// periwinkle
+"B388EB",
+// violet
+"E57BC4" // pink
+];
 
 // ASH did int/int division here, which truncates; JS needs it spelled out.
 function formatPrice(price) {
