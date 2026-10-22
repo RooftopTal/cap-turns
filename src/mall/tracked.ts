@@ -23,6 +23,7 @@ export const TRACKED: Tracked[] = [
   { item: $item`kneecapping contract`, kind: "want" },
   { item: $item`Old Country cookbook`, kind: "want" },
   { item: $item`Pokéfam Guide to Capturing All of Them`, kind: "want" },
+  { item: $item`box o' ghosts`, kind: "want" },
   { item: $item`meteorite fragment`, kind: "want" },
   { item: $item`Order of the Green Thumb Order Form`, kind: "want" },
   { item: $item`Booke of Vampyric Knowledge`, kind: "want" },
@@ -38,4 +39,5 @@ export const TRACKED: Tracked[] = [
 
   { item: $item`ice sickle`, kind: "keep" },
   { item: $item`haiku katana`, kind: "keep" },
+  { item: $item`Too Cold to Hold: How to Be Cool - A Memoir`, kind: "keep" },
 ];
