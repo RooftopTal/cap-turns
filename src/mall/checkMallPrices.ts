@@ -6,6 +6,7 @@ import {
   mallPrice,
   myMeat,
   print,
+  shopAmount,
   storageAmount,
   toItem,
   visitUrl,
@@ -42,9 +43,13 @@ function printPrice(it: Item, colour?: string): void {
   printLine(`${it.name} price: ${formatPrice(mallPrice(it))}`, colour);
 }
 
-/** Anywhere a sellable copy could be sitting. Not the display case. */
+/** Anywhere a sellable copy could be sitting, including already listed in
+ * the mall store (shopAmount loads the store listing on first use). Not the
+ * display case. */
 function owned(it: Item): number {
-  return itemAmount(it) + closetAmount(it) + storageAmount(it) + equippedAmount(it);
+  return (
+    itemAmount(it) + closetAmount(it) + storageAmount(it) + equippedAmount(it) + shopAmount(it)
+  );
 }
 
 const SECTIONS: { kind: Kind; title: string }[] = [

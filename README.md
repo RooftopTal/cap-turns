@@ -76,7 +76,7 @@ What's tracked, and how, is `src/mall/tracked.ts` -- the one list both the
 gCLI report and the sheet come from. Wanted items are in priority order (the
 first is the sheet's "next purchase") and get rainbow colours in that order,
 cycling after seven. Owned counts include inventory, closet, Hagnk's and
-equipped, not the display case.
+equipped and your mall store, not the display case.
 
 - Once a day: `_capSheetUpdated` is set on success and mafia clears it at
   rollover. The script also refuses a second wealth row for the same date.
