@@ -57,9 +57,34 @@ After that, `git update` (or `gitUpdateOnLogin`, already on) keeps it current --
 no copying. If a push doesn't show up, check the Actions tab: a failed `check`
 or build means nothing was published.
 
-`CAP_OUT` dev builds still write into the same `scripts/cap-turns` folder, so
-for quick iteration nothing changes; the next update from `release` simply
-overwrites them with the pushed version.
+Mafia runs the installed copy under `git/RooftopTal-cap-turns-release/`, not
+`scripts/cap-turns`, so a `CAP_OUT` build no longer reaches the game. Push and
+`git update` instead.
+
+## Wealth sheet
+
+`mall-prices` (run at login) also logs today's meat to the wealth tab of the
+"Limited resources" Google Sheet, once per day. It POSTs `?meat=<n>` to an Apps
+Script web app (`sheets/Code.gs`), which drops it in H3 and appends G3:H3 --
+exactly what the tab's save button does.
+
+- Once a day: `_capWealthLogged` is set on success and mafia clears it at
+  rollover. The script also refuses a second row for the same date.
+- The web-app URL is a write key for the sheet, so it lives in a preference,
+  not in this public repo. Unset means no logging.
+
+Setup, once:
+
+1. In the sheet, Extensions -> Apps Script, replace the code with
+   `sheets/Code.gs`, save.
+2. Deploy -> New deployment -> type Web app. Execute as: Me. Who has access:
+   Anyone (mafia isn't signed in to Google). Authorise when asked.
+3. Copy the URL ending `/exec`, then in the gCLI:
+   `set cap_sheetUrl = https://script.google.com/macros/s/.../exec`
+
+After editing `Code.gs`, paste it in again and use Deploy -> Manage
+deployments -> edit -> New version, which keeps the same URL. A *new*
+deployment gets a new URL.
 
 ## Migration status
 
