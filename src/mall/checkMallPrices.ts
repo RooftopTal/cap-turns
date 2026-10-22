@@ -31,7 +31,8 @@ function checkDesirePrices(): void {
   printPrice($item`Order of the Green Thumb Order Form`, "green");
   printPrice($item`meteorite fragment`, "blue");
   printPrice($item`Pokéfam Guide to Capturing All of Them`, "purple");
-  printPrice($item`corked genie bottle`, "4B0082");
+  printPrice($item`kneecapping contract`, "4B0082");
+  printPrice($item`Old Country cookbook`, "4B0082");
 }
 
 function checkKeepPrices(): void {
