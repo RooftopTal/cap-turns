@@ -317,9 +317,11 @@ function printPrice(it, colour) {
   printLine("".concat(it.name, " price: ").concat(formatPrice(kolmafia.mallPrice(it))), colour);
 }
 
-/** Anywhere a sellable copy could be sitting. Not the display case. */
+/** Anywhere a sellable copy could be sitting, including already listed in
+ * the mall store (shopAmount loads the store listing on first use). Not the
+ * display case. */
 function owned(it) {
-  return kolmafia.itemAmount(it) + kolmafia.closetAmount(it) + kolmafia.storageAmount(it) + kolmafia.equippedAmount(it);
+  return kolmafia.itemAmount(it) + kolmafia.closetAmount(it) + kolmafia.storageAmount(it) + kolmafia.equippedAmount(it) + kolmafia.shopAmount(it);
 }
 var SECTIONS = [{
   kind: "currency",
