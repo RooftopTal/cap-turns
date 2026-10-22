@@ -70,42 +70,6 @@ function _unsupportedIterableToArray(r, a) {
   }
 }
 
-/**
- * Splits a string by commas while also respecting escaping commas with a backslash
- *
- * @param str String to split
- * @returns List of tokens
- */
-function splitByCommasWithEscapes(str) {
-  var returnValue = [];
-  var ignoreNext = false;
-  var currentString = "";
-  var _iterator2 = _createForOfIteratorHelper(str.split("")),
-    _step2;
-  try {
-    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-      var char = _step2.value;
-      if (char === "\\") {
-        ignoreNext = true;
-      } else {
-        if (char == "," && !ignoreNext) {
-          returnValue.push(currentString.trim());
-          currentString = "";
-        } else {
-          currentString += char;
-        }
-        ignoreNext = false;
-      }
-    }
-  } catch (err) {
-    _iterator2.e(err);
-  } finally {
-    _iterator2.f();
-  }
-  returnValue.push(currentString.trim());
-  return returnValue;
-}
-
 var concatTemplateString = function concatTemplateString(literals) {
   for (var _len = arguments.length, placeholders = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     placeholders[_key - 1] = arguments[_key];
@@ -142,25 +106,6 @@ var createSingleConstant = (Type, converter) => {
   };
   return tagFunction;
 };
-var createPluralConstant = Type => {
-  var tagFunction = function tagFunction(literals) {
-    for (var _len3 = arguments.length, placeholders = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
-      placeholders[_key3 - 1] = arguments[_key3];
-    }
-    var input = concatTemplateString.apply(void 0, [literals].concat(placeholders));
-    if (input === "") {
-      return Type.all();
-    }
-    try {
-      return Type.get(splitByCommasWithEscapes(input));
-    } catch (error) {
-      handleTypeGetError(Type, error);
-    }
-    kolmafia.abort();
-  };
-  tagFunction.all = () => Type.all();
-  return tagFunction;
-};
 /**
  * A Bounty specified by name.
  *
@@ -168,25 +113,11 @@ var createPluralConstant = Type => {
  */
 createSingleConstant(kolmafia.Bounty, kolmafia.toBounty);
 /**
- * A list of Bounties specified by a comma-separated list of names.
- * For a list of all possible Bounties, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Bounty);
-/**
  * A Class specified by name.
  *
  * @category In-game constant
  */
 createSingleConstant(kolmafia.Class, kolmafia.toClass);
-/**
- * A list of Classes specified by a comma-separated list of names.
- * For a list of all possible Classes, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Class);
 /**
  * A Coinmaster specified by name.
  *
@@ -194,25 +125,11 @@ createPluralConstant(kolmafia.Class);
  */
 createSingleConstant(kolmafia.Coinmaster, kolmafia.toCoinmaster);
 /**
- * A list of Coinmasters specified by a comma-separated list of names.
- * For a list of all possible Coinmasters, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Coinmaster);
-/**
  * An Effect specified by name.
  *
  * @category In-game constant
  */
 createSingleConstant(kolmafia.Effect, kolmafia.toEffect);
-/**
- * A list of Effects specified by a comma-separated list of names.
- * For a list of all possible Effects, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Effect);
 /**
  * An Element specified by name.
  *
@@ -220,25 +137,11 @@ createPluralConstant(kolmafia.Effect);
  */
 createSingleConstant(kolmafia.Element, kolmafia.toElement);
 /**
- * A list of Elements specified by a comma-separated list of names.
- * For a list of all possible Elements, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Element);
-/**
  * A Familiar specified by name.
  *
  * @category In-game constant
  */
 createSingleConstant(kolmafia.Familiar, kolmafia.toFamiliar);
-/**
- * A list of Familiars specified by a comma-separated list of names.
- * For a list of all possible Familiars, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Familiar);
 /**
  * An Item specified by name.
  *
@@ -246,25 +149,11 @@ createPluralConstant(kolmafia.Familiar);
  */
 var $item = createSingleConstant(kolmafia.Item, kolmafia.toItem);
 /**
- * A list of Items specified by a comma-separated list of names.
- * For a list of all possible Items, leave the template string blank.
- *
- * @category In-game constant
- */
-var $items = createPluralConstant(kolmafia.Item);
-/**
  * A Location specified by name.
  *
  * @category In-game constant
  */
 createSingleConstant(kolmafia.Location, kolmafia.toLocation);
-/**
- * A list of Locations specified by a comma-separated list of names.
- * For a list of all possible Locations, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Location);
 /**
  * A Modifier specified by name.
  *
@@ -272,25 +161,11 @@ createPluralConstant(kolmafia.Location);
  */
 createSingleConstant(kolmafia.Modifier, kolmafia.toModifier);
 /**
- * A list of Modifiers specified by a comma-separated list of names.
- * For a list of all possible Modifiers, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Modifier);
-/**
  * A Monster specified by name.
  *
  * @category In-game constant
  */
 createSingleConstant(kolmafia.Monster, kolmafia.toMonster);
-/**
- * A list of Monsters specified by a comma-separated list of names.
- * For a list of all possible Monsters, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Monster);
 /**
  * A Path specified by name.
  *
@@ -298,25 +173,11 @@ createPluralConstant(kolmafia.Monster);
  */
 createSingleConstant(kolmafia.Path, kolmafia.toPath);
 /**
- * A list of Paths specified by a comma-separated list of names.
- * For a list of all possible Paths, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Path);
-/**
  * A Phylum specified by name.
  *
  * @category In-game constant
  */
 createSingleConstant(kolmafia.Phylum, kolmafia.toPhylum);
-/**
- * A list of Phyla specified by a comma-separated list of names.
- * For a list of all possible Phyla, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Phylum);
 /**
  * A Servant specified by name.
  *
@@ -324,25 +185,11 @@ createPluralConstant(kolmafia.Phylum);
  */
 createSingleConstant(kolmafia.Servant, kolmafia.toServant);
 /**
- * A list of Servants specified by a comma-separated list of names.
- * For a list of all possible Servants, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Servant);
-/**
  * A Skill specified by name.
  *
  * @category In-game constant
  */
 createSingleConstant(kolmafia.Skill, kolmafia.toSkill);
-/**
- * A list of Skills specified by a comma-separated list of names.
- * For a list of all possible Skills, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Skill);
 /**
  * A Slot specified by name.
  *
@@ -350,115 +197,189 @@ createPluralConstant(kolmafia.Skill);
  */
 createSingleConstant(kolmafia.Slot, kolmafia.toSlot);
 /**
- * A list of Slots specified by a comma-separated list of names.
- * For a list of all possible Slots, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Slot);
-/**
  * A Stat specified by name.
  *
  * @category In-game constant
  */
 createSingleConstant(kolmafia.Stat, kolmafia.toStat);
 /**
- * A list of Stats specified by a comma-separated list of names.
- * For a list of all possible Stats, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Stat);
-/**
  * A Thrall specified by name.
  *
  * @category In-game constant
  */
 createSingleConstant(kolmafia.Thrall, kolmafia.toThrall);
-/**
- * A list of Thralls specified by a comma-separated list of names.
- * For a list of all possible Thralls, leave the template string blank.
- *
- * @category In-game constant
- */
-createPluralConstant(kolmafia.Thrall);
 
 /** From mall_overrides.ash. A fixed ceiling rather than the live mall
  * price, which go_to_fantasyrealm/check_tickets deliberately don't trust. */
 var LYLECO_GUIDE_OVERRIDE = 2_000_000;
 
-var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject0, _templateObject1, _templateObject10, _templateObject11;
+var _templateObject$1, _templateObject2$1, _templateObject3$1, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject0, _templateObject1, _templateObject10, _templateObject11, _templateObject12, _templateObject13, _templateObject14, _templateObject15, _templateObject16, _templateObject17, _templateObject18, _templateObject19;
+
+/**
+ * Everything mall-prices tracks, and the source of truth for the sheet's
+ * "Purchasing power (auto)" tab. One entry per real item.
+ *
+ * - currency: what IotMs get bought with, valued but not a goal.
+ * - want: things to buy. Listed in priority order -- the sheet's "next
+ *   purchase" is the first one.
+ * - sell: held only to sell later.
+ * - keep: could sell, probably won't.
+ */
+
+var TRACKED = [{
+  item: $item(_templateObject$1 || (_templateObject$1 = _taggedTemplateLiteral(["Mr. Accessory"]))),
+  kind: "currency"
+}, {
+  item: $item(_templateObject2$1 || (_templateObject2$1 = _taggedTemplateLiteral(["Uncle Buck"]))),
+  kind: "currency"
+}, {
+  item: $item(_templateObject3$1 || (_templateObject3$1 = _taggedTemplateLiteral(["Comprehensive Cartographic Compendium"]))),
+  kind: "want"
+}, {
+  item: $item(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["kneecapping contract"]))),
+  kind: "want"
+}, {
+  item: $item(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["Old Country cookbook"]))),
+  kind: "want"
+}, {
+  item: $item(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["Pok\xE9fam Guide to Capturing All of Them"]))),
+  kind: "want"
+}, {
+  item: $item(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["box o' ghosts"]))),
+  kind: "want"
+}, {
+  item: $item(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["meteorite fragment"]))),
+  kind: "want"
+}, {
+  item: $item(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["Order of the Green Thumb Order Form"]))),
+  kind: "want"
+}, {
+  item: $item(_templateObject0 || (_templateObject0 = _taggedTemplateLiteral(["Booke of Vampyric Knowledge"]))),
+  kind: "want"
+}, {
+  item: $item(_templateObject1 || (_templateObject1 = _taggedTemplateLiteral(["boxed Heartstone"]))),
+  kind: "sell"
+}, {
+  item: $item(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["boxed bat wings"]))),
+  kind: "sell"
+}, {
+  item: $item(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["assemble-it-yourself Leprecondo"]))),
+  kind: "sell"
+}, {
+  item: $item(_templateObject12 || (_templateObject12 = _taggedTemplateLiteral(["lab-grown blood cubic zirconia"]))),
+  kind: "sell"
+}, {
+  item: $item(_templateObject13 || (_templateObject13 = _taggedTemplateLiteral(["shrink-wrapped Cup of 13s"]))),
+  kind: "sell"
+}, {
+  item: $item(_templateObject14 || (_templateObject14 = _taggedTemplateLiteral(["scabbarded Sword of S Words"]))),
+  kind: "sell"
+}, {
+  item: $item(_templateObject15 || (_templateObject15 = _taggedTemplateLiteral(["Meat shield toddler"]))),
+  kind: "sell"
+}, {
+  item: $item(_templateObject16 || (_templateObject16 = _taggedTemplateLiteral(["black rosebud"]))),
+  kind: "sell"
+}, {
+  item: $item(_templateObject17 || (_templateObject17 = _taggedTemplateLiteral(["ice sickle"]))),
+  kind: "keep"
+}, {
+  item: $item(_templateObject18 || (_templateObject18 = _taggedTemplateLiteral(["haiku katana"]))),
+  kind: "keep"
+}, {
+  item: $item(_templateObject19 || (_templateObject19 = _taggedTemplateLiteral(["Too Cold to Hold: How to Be Cool - A Memoir"]))),
+  kind: "keep"
+}];
+
+var _templateObject, _templateObject2, _templateObject3;
 
 /**
  * Ported from mall/check_mall_prices.ash. Purely informational -- prints
  * today's prices for things worth tracking, never buys or sells anything.
  */
 
+/** One tracked item's numbers, for the sheet. */
+
+/** Wanted items cycle through these, in list order. */
+var RAINBOW = ["red", "orange", "DAA520", "green", "blue", "purple", "4B0082"];
+
 // ASH did int/int division here, which truncates; JS needs it spelled out.
-function printPrice(it, colour) {
-  var price = kolmafia.mallPrice(it);
-  var text;
-  if (price > 1_000_000) {
-    text = "".concat(it.name, " price: ").concat(Math.trunc(price / 1_000_000), "M");
-  } else if (price > 1000) {
-    text = "".concat(it.name, " price: ").concat(Math.trunc(price / 1000), "k");
-  } else {
-    text = "".concat(it.name, " price: ").concat(price, " meat");
-  }
+function formatPrice(price) {
+  if (price > 1_000_000) return "".concat(Math.trunc(price / 1_000_000), "M");
+  if (price > 1000) return "".concat(Math.trunc(price / 1000), "k");
+  return "".concat(price, " meat");
+}
+function printLine(text, colour) {
   // No colour means mafia's default, which follows the light/dark theme.
   if (colour) kolmafia.print(text, colour);else kolmafia.print(text);
 }
-function checkDesirePrices() {
-  printPrice($item(_templateObject || (_templateObject = _taggedTemplateLiteral(["Mr. Accessory"]))), "red");
-  printPrice($item(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["Booke of Vampyric Knowledge"]))), "orange");
-  // printPrice($item`moveable feast`, "DAA520");
-  printPrice($item(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["Comprehensive Cartographic Compendium"]))), "DAA520");
-  printPrice($item(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["Order of the Green Thumb Order Form"]))), "green");
-  printPrice($item(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["meteorite fragment"]))), "blue");
-  printPrice($item(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["Pok\xE9fam Guide to Capturing All of Them"]))), "purple");
-  printPrice($item(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["kneecapping contract"]))), "4B0082");
-  printPrice($item(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["Old Country cookbook"]))), "4B0082");
+function printPrice(it, colour) {
+  printLine("".concat(it.name, " price: ").concat(formatPrice(kolmafia.mallPrice(it))), colour);
 }
-function checkKeepPrices() {
-  var _iterator = _createForOfIteratorHelper($items(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["ice sickle, haiku katana"])))),
+
+/** Anywhere a sellable copy could be sitting. Not the display case. */
+function owned(it) {
+  return kolmafia.itemAmount(it) + kolmafia.closetAmount(it) + kolmafia.storageAmount(it) + kolmafia.equippedAmount(it);
+}
+var SECTIONS = [{
+  kind: "currency",
+  title: "CURRENCY"
+}, {
+  kind: "want",
+  title: "WANTED"
+}, {
+  kind: "sell",
+  title: "FOR SALE"
+}, {
+  kind: "keep",
+  title: "MIGHT SELL"
+}];
+function checkTracked() {
+  var rows = [];
+  var _iterator = _createForOfIteratorHelper(SECTIONS),
     _step;
   try {
+    var _loop = function _loop() {
+      var _step$value = _step.value,
+        kind = _step$value.kind,
+        title = _step$value.title;
+      kolmafia.print(" ");
+      kolmafia.print("=== ".concat(title, " ==="));
+      TRACKED.filter(t => t.kind === kind).forEach((_ref, i) => {
+        var item = _ref.item;
+        var row = {
+          name: item.name,
+          kind,
+          have: owned(item),
+          price: kolmafia.mallPrice(item)
+        };
+        rows.push(row);
+        var have = kind !== "want" && row.have > 0 ? " (have ".concat(row.have, ")") : "";
+        var colour = kind === "want" ? RAINBOW[i % RAINBOW.length] : kind === "keep" ? "gray" : undefined;
+        printLine("".concat(item.name, " price: ").concat(formatPrice(row.price)).concat(have), colour);
+      });
+    };
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var it = _step.value;
-      printPrice(it, "gray");
+      _loop();
     }
   } catch (err) {
     _iterator.e(err);
   } finally {
     _iterator.f();
   }
+  return rows;
 }
-function checkSalesPrices() {
-  var items = $items(_templateObject0 || (_templateObject0 = _taggedTemplateLiteral(["boxed Heartstone, boxed bat wings, assemble-it-yourself Leprecondo, lab-grown blood cubic zirconia, shrink-wrapped Cup of 13s, scabbarded Sword of S Words, Meat shield toddler, black rosebud"])));
-  var _iterator2 = _createForOfIteratorHelper(items),
-    _step2;
-  try {
-    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-      var it = _step2.value;
-      printPrice(it);
-    }
-  } catch (err) {
-    _iterator2.e(err);
-  } finally {
-    _iterator2.f();
-  }
-}
-function checkGarbage() {
-  var garbagePrice = kolmafia.mallPrice($item(_templateObject1 || (_templateObject1 = _taggedTemplateLiteral(["bag of park garbage"]))));
+
+/** Prices that only matter if they cross a line -- red means go change something. */
+function checkReminders() {
+  var garbagePrice = kolmafia.mallPrice($item(_templateObject || (_templateObject = _taggedTemplateLiteral(["bag of park garbage"]))));
   kolmafia.print("Garbage price: ".concat(garbagePrice, " meat"), garbagePrice > 200 ? "red" : "gray");
-}
-function checkFantasyCalibration() {
-  var guide = $item(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["LyleCo Contractor's Manual"])));
+  var guide = $item(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["LyleCo Contractor's Manual"])));
   var guideTolerance = 500_000;
   printPrice(guide, kolmafia.mallPrice(guide) > LYLECO_GUIDE_OVERRIDE + guideTolerance ? "red" : "gray");
 
   // Not currently calibrating fantasyrealm tix, may change in future
-  printPrice($item(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["FantasyRealm guest pass"]))), "gray");
+  printPrice($item(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["FantasyRealm guest pass"]))), "gray");
 }
 function checkKnuckleboneStore() {
   var shopText = kolmafia.visitUrl("main.php?pwd&talktosocp=1", false, true);
@@ -471,52 +392,50 @@ function checkKnuckleboneStore() {
   }
 }
 function checkMallPrices() {
+  var rows = checkTracked();
   kolmafia.print(" ");
-  kolmafia.print("=== DESIRE tracker for today ===");
-  checkDesirePrices();
-  kolmafia.print(" ");
-  kolmafia.print("=== SALES tracker for today ===");
-  checkKeepPrices();
-  checkSalesPrices();
-  checkGarbage();
-  kolmafia.print("===", "gray");
-  checkFantasyCalibration();
+  kolmafia.print("=== REMINDERS ===");
+  checkReminders();
   kolmafia.print("===");
   checkKnuckleboneStore();
   kolmafia.print("===");
   // Rhino's toLocaleString can't be trusted to add separators, so do it by hand.
   kolmafia.print("Meat: ".concat(kolmafia.myMeat().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")));
+  return rows;
 }
 
 /**
- * Logs today's meat to the wealth tab of the "Limited resources" sheet, via
- * the Apps Script web app in sheets/Code.gs.
+ * Sends today's meat and tracked prices to the "Limited resources" sheet, via
+ * the Apps Script web app in sheets/Code.gs: meat goes on the wealth tab,
+ * prices rewrite the "Purchasing power (auto)" tab.
  *
  * The web-app URL lives in a preference, not here: anyone holding it can write
  * to the sheet, and this repo is public. Unset means skip quietly.
  *
  * The flag starts with an underscore, so mafia clears it at rollover -- that's
- * what makes this once a day. The script also refuses a second row for the
- * same date, in case the flag is lost before mafia saves preferences.
+ * what makes this once a day. The script also refuses a second wealth row for
+ * the same date, in case the flag is lost before mafia saves preferences.
  */
 var URL_SETTING = "cap_sheetUrl";
-var LOGGED_FLAG = "_capWealthLogged";
-function logWealth() {
+var UPDATED_FLAG = "_capSheetUpdated";
+function updateSheet(rows) {
   var url = kolmafia.getProperty(URL_SETTING);
   if (!url) return;
-  if (kolmafia.getProperty(LOGGED_FLAG) === "true") {
-    kolmafia.print("Wealth already logged today.", "gray");
+  if (kolmafia.getProperty(UPDATED_FLAG) === "true") {
+    kolmafia.print("Sheet already updated today.", "gray");
     return;
   }
 
-  // visitUrl sends a full https:// URL to that site rather than to KoL, and
-  // follows Apps Script's 302 to fetch the reply text.
-  var reply = kolmafia.visitUrl("".concat(url, "?meat=").concat(kolmafia.myMeat()), true, false).trim();
+  // Encoded by hand and sent as-is (third arg), so item names can't break
+  // the form fields. visitUrl sends a full https:// URL to that site rather
+  // than to KoL, and follows Apps Script's 302 to fetch the reply text.
+  var items = encodeURIComponent(JSON.stringify(rows));
+  var reply = kolmafia.visitUrl("".concat(url, "?meat=").concat(kolmafia.myMeat(), "&items=").concat(items), true, true).trim();
   if (reply === "added" || reply === "exists") {
-    kolmafia.setProperty(LOGGED_FLAG, "true");
-    kolmafia.print(reply === "added" ? "Wealth logged to sheet." : "Wealth already in sheet for today.", "gray");
+    kolmafia.setProperty(UPDATED_FLAG, "true");
+    kolmafia.print(reply === "added" ? "Sheet updated." : "Sheet updated (wealth already in for today).", "gray");
   } else {
-    kolmafia.print("Couldn't log wealth to sheet: ".concat(reply.slice(0, 200) || "no reply"), "red");
+    kolmafia.print("Couldn't update sheet: ".concat(reply.slice(0, 200) || "no reply"), "red");
   }
 }
 
@@ -524,8 +443,7 @@ function logWealth() {
  * Not named check_mall_prices -- mafia resolves scripts by filename across the
  * whole scripts tree, and the ASH original still lives in scripts/cap/mall/. */
 function main() {
-  checkMallPrices();
-  logWealth();
+  updateSheet(checkMallPrices());
 }
 
 exports.main = main;
