@@ -38,6 +38,9 @@ function doPost(e) {
     const result = appendWealthInput(sheet);
     if (e.parameter.items) writePurchasing(ss, JSON.parse(e.parameter.items));
     return ContentService.createTextOutput(result);
+  } catch (err) {
+    // Plain text back to mafia, instead of Google's HTML error page.
+    return ContentService.createTextOutput(`error: ${err && err.stack ? err.stack : err}`);
   } finally {
     lock.releaseLock();
   }
@@ -61,7 +64,7 @@ function writePurchasing(ss, items) {
   sheet.getRange("A2:B2").setValues([["Wanted", "Price (M)"]]);
   // M3 is cash, M7 cash plus everything for sale, M4 the 30-day daily average.
   const days = (title, have) =>
-    `=ARRAYFORMULA({"${title}"; IF(A3:A="", "", IF((B3:B-${have})/$M$4<0, 0, (B3:B-${have})/$M$4)))})`;
+    `=ARRAYFORMULA({"${title}"; IF(A3:A="", "", IF((B3:B-${have})/$M$4<0, 0, (B3:B-${have})/$M$4))})`;
   sheet.getRange("C2").setFormula(days("Days (cash)", "$M$3"));
   sheet.getRange("D2").setFormula(days("Days (with sales)", "$M$7"));
   sheet.getRange("F2:J2").setValues([["Asset", "Kind", "Have", "Price (M)", "Value (M)"]]);
