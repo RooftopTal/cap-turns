@@ -86,13 +86,15 @@ function writePurchasing(ss, items) {
     ["For sale (M)", '=SUMIF(G3:G, "sell", J3:J) + SUMIF(G3:G, "currency", J3:J)'],
     ["Might sell (M)", '=SUMIF(G3:G, "keep", J3:J)'],
     ["Cash + for sale (M)", "=M3+M5"],
+    ["", ""],
     ["Total wanted (M)", "=SUM(B3:B)"],
-    ["Shortfall (M)", "=M8-M7"],
+    ["Shortfall (M)", "=M9-M7"],
+    ["", ""],
     ["Next purchase", "=A3"],
     ["Days to next (cash)", "=C3"],
     ["Days to next (with sales)", "=D3"],
     ["Days to farm a Mr. A", '=IFERROR(INDEX(I3:I, MATCH("Mr. Accessory", F3:F, 0))/M4, "")'],
-    ["Mr. As a month", '=IFERROR((365/12)/M13, "")'],
+    ["Mr. As a month", '=IFERROR((365/12)/M15, "")'],
     ["Meat a month (M)", "=(365/12)*M4"],
   ];
   sheet.getRange("L2:M2").setValues([["Summary", ""]]);
