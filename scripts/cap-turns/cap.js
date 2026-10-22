@@ -1920,7 +1920,7 @@ createSingleConstant(kolmafia.Thrall, kolmafia.toThrall);
  */
 createPluralConstant(kolmafia.Thrall);
 
-var _templateObject$h, _templateObject10$4, _templateObject11$3, _templateObject12$3, _templateObject13$3, _templateObject14$3, _templateObject15$2, _templateObject16$2, _templateObject17$2, _templateObject18$2, _templateObject19$2, _templateObject20$2, _templateObject21$2, _templateObject22$2, _templateObject23$2, _templateObject24$2, _templateObject25$2, _templateObject26$2, _templateObject27$2, _templateObject28$2, _templateObject29$2, _templateObject30$2, _templateObject31$2, _templateObject32$2, _templateObject33$2, _templateObject34$2, _templateObject35$2, _templateObject48$2, _templateObject49$1, _templateObject50$1, _templateObject51$1, _templateObject52$1, _templateObject53$1;
+var _templateObject$h, _templateObject10$4, _templateObject11$4, _templateObject12$3, _templateObject13$3, _templateObject14$3, _templateObject15$2, _templateObject16$2, _templateObject17$2, _templateObject18$2, _templateObject19$2, _templateObject20$2, _templateObject21$2, _templateObject22$2, _templateObject23$2, _templateObject24$2, _templateObject25$2, _templateObject26$2, _templateObject27$2, _templateObject28$2, _templateObject29$2, _templateObject30$2, _templateObject31$2, _templateObject32$2, _templateObject33$2, _templateObject34$2, _templateObject35$2, _templateObject48$2, _templateObject49$1, _templateObject50$1, _templateObject51$1, _templateObject52$1, _templateObject53$1;
 /**
  * Determine whether the Skill or Effect provided is an Accordion Thief song
  *
@@ -2071,7 +2071,7 @@ function ensureEffect(ef) {
     }
   }
 }
-var holidayWanderers = new Map([["El Dia De Los Muertos Borrachos", $monsters(_templateObject10$4 || (_templateObject10$4 = _taggedTemplateLiteral(["Novia Cad\xE1ver, Novio Cad\xE1ver, Padre Cad\xE1ver, Persona Inocente Cad\xE1ver"])))], ["Feast of Boris", $monsters(_templateObject11$3 || (_templateObject11$3 = _taggedTemplateLiteral(["Candied Yam Golem, Malevolent Tofurkey, Possessed Can of Cranberry Sauce, Stuffing Golem"])))], ["Talk Like a Pirate Day", $monsters(_templateObject12$3 || (_templateObject12$3 = _taggedTemplateLiteral(["ambulatory pirate, migratory pirate, peripatetic pirate"])))]]);
+var holidayWanderers = new Map([["El Dia De Los Muertos Borrachos", $monsters(_templateObject10$4 || (_templateObject10$4 = _taggedTemplateLiteral(["Novia Cad\xE1ver, Novio Cad\xE1ver, Padre Cad\xE1ver, Persona Inocente Cad\xE1ver"])))], ["Feast of Boris", $monsters(_templateObject11$4 || (_templateObject11$4 = _taggedTemplateLiteral(["Candied Yam Golem, Malevolent Tofurkey, Possessed Can of Cranberry Sauce, Stuffing Golem"])))], ["Talk Like a Pirate Day", $monsters(_templateObject12$3 || (_templateObject12$3 = _taggedTemplateLiteral(["ambulatory pirate, migratory pirate, peripatetic pirate"])))]]);
 /**
  * Get today's holiday wanderers
  *
@@ -2875,7 +2875,7 @@ _defineProperty(Macro, "SAVED_MACRO_PROPERTY", "libram_savedMacro");
 _defineProperty(Macro, "cachedMacroIds", new Map());
 _defineProperty(Macro, "cachedAutoAttacks", new Map());
 
-var _templateObject$g, _templateObject2$c, _templateObject3$9, _templateObject4$7, _templateObject5$6, _templateObject6$4, _templateObject7$4, _templateObject8$3, _templateObject9$3, _templateObject0$3, _templateObject1$3, _templateObject10$3, _templateObject11$2, _templateObject12$2, _templateObject13$2, _templateObject14$2, _templateObject15$1, _templateObject16$1, _templateObject17$1, _templateObject18$1, _templateObject19$1, _templateObject20$1, _templateObject21$1, _templateObject22$1, _templateObject23$1, _templateObject24$1, _templateObject25$1, _templateObject26$1, _templateObject27$1, _templateObject28$1, _templateObject29$1, _templateObject30$1, _templateObject31$1, _templateObject32$1, _templateObject33$1, _templateObject34$1, _templateObject35$1, _templateObject36$1, _templateObject37$1, _templateObject38$1, _templateObject39$1, _templateObject40$1, _templateObject41$1, _templateObject42$1, _templateObject43$1, _templateObject44$1, _templateObject45$1, _templateObject46$1, _templateObject47$1, _templateObject48$1;
+var _templateObject$g, _templateObject2$c, _templateObject3$9, _templateObject4$7, _templateObject5$6, _templateObject6$4, _templateObject7$4, _templateObject8$3, _templateObject9$3, _templateObject0$3, _templateObject1$3, _templateObject10$3, _templateObject11$3, _templateObject12$2, _templateObject13$2, _templateObject14$2, _templateObject15$1, _templateObject16$1, _templateObject17$1, _templateObject18$1, _templateObject19$1, _templateObject20$1, _templateObject21$1, _templateObject22$1, _templateObject23$1, _templateObject24$1, _templateObject25$1, _templateObject26$1, _templateObject27$1, _templateObject28$1, _templateObject29$1, _templateObject30$1, _templateObject31$1, _templateObject32$1, _templateObject33$1, _templateObject34$1, _templateObject35$1, _templateObject36$1, _templateObject37$1, _templateObject38$1, _templateObject39$1, _templateObject40$1, _templateObject41$1, _templateObject42$1, _templateObject43$1, _templateObject44$1, _templateObject45$1, _templateObject46$1, _templateObject47$1, _templateObject48$1;
 function toMaximizerName(_ref) {
   var name = _ref.name,
     id = _ref.id;
@@ -3150,7 +3150,7 @@ function applyCached(entry, options) {
       saveOutfit(_outfitName);
     }
   }
-  if (kolmafia.equippedAmount($item(_templateObject10$3 || (_templateObject10$3 = _taggedTemplateLiteral(["Crown of Thrones"])))) > 0 && entry.rider.get($item(_templateObject11$2 || (_templateObject11$2 = _taggedTemplateLiteral(["Crown of Thrones"]))))) {
+  if (kolmafia.equippedAmount($item(_templateObject10$3 || (_templateObject10$3 = _taggedTemplateLiteral(["Crown of Thrones"])))) > 0 && entry.rider.get($item(_templateObject11$3 || (_templateObject11$3 = _taggedTemplateLiteral(["Crown of Thrones"]))))) {
     kolmafia.enthroneFamiliar(entry.rider.get($item(_templateObject12$2 || (_templateObject12$2 = _taggedTemplateLiteral(["Crown of Thrones"])))) || $familiar.none);
   }
   if (kolmafia.equippedAmount($item(_templateObject13$2 || (_templateObject13$2 = _taggedTemplateLiteral(["Buddy Bjorn"])))) > 0 && entry.rider.get($item(_templateObject14$2 || (_templateObject14$2 = _taggedTemplateLiteral(["Buddy Bjorn"]))))) {
@@ -3968,7 +3968,7 @@ var CombatResources = /*#__PURE__*/function () {
   }]);
 }();
 
-var _templateObject$f, _templateObject2$b, _templateObject3$8, _templateObject4$6, _templateObject5$5, _templateObject6$3, _templateObject7$3, _templateObject8$2, _templateObject9$2, _templateObject0$2, _templateObject1$2, _templateObject10$2, _templateObject11$1, _templateObject12$1, _templateObject13$1, _templateObject14$1, _templateObject15, _templateObject16, _templateObject17, _templateObject18, _templateObject19, _templateObject20, _templateObject21, _templateObject22, _templateObject23, _templateObject24, _templateObject25, _templateObject26, _templateObject27, _templateObject28, _templateObject29, _templateObject30, _templateObject31, _templateObject32, _templateObject33, _templateObject34, _templateObject35, _templateObject36, _templateObject37, _templateObject38, _templateObject39, _templateObject40, _templateObject41, _templateObject42, _templateObject43, _templateObject44, _templateObject45, _templateObject46, _templateObject47, _templateObject48, _templateObject49, _templateObject50, _templateObject51, _templateObject52, _templateObject53, _templateObject54, _templateObject55, _templateObject56, _templateObject57, _templateObject58, _templateObject59, _templateObject60, _templateObject61, _templateObject62, _templateObject63, _templateObject64, _templateObject65, _templateObject66, _templateObject67, _templateObject68, _templateObject69, _templateObject70, _templateObject71, _templateObject72, _templateObject73, _templateObject74, _templateObject75, _templateObject76, _templateObject77, _templateObject78, _templateObject79, _templateObject80;
+var _templateObject$f, _templateObject2$b, _templateObject3$8, _templateObject4$6, _templateObject5$5, _templateObject6$3, _templateObject7$3, _templateObject8$2, _templateObject9$2, _templateObject0$2, _templateObject1$2, _templateObject10$2, _templateObject11$2, _templateObject12$1, _templateObject13$1, _templateObject14$1, _templateObject15, _templateObject16, _templateObject17, _templateObject18, _templateObject19, _templateObject20, _templateObject21, _templateObject22, _templateObject23, _templateObject24, _templateObject25, _templateObject26, _templateObject27, _templateObject28, _templateObject29, _templateObject30, _templateObject31, _templateObject32, _templateObject33, _templateObject34, _templateObject35, _templateObject36, _templateObject37, _templateObject38, _templateObject39, _templateObject40, _templateObject41, _templateObject42, _templateObject43, _templateObject44, _templateObject45, _templateObject46, _templateObject47, _templateObject48, _templateObject49, _templateObject50, _templateObject51, _templateObject52, _templateObject53, _templateObject54, _templateObject55, _templateObject56, _templateObject57, _templateObject58, _templateObject59, _templateObject60, _templateObject61, _templateObject62, _templateObject63, _templateObject64, _templateObject65, _templateObject66, _templateObject67, _templateObject68, _templateObject69, _templateObject70, _templateObject71, _templateObject72, _templateObject73, _templateObject74, _templateObject75, _templateObject76, _templateObject77, _templateObject78, _templateObject79, _templateObject80;
 var FORCE_REFRESH_REQUIREMENT = new Requirement([], {
   forceUpdate: true
 });
@@ -4071,7 +4071,7 @@ var Outfit = /*#__PURE__*/function () {
     key: "equipUsingDualWield",
     value: function equipUsingDualWield(item, slot) {
       if (![undefined, $slot(_templateObject10$2 || (_templateObject10$2 = _taggedTemplateLiteral(["off-hand"])))].includes(slot)) return false;
-      if (kolmafia.toSlot(item) !== $slot(_templateObject11$1 || (_templateObject11$1 = _taggedTemplateLiteral(["weapon"])))) return false;
+      if (kolmafia.toSlot(item) !== $slot(_templateObject11$2 || (_templateObject11$2 = _taggedTemplateLiteral(["weapon"])))) return false;
       if (this.equips.has($slot(_templateObject12$1 || (_templateObject12$1 = _taggedTemplateLiteral(["weapon"])))) && weaponHands(this.equips.get($slot(_templateObject13$1 || (_templateObject13$1 = _taggedTemplateLiteral(["weapon"]))))) !== 1) {
         return false;
       }
@@ -6008,7 +6008,7 @@ function joinRaffle() {
   kolmafia.cliExecute("raffle ".concat(raffleTicketsToBuy()));
 }
 
-var _templateObject$5, _templateObject2$4, _templateObject3$3, _templateObject4$3, _templateObject5$2, _templateObject6$1, _templateObject7$1, _templateObject8$1, _templateObject9$1, _templateObject0$1, _templateObject1$1, _templateObject10$1, _templateObject11, _templateObject12, _templateObject13, _templateObject14;
+var _templateObject$5, _templateObject2$4, _templateObject3$3, _templateObject4$3, _templateObject5$2, _templateObject6$1, _templateObject7$1, _templateObject8$1, _templateObject9$1, _templateObject0$1, _templateObject1$1, _templateObject10$1, _templateObject11$1, _templateObject12, _templateObject13, _templateObject14;
 
 // The ASH source writes these item names with the HTML entity "&trade;"
 // ($item[Rubee&trade;]) -- libram's $item wants the real Unicode ™
@@ -6058,7 +6058,7 @@ function checkFantasyTickets(buyTickets) {
     if (buyLylecoGuideOverTix()) {
       var guidesDesired = Math.trunc(availableRubees / 3000);
       kolmafia.print("buying ".concat(guidesDesired, " lyleco guides!"));
-      kolmafia.buy($coinmaster(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["FantasyRealm Rubee\u2122 Store"]))), guidesDesired, $item(_templateObject12 || (_templateObject12 = _taggedTemplateLiteral(["LyleCo Contractor's Manual"]))));
+      kolmafia.buy($coinmaster(_templateObject11$1 || (_templateObject11$1 = _taggedTemplateLiteral(["FantasyRealm Rubee\u2122 Store"]))), guidesDesired, $item(_templateObject12 || (_templateObject12 = _taggedTemplateLiteral(["LyleCo Contractor's Manual"]))));
     } else {
       var fantasiesDesired = Math.trunc(availableRubees / 350);
       kolmafia.print("buying ".concat(fantasiesDesired, " fantasyrealm tickets!"));
@@ -6156,7 +6156,7 @@ function setSitCourse() {
   withChoice(1494, insectologyPreset, () => kolmafia.use($item(_templateObject$2 || (_templateObject$2 = _taggedTemplateLiteral(["S.I.T. Course Completion Certificate"])))));
 }
 
-var _templateObject$1, _templateObject2$1, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject0, _templateObject1, _templateObject10;
+var _templateObject$1, _templateObject2$1, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject0, _templateObject1, _templateObject10, _templateObject11;
 
 /**
  * Ported from mall/check_mall_prices.ash. Purely informational -- prints
@@ -6185,10 +6185,11 @@ function checkDesirePrices() {
   printPrice($item(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["Order of the Green Thumb Order Form"]))), "green");
   printPrice($item(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["meteorite fragment"]))), "blue");
   printPrice($item(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["Pok\xE9fam Guide to Capturing All of Them"]))), "purple");
-  printPrice($item(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["corked genie bottle"]))), "4B0082");
+  printPrice($item(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["kneecapping contract"]))), "4B0082");
+  printPrice($item(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["Old Country cookbook"]))), "4B0082");
 }
 function checkKeepPrices() {
-  var _iterator = _createForOfIteratorHelper($items(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["ice sickle, haiku katana"])))),
+  var _iterator = _createForOfIteratorHelper($items(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["ice sickle, haiku katana"])))),
     _step;
   try {
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
@@ -6202,7 +6203,7 @@ function checkKeepPrices() {
   }
 }
 function checkSalesPrices() {
-  var items = $items(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["boxed Heartstone, boxed bat wings, assemble-it-yourself Leprecondo, lab-grown blood cubic zirconia, shrink-wrapped Cup of 13s, scabbarded Sword of S Words, Meat shield toddler, black rosebud"])));
+  var items = $items(_templateObject0 || (_templateObject0 = _taggedTemplateLiteral(["boxed Heartstone, boxed bat wings, assemble-it-yourself Leprecondo, lab-grown blood cubic zirconia, shrink-wrapped Cup of 13s, scabbarded Sword of S Words, Meat shield toddler, black rosebud"])));
   var _iterator2 = _createForOfIteratorHelper(items),
     _step2;
   try {
@@ -6217,16 +6218,16 @@ function checkSalesPrices() {
   }
 }
 function checkGarbage() {
-  var garbagePrice = kolmafia.mallPrice($item(_templateObject0 || (_templateObject0 = _taggedTemplateLiteral(["bag of park garbage"]))));
+  var garbagePrice = kolmafia.mallPrice($item(_templateObject1 || (_templateObject1 = _taggedTemplateLiteral(["bag of park garbage"]))));
   kolmafia.print("Garbage price: ".concat(garbagePrice, " meat"), garbagePrice > 200 ? "red" : "gray");
 }
 function checkFantasyCalibration() {
-  var guide = $item(_templateObject1 || (_templateObject1 = _taggedTemplateLiteral(["LyleCo Contractor's Manual"])));
+  var guide = $item(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["LyleCo Contractor's Manual"])));
   var guideTolerance = 500_000;
   printPrice(guide, kolmafia.mallPrice(guide) > LYLECO_GUIDE_OVERRIDE + guideTolerance ? "red" : "gray");
 
   // Not currently calibrating fantasyrealm tix, may change in future
-  printPrice($item(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["FantasyRealm guest pass"]))), "gray");
+  printPrice($item(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["FantasyRealm guest pass"]))), "gray");
 }
 function checkKnuckleboneStore() {
   var shopText = kolmafia.visitUrl("main.php?pwd&talktosocp=1", false, true);

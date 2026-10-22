@@ -387,7 +387,7 @@ createPluralConstant(kolmafia.Thrall);
  * price, which go_to_fantasyrealm/check_tickets deliberately don't trust. */
 var LYLECO_GUIDE_OVERRIDE = 2_000_000;
 
-var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject0, _templateObject1, _templateObject10;
+var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject0, _templateObject1, _templateObject10, _templateObject11;
 
 /**
  * Ported from mall/check_mall_prices.ash. Purely informational -- prints
@@ -416,10 +416,11 @@ function checkDesirePrices() {
   printPrice($item(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["Order of the Green Thumb Order Form"]))), "green");
   printPrice($item(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["meteorite fragment"]))), "blue");
   printPrice($item(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["Pok\xE9fam Guide to Capturing All of Them"]))), "purple");
-  printPrice($item(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["corked genie bottle"]))), "4B0082");
+  printPrice($item(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["kneecapping contract"]))), "4B0082");
+  printPrice($item(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["Old Country cookbook"]))), "4B0082");
 }
 function checkKeepPrices() {
-  var _iterator = _createForOfIteratorHelper($items(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["ice sickle, haiku katana"])))),
+  var _iterator = _createForOfIteratorHelper($items(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["ice sickle, haiku katana"])))),
     _step;
   try {
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
@@ -433,7 +434,7 @@ function checkKeepPrices() {
   }
 }
 function checkSalesPrices() {
-  var items = $items(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["boxed Heartstone, boxed bat wings, assemble-it-yourself Leprecondo, lab-grown blood cubic zirconia, shrink-wrapped Cup of 13s, scabbarded Sword of S Words, Meat shield toddler, black rosebud"])));
+  var items = $items(_templateObject0 || (_templateObject0 = _taggedTemplateLiteral(["boxed Heartstone, boxed bat wings, assemble-it-yourself Leprecondo, lab-grown blood cubic zirconia, shrink-wrapped Cup of 13s, scabbarded Sword of S Words, Meat shield toddler, black rosebud"])));
   var _iterator2 = _createForOfIteratorHelper(items),
     _step2;
   try {
@@ -448,16 +449,16 @@ function checkSalesPrices() {
   }
 }
 function checkGarbage() {
-  var garbagePrice = kolmafia.mallPrice($item(_templateObject0 || (_templateObject0 = _taggedTemplateLiteral(["bag of park garbage"]))));
+  var garbagePrice = kolmafia.mallPrice($item(_templateObject1 || (_templateObject1 = _taggedTemplateLiteral(["bag of park garbage"]))));
   kolmafia.print("Garbage price: ".concat(garbagePrice, " meat"), garbagePrice > 200 ? "red" : "gray");
 }
 function checkFantasyCalibration() {
-  var guide = $item(_templateObject1 || (_templateObject1 = _taggedTemplateLiteral(["LyleCo Contractor's Manual"])));
+  var guide = $item(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["LyleCo Contractor's Manual"])));
   var guideTolerance = 500_000;
   printPrice(guide, kolmafia.mallPrice(guide) > LYLECO_GUIDE_OVERRIDE + guideTolerance ? "red" : "gray");
 
   // Not currently calibrating fantasyrealm tix, may change in future
-  printPrice($item(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["FantasyRealm guest pass"]))), "gray");
+  printPrice($item(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["FantasyRealm guest pass"]))), "gray");
 }
 function checkKnuckleboneStore() {
   var shopText = kolmafia.visitUrl("main.php?pwd&talktosocp=1", false, true);
@@ -487,11 +488,44 @@ function checkMallPrices() {
   kolmafia.print("Meat: ".concat(kolmafia.myMeat().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")));
 }
 
+/**
+ * Logs today's meat to the wealth tab of the "Limited resources" sheet, via
+ * the Apps Script web app in sheets/Code.gs.
+ *
+ * The web-app URL lives in a preference, not here: anyone holding it can write
+ * to the sheet, and this repo is public. Unset means skip quietly.
+ *
+ * The flag starts with an underscore, so mafia clears it at rollover -- that's
+ * what makes this once a day. The script also refuses a second row for the
+ * same date, in case the flag is lost before mafia saves preferences.
+ */
+var URL_SETTING = "cap_sheetUrl";
+var LOGGED_FLAG = "_capWealthLogged";
+function logWealth() {
+  var url = kolmafia.getProperty(URL_SETTING);
+  if (!url) return;
+  if (kolmafia.getProperty(LOGGED_FLAG) === "true") {
+    kolmafia.print("Wealth already logged today.", "gray");
+    return;
+  }
+
+  // visitUrl sends a full https:// URL to that site rather than to KoL, and
+  // follows Apps Script's 302 to fetch the reply text.
+  var reply = kolmafia.visitUrl("".concat(url, "?meat=").concat(kolmafia.myMeat()), true, false).trim();
+  if (reply === "added" || reply === "exists") {
+    kolmafia.setProperty(LOGGED_FLAG, "true");
+    kolmafia.print(reply === "added" ? "Wealth logged to sheet." : "Wealth already in sheet for today.", "gray");
+  } else {
+    kolmafia.print("Couldn't log wealth to sheet: ".concat(reply.slice(0, 200) || "no reply"), "red");
+  }
+}
+
 /** `mall-prices` in the gCLI: just the price report, without a whole cap day.
  * Not named check_mall_prices -- mafia resolves scripts by filename across the
  * whole scripts tree, and the ASH original still lives in scripts/cap/mall/. */
 function main() {
   checkMallPrices();
+  logWealth();
 }
 
 exports.main = main;
