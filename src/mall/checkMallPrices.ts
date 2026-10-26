@@ -11,8 +11,9 @@ import {
   toItem,
   visitUrl,
 } from "kolmafia";
-import { $item } from "libram";
-import { LYLECO_GUIDE_OVERRIDE } from "./overrides";
+import { $item, get } from "libram";
+import { fantasyRealmEstimate, pirateRealmEstimate } from "../realms/realms";
+import { OVERRIDABLE, overrideFor } from "./prices";
 import { Kind, TRACKED } from "./tracked";
 
 /**
@@ -87,17 +88,34 @@ function checkTracked(): PriceRow[] {
   return rows;
 }
 
+/** How far an override can drift from the mall before it's flagged red. */
+const OVERRIDE_DRIFT = 0.25;
+
 /** Prices that only matter if they cross a line -- red means go change something. */
 function checkReminders(): void {
   const garbagePrice = mallPrice($item`bag of park garbage`);
   print(`Garbage price: ${garbagePrice} meat`, garbagePrice > 200 ? "red" : "gray");
 
-  const guide = $item`LyleCo Contractor's Manual`;
-  const guideTolerance = 500_000;
-  printPrice(guide, mallPrice(guide) > LYLECO_GUIDE_OVERRIDE + guideTolerance ? "red" : "gray");
+  // The realm prices. Red when an override has drifted well away from the
+  // mall: either the override is stale, or the mall is being silly -- worth a look.
+  for (const it of OVERRIDABLE) {
+    const mall = mallPrice(it);
+    const override = overrideFor(it);
+    const note = override === undefined ? "" : ` (override ${formatPrice(override)})`;
+    const drifted = override !== undefined && Math.abs(mall - override) > override * OVERRIDE_DRIFT;
+    printLine(`${it.name} price: ${formatPrice(mall)}${note}`, drifted ? "red" : "gray");
+  }
+}
 
-  // Not currently calibrating fantasyrealm tix, may change in future
-  printPrice($item`FantasyRealm guest pass`, "gray");
+/** Today's realm estimates, at the same prices cap will decide with. */
+function checkRealms(): void {
+  const voa = get("valueOfAdventure");
+  for (const [name, est] of [
+    ["PirateRealm", pirateRealmEstimate()],
+    ["FantasyRealm", fantasyRealmEstimate()],
+  ] as const) {
+    printLine(`${name}: ~${est.perTurn} meat/turn vs ${voa} (${est.breakdown})`, est.perTurn >= voa ? "green" : "gray");
+  }
 }
 
 function checkKnuckleboneStore(): void {
@@ -117,6 +135,9 @@ export function checkMallPrices(): PriceRow[] {
   print(" ");
   print("=== REMINDERS ===");
   checkReminders();
+  print(" ");
+  print("=== REALMS ===");
+  checkRealms();
   print("===");
   checkKnuckleboneStore();
   print("===");

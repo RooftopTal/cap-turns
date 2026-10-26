@@ -1,6 +1,6 @@
-import { availableAmount, buy, closetAmount, itemAmount, mallPrice, print, takeCloset } from "kolmafia";
+import { availableAmount, buy, closetAmount, itemAmount, print, takeCloset } from "kolmafia";
 import { $coinmaster, $item, get } from "libram";
-import { LYLECO_GUIDE_OVERRIDE } from "./overrides";
+import { realmPrice } from "./prices";
 
 // The ASH source writes these item names with the HTML entity "&trade;"
 // ($item[Rubee&trade;]) -- libram's $item wants the real Unicode ™
@@ -31,16 +31,11 @@ function checkPirateTickets(buyTickets: boolean): void {
   }
 }
 
-/** Ported int/int truncation and all -- ASH's lyleco_price/lyleco_rubee_price
- * and tix_price/tix_rubee_price are both int/int, same as the equivalent
- * calculation in realms.ts's goToFantasyRealm. */
+/** Which Rubee buy is worth more per Rubee, at the same prices (overrides
+ * included) that goToFantasyRealm values the run with. */
 function buyLylecoGuideOverTix(): boolean {
-  const lylecoRubeePrice = 3000;
-  const lylecoEfficiency = Math.trunc(LYLECO_GUIDE_OVERRIDE / lylecoRubeePrice);
-
-  const tixPrice = mallPrice($item`FantasyRealm guest pass`);
-  const tixRubeePrice = 350;
-  const tixEfficiency = Math.trunc(tixPrice / tixRubeePrice);
+  const lylecoEfficiency = realmPrice($item`LyleCo Contractor's Manual`) / 3000;
+  const tixEfficiency = realmPrice($item`FantasyRealm guest pass`) / 350;
 
   if (lylecoEfficiency > tixEfficiency) {
     print("lyleco guide is more efficient", "blue");

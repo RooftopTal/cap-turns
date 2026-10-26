@@ -97,6 +97,34 @@ After editing `Code.gs`, paste it in again and use Deploy -> Manage
 deployments -> edit -> New version, which keeps the same URL. A *new*
 deployment gets a new URL.
 
+## Realm decisions
+
+Before garbo, `cap` decides whether to finish the PirateRealm voyage (after
+garbo's cockroach leg) and whether to run FantasyRealm. Each is an estimate of
+meat per realm turn against `valueOfAdventure` (`src/realms/realms.ts`):
+
+- PirateRealm: fun x (guest pass / 600) + windicles x windicle price + meat,
+  over the leg's turns. Always via Storm Island -- windicles are most of the
+  value. Still goes regardless with 500+ fun, so the fun-a-log stays usable.
+- FantasyRealm: Rubees x the better of (guest pass / 350) and (LyleCo guide /
+  3000), over the run's turns.
+
+PirateRealm yields are measured from the October 2026 session logs (~17 turns,
+85 fun, 6.1 windicles a leg). FantasyRealm's are still the old ASH guess --
+it didn't run once that month -- so re-measure it when it does.
+
+Prices come from the mall unless pinned, since mall limits make these easy to
+misread:
+
+    set cap_pirateRealmGuestPassOverride = 400000
+    set cap_fantasyRealmGuestPassOverride = 250000
+    set cap_lylecoGuideOverride = 2000000
+    set cap_windicleOverride = 6000
+
+(0 or unset = mall price.) The ticket buyer uses the same prices. `mall-prices`
+shows each override next to the mall price (red if they're more than 25%
+apart) and a REALMS section with today's estimates.
+
 ## Migration status
 
 Ported:
@@ -127,7 +155,7 @@ Ported:
 - `open_beach` -> `src/daily/openBeach.ts`
 - `check_tickets` -> `src/mall/tickets.ts`
 - `check_mall_prices` -> `src/mall/checkMallPrices.ts` (2026-09-30)
-- `mall_overrides.ash` -> `src/mall/overrides.ts`
+- `mall_overrides.ash` -> `src/mall/prices.ts` (now `cap_*Override` preferences)
 
 `cap` runs the whole day natively in TypeScript now. **The migration is
 functionally complete.** What's left ASH-side and reached via `cliExecute`,

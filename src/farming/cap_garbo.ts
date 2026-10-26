@@ -9,11 +9,10 @@ import {
   mySpleenUse,
   outfit,
   print,
-  shopAmount,
   spleenLimit,
   useFamiliar,
 } from "kolmafia";
-import { $coinmaster, $familiar, $item, $location, get, questStep } from "libram";
+import { $coinmaster, $familiar, $location, get, questStep } from "libram";
 import { TURNS_FLEX, TURNS_FOR_FANTASYREALM, TURNS_FOR_PIRATEREALM, WORTHWHILE_ADVS } from "../lib/constants";
 import { ensureAdventuresForPirateRealm } from "../realms/pirateRealmTurns";
 import { goToFantasyRealm, goToPirateRealm } from "../realms/realms";
@@ -133,14 +132,10 @@ export function safeGarbo(turnsToSave: number, doRealms: boolean): void {
       if (get("_lastPirateRealmIsland") !== $location`Trash Island`) {
         print("Garbo didn't start a PirateRealm voyage today; skipping the rest of it", "purple");
       } else if (get("_questPirateRealm") !== "finished") {
+        // Always Storm Island: windicles are most of what finishing a voyage
+        // is worth (see realms.ts), and the mall price says what they're worth.
         useFamiliar($familiar`Jill-of-All-Trades`);
-        if (shopAmount($item`windicle`) < 100) {
-          print("Need to restock windicles!");
-          cliExecute("PirateRealm_cap storm");
-        } else {
-          print("Go to whatever island, we're well stocked on windicles");
-          cliExecute("PirateRealm_cap any");
-        }
+        cliExecute("PirateRealm_cap storm");
       }
     }
     outfit("birthday suit");
