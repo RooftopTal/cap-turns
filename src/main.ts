@@ -1,5 +1,5 @@
 import { Args } from "grimoire-kolmafia";
-import { cliExecute, holiday, myPath, print, runChoice, userConfirm, visitUrl } from "kolmafia";
+import { cliExecute, holiday, myName, myPath, print, runChoice, userConfirm, visitUrl } from "kolmafia";
 import { $path, get } from "libram";
 import { aftercoreActions, trickOrTreat } from "./farming/aftercore";
 import { clearPledge } from "./daily/clearPledge";
@@ -12,6 +12,8 @@ import { setSitCourse } from "./daily/setSitCourse";
 import { checkMallPrices } from "./mall/checkMallPrices";
 import { checkTickets } from "./mall/tickets";
 import { triggerStandardAscension } from "./ascensions/triggerStandardAscension";
+import { brightfeatherVolcano } from "./brightfeather/volcano";
+import { isCharacter } from "./lib/character";
 
 export const args = Args.create("cap", "Captain Yaksworth's daily turns.", {
   path: Args.string({
@@ -95,6 +97,15 @@ export function main(command?: string): void {
   if (args.help) {
     Args.showHelp(args);
     return;
+  }
+
+  // One script for both characters. Brightfeather ignores every arg.
+  if (isCharacter("Brightfeather")) {
+    brightfeatherVolcano();
+    return;
+  }
+  if (!isCharacter("Captain Yaksworth")) {
+    throw new Error(`cap doesn't know what to do with ${myName()}; it only runs Captain Yaksworth and Brightfeather`);
   }
 
   // holiday() lists the game holiday (Porktober 8) and the real-life one

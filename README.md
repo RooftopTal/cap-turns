@@ -3,10 +3,15 @@
 Captain Yaksworth's daily turns, in TypeScript. Successor to the ASH scripts in
 `<mafia>/scripts/cap`, which still run the actual day until the port is done.
 
+`cap` checks who's logged in: Captain Yaksworth gets the full day, Brightfeather
+(the giveaway-funds alt) gets the volcano day from `brightfeather-volcano.ash`,
+ported as-is and deliberately left unoptimised, and anyone else aborts.
+
 ## Layout
 
     src/              what you edit
     src/lib/          shared helpers (cliRun, constants)
+    src/brightfeather/  Brightfeather's volcano day
     src/ascensions/   triggering/running ascensions
     src/consumption/  diet bits outside CONSUME (nightcap, stooper)
     src/daily/        daily chores and end-of-day
@@ -64,7 +69,8 @@ Mafia runs the installed copy under `git/RooftopTal-cap-turns-release/`, not
 ## Google Sheet
 
 `mall-prices` (run at login) also updates the "Limited resources" Google Sheet,
-once per day. It POSTs today's meat and every tracked item's price and owned
+once per day, and only on Captain Yaksworth (mall-prices runs at every
+character's login; the price report still prints for everyone). It POSTs today's meat and every tracked item's price and owned
 count to an Apps Script web app (`sheets/Code.gs`), which:
 
 - drops the meat in the wealth tab's H3 and appends G3:H3 -- exactly what the
@@ -134,6 +140,7 @@ Ported:
 - tuning constants from `daily-cap.ash` -> `src/lib/constants.ts`
 - `check_for_input()` argument parsing -> grimoire `Args` in `src/main.ts`
 - `main()` from `daily-cap.ash`, transcribed into `src/main.ts`
+- `brightfeather-volcano.ash` -> `src/brightfeather/volcano.ts` (run via `cap` on Brightfeather)
 - `safe_garbo` -> `src/farming/cap_garbo.ts` (named to avoid confusion with the
   actual `garbo` script/library referenced constantly via `cliExecute`; now
   calls `goToPirateRealm`/`goToFantasyRealm` from `src/realms/realms.ts`

@@ -1,4 +1,5 @@
 import { getProperty, myMeat, print, setProperty, visitUrl } from "kolmafia";
+import { isCharacter } from "../lib/character";
 import { PriceRow } from "./checkMallPrices";
 
 /**
@@ -17,6 +18,9 @@ const URL_SETTING = "cap_sheetUrl";
 const UPDATED_FLAG = "_capSheetUpdated";
 
 export function updateSheet(rows: PriceRow[]): void {
+  // mall-prices runs on every login, but the sheet is Captain Yaksworth's
+  // wealth alone -- another character's meat would corrupt it.
+  if (!isCharacter("Captain Yaksworth")) return;
   const url = getProperty(URL_SETTING);
   if (!url) return;
   if (getProperty(UPDATED_FLAG) === "true") {
