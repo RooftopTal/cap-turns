@@ -27,7 +27,7 @@ export const VALUE_NIGHTCAP = VALUE_MORNING;
 export const VALUE_POST_ASCENSION = Math.round((VALUE_MORNING + VALUE_EVENING) / 2);
 
 export const TURNS_FOR_PIRATEREALM = 20;
-export const TURNS_FOR_FANTASYREALM = 44;
+export const TURNS_FOR_FANTASYREALM = 45;
 export const TURNS_FLEX = 5;
 
 /** When to redo garbo, or else just skip. */
