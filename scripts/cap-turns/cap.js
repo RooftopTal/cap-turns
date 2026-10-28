@@ -5377,7 +5377,7 @@ var VALUE_NIGHTCAP = VALUE_MORNING;
  */
 var VALUE_POST_ASCENSION = Math.round((VALUE_MORNING + VALUE_EVENING) / 2);
 var TURNS_FOR_PIRATEREALM = 20;
-var TURNS_FOR_FANTASYREALM = 44;
+var TURNS_FOR_FANTASYREALM = 45;
 var TURNS_FLEX = 5;
 
 /** When to redo garbo, or else just skip. */
@@ -5576,11 +5576,13 @@ var PR_LEG = {
 };
 var PR_PASS_FUN = 600;
 
-/** Not measured -- FantasyRealm wasn't chosen once in the logged month.
- * The original ASH guess; replace once there's a real run to measure. */
+/** One run measured (2026-10-28, `FantasyRealm gem`): 45 turns, 317 rubees
+ * less the 2 the lucky gold ring would have found in garbo anyway, ~9.5k meat.
+ * The original ASH guess was 346 rubees in 44 turns. */
 var FR_RUN = {
-  turns: 44,
-  rubees: 346
+  turns: 45,
+  rubees: 315,
+  meat: 9500
 };
 var FR_PASS_RUBEES = 350;
 var LYLECO_RUBEES = 3000;
@@ -5602,9 +5604,10 @@ function fantasyRealmEstimate() {
   var viaGuide = realmPrice($item(_templateObject4$7 || (_templateObject4$7 = _taggedTemplateLiteral(["LyleCo Contractor's Manual"])))) / LYLECO_RUBEES;
   var meatPerRubee = Math.max(viaPass, viaGuide);
   var via = viaGuide > viaPass ? "LyleCo" : "guest pass";
+  var rubees = FR_RUN.rubees * meatPerRubee;
   return {
-    perTurn: Math.round(FR_RUN.rubees * meatPerRubee / FR_RUN.turns),
-    breakdown: "".concat(FR_RUN.rubees, " rubees at ").concat(Math.round(meatPerRubee), " (").concat(via, ") over ").concat(FR_RUN.turns, " turns")
+    perTurn: Math.round((rubees + FR_RUN.meat) / FR_RUN.turns),
+    breakdown: "".concat(FR_RUN.rubees, " rubees at ").concat(Math.round(meatPerRubee), " (").concat(via, ") + meat ").concat(k(FR_RUN.meat), " over ").concat(FR_RUN.turns, " turns")
   };
 }
 function report(name, est, voa) {
@@ -5709,7 +5712,7 @@ function checkWorthGarboing() {
  * back from libram as a real Location (not a string) -- it's typed that
  * way in libram's property tables -- so it's compared with $location, not
  * string equality. `_frHoursLeft` is the opposite surprise: it's typed as
- * a string, so it needs a Number() conversion before the `!== 0` check.
+ * a string, and "" (not entered yet today) is different from "0".
  *
  * `doRealms` false (`cap realms=false`, or `set cap_realms = false`) skips
  * the other realms entirely: no turns held back for them, and no
@@ -5721,12 +5724,16 @@ function safeGarbo(turnsToSave, doRealms) {
   // Skip fancy stuff if overdrunk
   if (kolmafia.myInebriety() <= kolmafia.inebrietyLimit()) {
     var prQuestFinished = get("_questPirateRealm") === "finished";
-    var frHoursLeft = Number(get("_frHoursLeft"));
+    // _frHoursLeft is "" from rollover until FantasyRealm is first entered
+    // (usually garbo's dailies, taking the hat), so "" means a full day is
+    // still to come, not "none left". Only "0" means today's hours are spent.
+    var frHoursLeft = get("_frHoursLeft");
+    var frAvailable = (get("frAlways") || get("_frToday")) && (frHoursLeft === "" || Number(frHoursLeft) > 0);
 
     // Short-circuit so the price checks (and their output) only run when
     // realms are on at all.
     var doPirateRealm = doRealms && !prQuestFinished && goToPirateRealm();
-    var doFantasyRealm = doRealms && frHoursLeft !== 0 && goToFantasyRealm();
+    var doFantasyRealm = doRealms && frAvailable && goToFantasyRealm();
     if (!doRealms) kolmafia.print("Other realms are switched off; garbo gets every turn", "blue");
     kolmafia.outfit("birthday suit");
     var expectedGarboTurns = -1 * ((doPirateRealm ? TURNS_FOR_PIRATEREALM : 0) + (doFantasyRealm ? TURNS_FOR_FANTASYREALM : 0) + turnsToSave + TURNS_FLEX);

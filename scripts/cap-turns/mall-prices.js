@@ -811,11 +811,13 @@ var PR_LEG = {
 };
 var PR_PASS_FUN = 600;
 
-/** Not measured -- FantasyRealm wasn't chosen once in the logged month.
- * The original ASH guess; replace once there's a real run to measure. */
+/** One run measured (2026-10-28, `FantasyRealm gem`): 45 turns, 317 rubees
+ * less the 2 the lucky gold ring would have found in garbo anyway, ~9.5k meat.
+ * The original ASH guess was 346 rubees in 44 turns. */
 var FR_RUN = {
-  turns: 44,
-  rubees: 346
+  turns: 45,
+  rubees: 315,
+  meat: 9500
 };
 var FR_PASS_RUBEES = 350;
 var LYLECO_RUBEES = 3000;
@@ -837,9 +839,10 @@ function fantasyRealmEstimate() {
   var viaGuide = realmPrice($item(_templateObject4$1 || (_templateObject4$1 = _taggedTemplateLiteral(["LyleCo Contractor's Manual"])))) / LYLECO_RUBEES;
   var meatPerRubee = Math.max(viaPass, viaGuide);
   var via = viaGuide > viaPass ? "LyleCo" : "guest pass";
+  var rubees = FR_RUN.rubees * meatPerRubee;
   return {
-    perTurn: Math.round(FR_RUN.rubees * meatPerRubee / FR_RUN.turns),
-    breakdown: "".concat(FR_RUN.rubees, " rubees at ").concat(Math.round(meatPerRubee), " (").concat(via, ") over ").concat(FR_RUN.turns, " turns")
+    perTurn: Math.round((rubees + FR_RUN.meat) / FR_RUN.turns),
+    breakdown: "".concat(FR_RUN.rubees, " rubees at ").concat(Math.round(meatPerRubee), " (").concat(via, ") + meat ").concat(k(FR_RUN.meat), " over ").concat(FR_RUN.turns, " turns")
   };
 }
 
