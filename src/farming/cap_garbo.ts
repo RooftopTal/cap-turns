@@ -82,7 +82,7 @@ export function checkWorthGarboing(): void {
  * back from libram as a real Location (not a string) -- it's typed that
  * way in libram's property tables -- so it's compared with $location, not
  * string equality. `_frHoursLeft` is the opposite surprise: it's typed as
- * a string, so it needs a Number() conversion before the `!== 0` check.
+ * a string, and "" (not entered yet today) is different from "0".
  *
  * `doRealms` false (`cap realms=false`, or `set cap_realms = false`) skips
  * the other realms entirely: no turns held back for them, and no
@@ -94,12 +94,16 @@ export function safeGarbo(turnsToSave: number, doRealms: boolean): void {
   // Skip fancy stuff if overdrunk
   if (myInebriety() <= inebrietyLimit()) {
     const prQuestFinished = get("_questPirateRealm") === "finished";
-    const frHoursLeft = Number(get("_frHoursLeft"));
+    // _frHoursLeft is "" from rollover until FantasyRealm is first entered
+    // (usually garbo's dailies, taking the hat), so "" means a full day is
+    // still to come, not "none left". Only "0" means today's hours are spent.
+    const frHoursLeft = get("_frHoursLeft");
+    const frAvailable = (get("frAlways") || get("_frToday")) && (frHoursLeft === "" || Number(frHoursLeft) > 0);
 
     // Short-circuit so the price checks (and their output) only run when
     // realms are on at all.
     const doPirateRealm = doRealms && !prQuestFinished && goToPirateRealm();
-    const doFantasyRealm = doRealms && frHoursLeft !== 0 && goToFantasyRealm();
+    const doFantasyRealm = doRealms && frAvailable && goToFantasyRealm();
     if (!doRealms) print("Other realms are switched off; garbo gets every turn", "blue");
 
     outfit("birthday suit");
