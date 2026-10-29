@@ -19,10 +19,11 @@ import { realmPrice } from "../mall/prices";
 const PR_LEG = { turns: 17, fun: 85, windicles: 6.1, meat: 1900 };
 const PR_PASS_FUN = 600;
 
-/** One run measured (2026-10-28, `FantasyRealm gem`): 45 turns, 317 rubees
- * less the 2 the lucky gold ring would have found in garbo anyway, ~9.5k meat.
- * The original ASH guess was 346 rubees in 44 turns. */
-const FR_RUN = { turns: 45, rubees: 315, meat: 9500 };
+/** Three runs measured (`FantasyRealm gem`, 2026-10-28 evening, 2026-10-29
+ * both halves): 45 turns every time, 315/323/344 rubees net of the lucky gold
+ * ring's (which garbo would have found anyway), ~9.1k meat. Two big drops at
+ * the end (91-108 and 43-59) were in every run, so they're not luck. */
+const FR_RUN = { turns: 45, rubees: 327, meat: 9100 };
 const FR_PASS_RUBEES = 350;
 const LYLECO_RUBEES = 3000;
 

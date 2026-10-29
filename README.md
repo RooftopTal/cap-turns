@@ -116,9 +116,8 @@ meat per realm turn against `valueOfAdventure` (`src/realms/realms.ts`):
   3000), plus the run's meat, over its turns.
 
 PirateRealm yields are measured from the October 2026 session logs (~17 turns,
-85 fun, 6.1 windicles a leg). FantasyRealm's come from a single run on
-2026-10-28 (45 turns, 315 Rubees, ~9.5k meat) -- worth re-measuring once there
-are a few more.
+85 fun, 6.1 windicles a leg). FantasyRealm's are the average of three runs
+on 2026-10-28/29 (45 turns, 327 Rubees, ~9.1k meat; Rubees ranged 315-344).
 
 Prices come from the mall unless pinned, since mall limits make these easy to
 misread:
