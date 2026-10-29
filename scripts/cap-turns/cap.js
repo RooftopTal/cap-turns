@@ -5358,11 +5358,19 @@ function lastEncounterWasWanderingNC() {
  * JavaScript does not.
  */
 
-/** valueOfAdventure for the first half of the loop. */
-var VALUE_MORNING = 6500;
+/** A positive number preference, else the fallback. Read once per cap run. */
+function numberPref(name, fallback) {
+  var value = Number(kolmafia.getProperty(name));
+  return value > 0 ? value : fallback;
+}
 
-/** valueOfAdventure for the second half of the loop. */
-var VALUE_EVENING = 6000;
+/** valueOfAdventure for the first half of the loop. `cap_valueMorning`
+ * overrides it, for trying other values (see docs/voa-experiment.md). */
+var VALUE_MORNING = numberPref("cap_valueMorning", 6500);
+
+/** valueOfAdventure for the second half of the loop; `cap_valueEvening`
+ * overrides it. */
+var VALUE_EVENING = numberPref("cap_valueEvening", 6000);
 
 /** Can be set separately if we don't just want to base this on tomorrow's turns. */
 var VALUE_OVERDRUNK = VALUE_EVENING;
@@ -5576,13 +5584,14 @@ var PR_LEG = {
 };
 var PR_PASS_FUN = 600;
 
-/** One run measured (2026-10-28, `FantasyRealm gem`): 45 turns, 317 rubees
- * less the 2 the lucky gold ring would have found in garbo anyway, ~9.5k meat.
- * The original ASH guess was 346 rubees in 44 turns. */
+/** Three runs measured (`FantasyRealm gem`, 2026-10-28 evening, 2026-10-29
+ * both halves): 45 turns every time, 315/323/344 rubees net of the lucky gold
+ * ring's (which garbo would have found anyway), ~9.1k meat. Two big drops at
+ * the end (91-108 and 43-59) were in every run, so they're not luck. */
 var FR_RUN = {
   turns: 45,
-  rubees: 315,
-  meat: 9500
+  rubees: 327,
+  meat: 9100
 };
 var FR_PASS_RUBEES = 350;
 var LYLECO_RUBEES = 3000;
@@ -5614,17 +5623,25 @@ function report(name, est, voa) {
   kolmafia.print("".concat(name, ": ").concat(est.breakdown));
   kolmafia.print("".concat(name, ": ~").concat(est.perTurn, " meat/turn vs valueOfAdventure ").concat(voa), "blue");
 }
-function goToPirateRealm() {
+
+/**
+ * Fun is only spendable at the fun-a-log, which you get by *finishing* a
+ * voyage. It's a quest item, so ascension takes it, and tickets are only
+ * bought at end of day (endOfDay -> checkTickets). So in the evening, once
+ * there's a ticket's worth of fun, finish the voyage regardless of price:
+ * that's the finish that lets tonight cash it in. It waits for a full 600
+ * before the leg, rather than counting on the leg's ~85, so a finish is never
+ * left short of a ticket.
+ */
+function goToPirateRealm(isEvening) {
   var voa = get("valueOfAdventure");
   var est = pirateRealmEstimate();
   report("PirateRealm", est, voa);
-
-  // To avoid breaking the "buy pass" code, if we're close enough to a ticket
-  // we complete a run anyway so we have fun-a-log access.
   var fun = get("availableFunPoints");
   kolmafia.print("proximity to ticket: ".concat(fun, "/").concat(PR_PASS_FUN));
-  var closeToTicket = fun >= 500;
-  if (est.perTurn >= voa || closeToTicket) {
+  var cashIn = isEvening && fun >= PR_PASS_FUN;
+  if (est.perTurn >= voa || cashIn) {
+    if (est.perTurn < voa) kolmafia.print("Finishing the voyage for a fun-a-log to buy a ticket with", "blue");
     kolmafia.print("avast, me hearties", "green");
     return true;
   }
@@ -5718,7 +5735,7 @@ function checkWorthGarboing() {
  * the other realms entirely: no turns held back for them, and no
  * PirateRealm/FantasyRealm visit after garbo.
  */
-function safeGarbo(turnsToSave, doRealms) {
+function safeGarbo(turnsToSave, doRealms, isEvening) {
   checkWorthGarboing();
 
   // Skip fancy stuff if overdrunk
@@ -5732,7 +5749,7 @@ function safeGarbo(turnsToSave, doRealms) {
 
     // Short-circuit so the price checks (and their output) only run when
     // realms are on at all.
-    var doPirateRealm = doRealms && !prQuestFinished && goToPirateRealm();
+    var doPirateRealm = doRealms && !prQuestFinished && goToPirateRealm(isEvening);
     var doFantasyRealm = doRealms && frAvailable && goToFantasyRealm();
     if (!doRealms) kolmafia.print("Other realms are switched off; garbo gets every turn", "blue");
     kolmafia.outfit("birthday suit");
@@ -5926,7 +5943,7 @@ function aftercoreActions(isMorning, doRealms, valueOverride) {
     turnsToSave = TURNS_TO_SAVE_OVERNIGHT; // save turns overnight to start day closer to 200 advs
   }
   genericLoopStuff();
-  safeGarbo(turnsToSave, doRealms);
+  safeGarbo(turnsToSave, doRealms, !isMorning);
   if (isMorning) {
     if (kolmafia.myAdventures() > WORTHWHILE_ADVS) {
       kolmafia.print("Trying to overdrink while there's still adventures left", "red");
@@ -6174,17 +6191,43 @@ function takeMeteoriteAde() {
   kolmafia.use($item(_templateObject4$2 || (_templateObject4$2 = _taggedTemplateLiteral(["Meteorite-Ade"]))), 3);
 }
 
+/** `set _capSkipPvp = true` skips PvP for the rest of today (the leading
+ * underscore makes mafia clear it at rollover). */
+var SKIP_SETTING = "_capSkipPvp";
+
+/**
+ * At the start of a season the stone can't be smashed, and fights can't
+ * start, until you've pledged allegiance to a clan for the season -- which
+ * is a choice for a human. KoL's wording (mafia's PeeVPeeRequest matches
+ * "Before entering combat, you must pledge your allegiance to a clan for the
+ * season"); the fight page is checked before anything gets spent.
+ */
+function seasonNeedsSetup() {
+  // Visit first: mafia only learns the stone's state from this page, not at
+  // login, so hippyStoneBroken() can be stale before it.
+  var page = kolmafia.visitUrl("peevpee.php?place=fight");
+  return !kolmafia.hippyStoneBroken() || /pledge your allegiance|Before entering combat/i.test(page);
+}
+
 /**
  * Ported from daily-cap.ash's do_pvp(). UberPVPOptimizer and the loot
  * command are other people's scripts the original called unchecked, so
  * they stay best-effort here too.
  */
 function doPvp() {
+  if (get(SKIP_SETTING, false)) {
+    kolmafia.print("Skipping PvP today (".concat(SKIP_SETTING, " is set)"), "orange");
+    return;
+  }
   var sparePvpFights = kolmafia.pvpAttacksLeft() > 0;
   if (sparePvpFights) {
     kolmafia.print("Doin' PVP", "blue");
     run("break_hippy_stone");
-    // todo put meteorite-ade back in during a real pvp season
+    // Before the Meteorite-Ade: at a season start it would be bought and
+    // drunk for fights that can't happen.
+    if (seasonNeedsSetup()) {
+      throw new Error("PvP isn't ready -- probably a new season: pledge a clan alignment at the Colosseum " + "(peevpee.php), then run cap again. Or `set ".concat(SKIP_SETTING, " = true` to skip PvP today."));
+    }
     takeMeteoriteAde();
     kolmafia.cliExecute("UberPVPOptimizer");
     kolmafia.cliExecute("pvp loot Barely Dressed");
