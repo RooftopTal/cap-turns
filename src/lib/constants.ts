@@ -1,3 +1,5 @@
+import { getProperty } from "kolmafia";
+
 /**
  * Tuning constants, lifted from the top of daily-cap.ash.
  *
@@ -6,11 +8,19 @@
  * JavaScript does not.
  */
 
-/** valueOfAdventure for the first half of the loop. */
-export const VALUE_MORNING = 6500;
+/** A positive number preference, else the fallback. Read once per cap run. */
+function numberPref(name: string, fallback: number): number {
+  const value = Number(getProperty(name));
+  return value > 0 ? value : fallback;
+}
 
-/** valueOfAdventure for the second half of the loop. */
-export const VALUE_EVENING = 6000;
+/** valueOfAdventure for the first half of the loop. `cap_valueMorning`
+ * overrides it, for trying other values (see docs/voa-experiment.md). */
+export const VALUE_MORNING = numberPref("cap_valueMorning", 6500);
+
+/** valueOfAdventure for the second half of the loop; `cap_valueEvening`
+ * overrides it. */
+export const VALUE_EVENING = numberPref("cap_valueEvening", 6000);
 
 /** Can be set separately if we don't just want to base this on tomorrow's turns. */
 export const VALUE_OVERDRUNK = VALUE_EVENING;
