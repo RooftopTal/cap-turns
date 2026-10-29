@@ -48,7 +48,7 @@ export function aftercoreActions(isMorning: boolean, doRealms: boolean, valueOve
   }
 
   genericLoopStuff();
-  safeGarbo(turnsToSave, doRealms);
+  safeGarbo(turnsToSave, doRealms, !isMorning);
 
   if (isMorning) {
     if (myAdventures() > WORTHWHILE_ADVS) {

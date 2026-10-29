@@ -111,7 +111,9 @@ meat per realm turn against `valueOfAdventure` (`src/realms/realms.ts`):
 
 - PirateRealm: fun x (guest pass / 600) + windicles x windicle price + meat,
   over the leg's turns. Always via Storm Island -- windicles are most of the
-  value. Still goes regardless with 500+ fun, so the fun-a-log stays usable.
+  value. Fun can only be spent at the fun-a-log, which comes from finishing a
+  voyage and goes at ascension, and tickets are bought at end of day -- so in
+  the evening half it also finishes regardless once there's 600+ fun.
 - FantasyRealm: Rubees x the better of (guest pass / 350) and (LyleCo guide /
   3000), plus the run's meat, over its turns.
 

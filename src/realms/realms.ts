@@ -61,18 +61,26 @@ function report(name: string, est: RealmEstimate, voa: number): void {
   print(`${name}: ~${est.perTurn} meat/turn vs valueOfAdventure ${voa}`, "blue");
 }
 
-export function goToPirateRealm(): boolean {
+/**
+ * Fun is only spendable at the fun-a-log, which you get by *finishing* a
+ * voyage. It's a quest item, so ascension takes it, and tickets are only
+ * bought at end of day (endOfDay -> checkTickets). So in the evening, once
+ * there's a ticket's worth of fun, finish the voyage regardless of price:
+ * that's the finish that lets tonight cash it in. It waits for a full 600
+ * before the leg, rather than counting on the leg's ~85, so a finish is never
+ * left short of a ticket.
+ */
+export function goToPirateRealm(isEvening: boolean): boolean {
   const voa = get("valueOfAdventure");
   const est = pirateRealmEstimate();
   report("PirateRealm", est, voa);
 
-  // To avoid breaking the "buy pass" code, if we're close enough to a ticket
-  // we complete a run anyway so we have fun-a-log access.
   const fun = get("availableFunPoints");
   print(`proximity to ticket: ${fun}/${PR_PASS_FUN}`);
-  const closeToTicket = fun >= 500;
+  const cashIn = isEvening && fun >= PR_PASS_FUN;
 
-  if (est.perTurn >= voa || closeToTicket) {
+  if (est.perTurn >= voa || cashIn) {
+    if (est.perTurn < voa) print("Finishing the voyage for a fun-a-log to buy a ticket with", "blue");
     print("avast, me hearties", "green");
     return true;
   }

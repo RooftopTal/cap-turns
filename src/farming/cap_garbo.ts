@@ -88,7 +88,7 @@ export function checkWorthGarboing(): void {
  * the other realms entirely: no turns held back for them, and no
  * PirateRealm/FantasyRealm visit after garbo.
  */
-export function safeGarbo(turnsToSave: number, doRealms: boolean): void {
+export function safeGarbo(turnsToSave: number, doRealms: boolean, isEvening: boolean): void {
   checkWorthGarboing();
 
   // Skip fancy stuff if overdrunk
@@ -102,7 +102,7 @@ export function safeGarbo(turnsToSave: number, doRealms: boolean): void {
 
     // Short-circuit so the price checks (and their output) only run when
     // realms are on at all.
-    const doPirateRealm = doRealms && !prQuestFinished && goToPirateRealm();
+    const doPirateRealm = doRealms && !prQuestFinished && goToPirateRealm(isEvening);
     const doFantasyRealm = doRealms && frAvailable && goToFantasyRealm();
     if (!doRealms) print("Other realms are switched off; garbo gets every turn", "blue");
 
