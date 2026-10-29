@@ -105,6 +105,15 @@ After editing `Code.gs`, paste it in again and use Deploy -> Manage
 deployments -> edit -> New version, which keeps the same URL. A *new*
 deployment gets a new URL.
 
+## PvP season starts
+
+A new season needs a clan alignment pledged before the stone can be smashed or
+fights started, and that's left to a human. `cap` checks the Colosseum fight
+page after trying the stone and, if it isn't ready, aborts *before* buying and
+drinking Meteorite-Ade. Pledge at peevpee.php and run `cap` again, or
+`set _capSkipPvp = true` to skip PvP for the rest of today (it clears at
+rollover).
+
 ## Realm decisions
 
 Before garbo, `cap` decides whether to finish the PirateRealm voyage (after
