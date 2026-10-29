@@ -19,6 +19,8 @@ ported as-is and deliberately left unoptimised, and anyone else aborts.
     src/mall/         mall prices, coinmaster tickets, price overrides
     src/pvp/          PvP
     src/realms/       PirateRealm/FantasyRealm
+    tools/            log analysis (voa_report.py)
+    docs/             notes, e.g. the valueOfAdventure experiment
     KoLmafia/         local build output (gitignored)
     .github/          CI: builds main and publishes it to the `release` branch
 
