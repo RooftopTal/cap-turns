@@ -6230,7 +6230,7 @@ function doPvp() {
     }
     takeMeteoriteAde();
     kolmafia.cliExecute("UberPVPOptimizer");
-    kolmafia.cliExecute("pvp loot Barely Dressed");
+    kolmafia.cliExecute("pvp loot ASCII-7 of the moment");
   } else {
     kolmafia.print("no PVP fights left, skipping", "red");
   }
