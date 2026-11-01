@@ -47,7 +47,7 @@ export function doPvp(): void {
     takeMeteoriteAde();
 
     cliExecute("UberPVPOptimizer");
-    cliExecute("pvp loot Barely Dressed");
+    cliExecute("pvp loot ASCII-7 of the moment");
   } else {
     print("no PVP fights left, skipping", "red");
   }
