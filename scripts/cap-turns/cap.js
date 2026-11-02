@@ -6635,6 +6635,20 @@ var args = Args.create("cap", "Captain Yaksworth's daily turns.", {
   })
 });
 
+/** What this run was asked to do, as daily-cap.ash used to print it --
+ * the first thing to check when a day goes wrong. */
+function printChoices() {
+  var flag = (name, on) => kolmafia.print("".concat(name, " = ").concat(on), on ? "green" : "red");
+  kolmafia.print("Path = ".concat(args.path).concat(args.path === "standard" ? " (".concat(args["class"], ")") : ""), "blue");
+  flag("Hardcore", Boolean(args.hardcore));
+  flag("Manual", Boolean(args.manual));
+  kolmafia.print("Farm = ".concat(args.farm), args.farm === "none" ? "blue" : "green");
+  flag("Realms", args.realms);
+  flag("Skip ween", Boolean(args.skipween));
+  var overridden = kolmafia.getProperty("cap_valueMorning") !== "" || kolmafia.getProperty("cap_valueEvening") !== "";
+  kolmafia.print("Value of adventure = ".concat(VALUE_MORNING, " / ").concat(VALUE_EVENING).concat(overridden ? " (overridden)" : ""), "blue");
+}
+
 /** Ported from daily-cap.ash's trick_or_treat/crimbone/aftercore_actions
  * dispatch. crimbone is still ASH -- there's no real logic in it to port,
  * the actual crimbo behavior is commented out in the source. */
@@ -6684,6 +6698,7 @@ function main(command) {
   var runningStandard = args.path === "standard";
   var farmingWeen = args.farm === "ween";
   var farmingCrimbo = args.farm === "crimbo";
+  printChoices();
   kolmafia.print("Running Captain Yaksworth's daily turns", "green");
   var ascendedAlready = get("ascensionsToday") > 0;
   // kingLiberated is false while an ascension is in progress (it flips true
