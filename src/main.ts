@@ -1,10 +1,17 @@
 import { Args } from "grimoire-kolmafia";
-import { cliExecute, holiday, myName, myPath, print, runChoice, userConfirm, visitUrl } from "kolmafia";
+import { cliExecute, getProperty, holiday, myName, myPath, print, runChoice, userConfirm, visitUrl } from "kolmafia";
 import { $path, get } from "libram";
 import { aftercoreActions, trickOrTreat } from "./farming/aftercore";
 import { clearPledge } from "./daily/clearPledge";
 import { run } from "./lib/cliRun";
-import { DAY_TOLERANCE, NIGHT_TOLERANCE, VALUE_NIGHTCAP, VALUE_POST_ASCENSION } from "./lib/constants";
+import {
+  DAY_TOLERANCE,
+  NIGHT_TOLERANCE,
+  VALUE_EVENING,
+  VALUE_MORNING,
+  VALUE_NIGHTCAP,
+  VALUE_POST_ASCENSION,
+} from "./lib/constants";
 import { dayAhead } from "./daily/day";
 import { endOfDay } from "./daily/endOfDay";
 import { doPvp } from "./pvp/pvp";
@@ -68,6 +75,20 @@ export const args = Args.create("cap", "Captain Yaksworth's daily turns.", {
   }),
 });
 
+/** What this run was asked to do, as daily-cap.ash used to print it --
+ * the first thing to check when a day goes wrong. */
+function printChoices(): void {
+  const flag = (name: string, on: boolean) => print(`${name} = ${on}`, on ? "green" : "red");
+  print(`Path = ${args.path}${args.path === "standard" ? ` (${args.class})` : ""}`, "blue");
+  flag("Hardcore", Boolean(args.hardcore));
+  flag("Manual", Boolean(args.manual));
+  print(`Farm = ${args.farm}`, args.farm === "none" ? "blue" : "green");
+  flag("Realms", args.realms);
+  flag("Skip ween", Boolean(args.skipween));
+  const overridden = getProperty("cap_valueMorning") !== "" || getProperty("cap_valueEvening") !== "";
+  print(`Value of adventure = ${VALUE_MORNING} / ${VALUE_EVENING}${overridden ? " (overridden)" : ""}`, "blue");
+}
+
 /** Ported from daily-cap.ash's trick_or_treat/crimbone/aftercore_actions
  * dispatch. crimbone is still ASH -- there's no real logic in it to port,
  * the actual crimbo behavior is commented out in the source. */
@@ -126,6 +147,7 @@ export function main(command?: string): void {
   const farmingWeen = args.farm === "ween";
   const farmingCrimbo = args.farm === "crimbo";
 
+  printChoices();
   print("Running Captain Yaksworth's daily turns", "green");
 
   const ascendedAlready = get("ascensionsToday") > 0;
