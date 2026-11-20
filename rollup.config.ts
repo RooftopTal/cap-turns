@@ -14,12 +14,16 @@ const extensions = [".js", ".ts"];
 // Left unset, it builds into KoLmafia/ (gitignored). CI builds the same way and
 // publishes that tree to the `release` branch, which is what mafia installs.
 const outDir = process.env.CAP_OUT ?? "KoLmafia/scripts/cap-turns";
+// Relay pages have to sit directly in mafia's relay folder to show up in the
+// relay browser's script dropdown. CAP_RELAY_OUT does for them what CAP_OUT
+// does for scripts.
+const relayDir = process.env.CAP_RELAY_OUT ?? "KoLmafia/relay";
 
-function script(name: string, input: string): RollupOptions {
+function script(name: string, input: string, dir = outDir): RollupOptions {
   return {
     input,
     output: {
-      file: `${outDir}/${name}.js`,
+      file: `${dir}/${name}.js`,
       format: "cjs",
     },
     // The kolmafia package is types only; the real functions are injected by
@@ -53,4 +57,8 @@ function script(name: string, input: string): RollupOptions {
   };
 }
 
-export default [script("cap", "src/main.ts"), script("mall-prices", "src/mallPrices.ts")];
+export default [
+  script("cap", "src/main.ts"),
+  script("mall-prices", "src/mallPrices.ts"),
+  script("relay_Cap_Mall_Prices", "src/relay/capMallPrices.ts", relayDir),
+];

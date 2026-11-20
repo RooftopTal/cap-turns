@@ -27,8 +27,9 @@ jobs:
       - run: npm run check
       - run: npm run build
 
-      # The release branch holds only the freshly built scripts/cap-turns/, at
-      # its root, so mafia copies cap.js etc. straight into its scripts folder.
+      # The release branch holds only the freshly built scripts/cap-turns/ and
+      # relay/, at its root, so mafia copies cap.js etc. straight into its
+      # scripts folder and the relay pages into its relay folder.
       # Copied out on its own so nothing else under KoLmafia/ can ride along.
       # Each build is committed on top of the existing release history: mafia
       # updates with `git pull --rebase`, which breaks if the branch is
@@ -43,6 +44,7 @@ jobs:
           git rm -rq --ignore-unmatch .
           mkdir -p scripts
           cp -r "$GITHUB_WORKSPACE/KoLmafia/scripts/cap-turns" scripts/
+          cp -r "$GITHUB_WORKSPACE/KoLmafia/relay" .
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A

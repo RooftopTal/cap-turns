@@ -14,7 +14,7 @@ import {
 import { $item, get } from "libram";
 import { fantasyRealmEstimate, pirateRealmEstimate } from "../realms/realms";
 import { OVERRIDABLE, overrideFor } from "./prices";
-import { Kind, TRACKED } from "./tracked";
+import { getTracked, Kind } from "./tracked";
 
 /**
  * Ported from mall/check_mall_prices.ash. Purely informational -- prints
@@ -73,11 +73,12 @@ const SECTIONS: { kind: Kind; title: string }[] = [
 ];
 
 function checkTracked(): PriceRow[] {
+  const tracked = getTracked();
   const rows: PriceRow[] = [];
   for (const { kind, title } of SECTIONS) {
     print(" ");
     print(`=== ${title} ===`);
-    TRACKED.filter((t) => t.kind === kind).forEach(({ item }, i) => {
+    tracked.filter((t) => t.kind === kind).forEach(({ item }, i) => {
       const row = { name: item.name, kind, have: owned(item), price: mallPrice(item) };
       rows.push(row);
       const have = kind !== "want" && row.have > 0 ? ` (have ${row.have})` : "";

@@ -19,6 +19,7 @@ ported as-is and deliberately left unoptimised, and anyone else aborts.
     src/mall/         mall prices, coinmaster tickets, price overrides
     src/pvp/          PvP
     src/realms/       PirateRealm/FantasyRealm
+    src/relay/        relay browser pages (built into relay/, not scripts/)
     tools/            log analysis (voa_report.py)
     docs/             notes, e.g. the valueOfAdventure experiment
     KoLmafia/         local build output (gitignored)
@@ -36,6 +37,17 @@ so you can run both side by side.
 `mall-prices` runs just the mall price report (`src/mall/checkMallPrices.ts`)
 without a whole day. Typing `check_mall_prices` still runs the old ASH copy in
 `scripts/cap/mall/`, which no longer gets updates.
+
+What it tracks is the `cap_mallTracked` preference (itemId:kind pairs, seeded
+from `src/mall/tracked.ts` the first time). Edit it from the relay browser's
+script dropdown, "Cap Mall Prices", or in the gCLI:
+
+    mall-prices list
+    mall-prices add 12391 sell      (number or name; kind is currency/want/sell/keep, default want)
+    mall-prices remove 12391
+
+The relay page builds into `KoLmafia/relay/`; set `CAP_RELAY_OUT` (e.g.
+`C:/work/kolmafia/relay`) alongside `CAP_OUT` to build it into the game.
 
 Windows cmd:
 
