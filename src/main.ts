@@ -21,6 +21,8 @@ import { checkTickets } from "./mall/tickets";
 import { triggerStandardAscension } from "./ascensions/triggerStandardAscension";
 import { brightfeatherVolcano } from "./brightfeather/volcano";
 import { isCharacter } from "./lib/character";
+import { resetCodpiece } from "./codpiece/gems";
+import { reportMysTest } from "./daily/mysTestReport";
 
 export const args = Args.create("cap", "Captain Yaksworth's daily turns.", {
   path: Args.string({
@@ -220,6 +222,12 @@ export function main(command?: string): void {
       run("sccs_preparation");
     }
 
+    // Before the manual stop too, so a hand-run ascension starts right. The
+    // run's own snapshot (InstantSCCS's _instant_codpieceGems) is taken after
+    // ascending, so this is the socketing it restores at the end. Problems
+    // are printed, not thrown: a missing gem shouldn't cost the ascension.
+    resetCodpiece();
+
     if (args.manual) {
       throw new Error("Manual ascension requested");
     }
@@ -344,4 +352,6 @@ export function main(command?: string): void {
   run("pvp-safety");
 
   checkMallPrices();
+
+  reportMysTest();
 }

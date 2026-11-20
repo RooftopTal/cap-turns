@@ -12,6 +12,7 @@ ported as-is and deliberately left unoptimised, and anyone else aborts.
     src/              what you edit
     src/lib/          shared helpers (cliRun, constants)
     src/brightfeather/  Brightfeather's volcano day
+    src/codpiece/     Eternity Codpiece gem sockets
     src/ascensions/   triggering/running ascensions
     src/consumption/  diet bits outside CONSUME (nightcap, stooper)
     src/daily/        daily chores and end-of-day
@@ -48,6 +49,16 @@ script dropdown, "Cap Mall Prices", or in the gCLI:
 
 The relay page builds into `KoLmafia/relay/`; set `CAP_RELAY_OUT` (e.g.
 `C:/work/kolmafia/relay`) alongside `CAP_OUT` to build it into the game.
+
+`codpiece` keeps the Eternity Codpiece's gems as preferred
+(`src/codpiece/gems.ts`). The preferred gem per socket is the
+`cap_codpieceGems` preference, set from the "Cap Codpiece" relay page or:
+
+    codpiece          put the preferred gems back (cap also does this in ascension prep)
+    codpiece check    report each socket, change nothing
+    codpiece save     make what's socketed now the preferred socketing
+
+Missing gems come from the closet or Hagnk's, never the mall.
 
 Windows cmd:
 

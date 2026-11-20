@@ -1,5 +1,6 @@
 import { formFields, write } from "kolmafia";
 import { addTracked, getTracked, isKind, KINDS, parseItem, removeTracked } from "../mall/tracked";
+import { escape } from "./html";
 
 /**
  * "Cap Mall Prices" in mafia's relay-browser script dropdown: add and remove
@@ -17,14 +18,6 @@ const KIND_LABELS: Record<string, string> = {
   sell: "For sale",
   keep: "Might sell",
 };
-
-function escape(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
 
 /** Applies whatever the form asked for; returns a message for the page. */
 function handle(fields: { [key: string]: string }): { text: string; ok: boolean } | null {

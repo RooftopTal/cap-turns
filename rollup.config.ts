@@ -60,5 +60,7 @@ function script(name: string, input: string, dir = outDir): RollupOptions {
 export default [
   script("cap", "src/main.ts"),
   script("mall-prices", "src/mallPrices.ts"),
+  script("codpiece", "src/codpiece.ts"),
   script("relay_Cap_Mall_Prices", "src/relay/capMallPrices.ts", relayDir),
+  script("relay_Cap_Codpiece", "src/relay/capCodpiece.ts", relayDir),
 ];
