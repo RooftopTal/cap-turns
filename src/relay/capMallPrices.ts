@@ -66,7 +66,8 @@ function trackedTables(): string {
       <td class="id">${item.id}</td>
       <td>${escape(item.name)}</td>
       <td class="remove">
-        <form method="post" action="${SELF}">
+        <form method="post" action="${SELF}" data-name="${escape(item.name)}"
+          onsubmit="return confirm('Stop tracking ' + this.dataset.name + '?')">
           <input type="hidden" name="action" value="remove">
           <input type="hidden" name="item" value="${item.id}">
           <button type="submit" title="Stop tracking ${escape(item.name)}">Remove</button>
