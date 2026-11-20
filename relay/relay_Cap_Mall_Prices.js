@@ -416,6 +416,11 @@ function removeTracked(item) {
   return true;
 }
 
+/** Escapes text for use in HTML content and double-quoted attributes. */
+function escape(text) {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
 /**
  * "Cap Mall Prices" in mafia's relay-browser script dropdown: add and remove
  * the items mall-prices tracks. Built as relay/relay_Cap_Mall_Prices.js --
@@ -431,9 +436,6 @@ var KIND_LABELS = {
   sell: "For sale",
   keep: "Might sell"
 };
-function escape(text) {
-  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
 
 /** Applies whatever the form asked for; returns a message for the page. */
 function handle(fields) {

@@ -1920,7 +1920,7 @@ createSingleConstant(kolmafia.Thrall, kolmafia.toThrall);
  */
 createPluralConstant(kolmafia.Thrall);
 
-var _templateObject$k, _templateObject10$4, _templateObject11$4, _templateObject12$4, _templateObject13$4, _templateObject14$4, _templateObject15$4, _templateObject16$3, _templateObject17$3, _templateObject18$3, _templateObject19$3, _templateObject20$3, _templateObject21$2, _templateObject22$2, _templateObject23$2, _templateObject24$2, _templateObject25$2, _templateObject26$2, _templateObject27$2, _templateObject28$2, _templateObject29$2, _templateObject30$2, _templateObject31$2, _templateObject32$2, _templateObject33$2, _templateObject34$2, _templateObject35$2, _templateObject48$2, _templateObject49$1, _templateObject50$1, _templateObject51$1, _templateObject52$1, _templateObject53$1;
+var _templateObject$l, _templateObject10$4, _templateObject11$4, _templateObject12$4, _templateObject13$4, _templateObject14$4, _templateObject15$4, _templateObject16$3, _templateObject17$3, _templateObject18$3, _templateObject19$3, _templateObject20$3, _templateObject21$2, _templateObject22$2, _templateObject23$2, _templateObject24$2, _templateObject25$2, _templateObject26$2, _templateObject27$2, _templateObject28$2, _templateObject29$2, _templateObject30$2, _templateObject31$2, _templateObject32$2, _templateObject33$2, _templateObject34$2, _templateObject35$2, _templateObject48$2, _templateObject49$1, _templateObject50$1, _templateObject51$1, _templateObject52$1, _templateObject53$1;
 /**
  * Determine whether the Skill or Effect provided is an Accordion Thief song
  *
@@ -1933,7 +1933,7 @@ function isSong(skillOrEffect) {
     return true;
   } else {
     var skill = skillOrEffect instanceof kolmafia.Effect ? kolmafia.toSkill(skillOrEffect) : skillOrEffect;
-    return skill["class"] === $class(_templateObject$k || (_templateObject$k = _taggedTemplateLiteral(["Accordion Thief"]))) && skill.buff;
+    return skill["class"] === $class(_templateObject$l || (_templateObject$l = _taggedTemplateLiteral(["Accordion Thief"]))) && skill.buff;
   }
 }
 /**
@@ -2875,7 +2875,7 @@ _defineProperty(Macro, "SAVED_MACRO_PROPERTY", "libram_savedMacro");
 _defineProperty(Macro, "cachedMacroIds", new Map());
 _defineProperty(Macro, "cachedAutoAttacks", new Map());
 
-var _templateObject$j, _templateObject2$e, _templateObject3$b, _templateObject4$a, _templateObject5$6, _templateObject6$4, _templateObject7$4, _templateObject8$3, _templateObject9$3, _templateObject0$3, _templateObject1$3, _templateObject10$3, _templateObject11$3, _templateObject12$3, _templateObject13$3, _templateObject14$3, _templateObject15$3, _templateObject16$2, _templateObject17$2, _templateObject18$2, _templateObject19$2, _templateObject20$2, _templateObject21$1, _templateObject22$1, _templateObject23$1, _templateObject24$1, _templateObject25$1, _templateObject26$1, _templateObject27$1, _templateObject28$1, _templateObject29$1, _templateObject30$1, _templateObject31$1, _templateObject32$1, _templateObject33$1, _templateObject34$1, _templateObject35$1, _templateObject36$1, _templateObject37$1, _templateObject38$1, _templateObject39$1, _templateObject40$1, _templateObject41$1, _templateObject42$1, _templateObject43$1, _templateObject44$1, _templateObject45$1, _templateObject46$1, _templateObject47$1, _templateObject48$1;
+var _templateObject$k, _templateObject2$f, _templateObject3$b, _templateObject4$a, _templateObject5$6, _templateObject6$4, _templateObject7$4, _templateObject8$3, _templateObject9$3, _templateObject0$3, _templateObject1$3, _templateObject10$3, _templateObject11$3, _templateObject12$3, _templateObject13$3, _templateObject14$3, _templateObject15$3, _templateObject16$2, _templateObject17$2, _templateObject18$2, _templateObject19$2, _templateObject20$2, _templateObject21$1, _templateObject22$1, _templateObject23$1, _templateObject24$1, _templateObject25$1, _templateObject26$1, _templateObject27$1, _templateObject28$1, _templateObject29$1, _templateObject30$1, _templateObject31$1, _templateObject32$1, _templateObject33$1, _templateObject34$1, _templateObject35$1, _templateObject36$1, _templateObject37$1, _templateObject38$1, _templateObject39$1, _templateObject40$1, _templateObject41$1, _templateObject42$1, _templateObject43$1, _templateObject44$1, _templateObject45$1, _templateObject46$1, _templateObject47$1, _templateObject48$1;
 function toMaximizerName(_ref) {
   var name = _ref.name,
     id = _ref.id;
@@ -2921,8 +2921,8 @@ var defaultMaximizeOptions = {
 };
 var modeableCommands$1 = ["backupcamera", "umbrella", "snowsuit", "edpiece", "retrocape", "parka", "jillcandle"];
 var modeableItems = {
-  backupcamera: $item(_templateObject$j || (_templateObject$j = _taggedTemplateLiteral(["backup camera"]))),
-  umbrella: $item(_templateObject2$e || (_templateObject2$e = _taggedTemplateLiteral(["unbreakable umbrella"]))),
+  backupcamera: $item(_templateObject$k || (_templateObject$k = _taggedTemplateLiteral(["backup camera"]))),
+  umbrella: $item(_templateObject2$f || (_templateObject2$f = _taggedTemplateLiteral(["unbreakable umbrella"]))),
   snowsuit: $item(_templateObject3$b || (_templateObject3$b = _taggedTemplateLiteral(["Snow Suit"]))),
   edpiece: $item(_templateObject4$a || (_templateObject4$a = _taggedTemplateLiteral(["The Crown of Ed the Undying"]))),
   retrocape: $item(_templateObject5$6 || (_templateObject5$6 = _taggedTemplateLiteral(["unwrapped knock-off retro superhero cape"]))),
@@ -3968,7 +3968,7 @@ var CombatResources = /*#__PURE__*/function () {
   }]);
 }();
 
-var _templateObject$i, _templateObject2$d, _templateObject3$a, _templateObject4$9, _templateObject5$5, _templateObject6$3, _templateObject7$3, _templateObject8$2, _templateObject9$2, _templateObject0$2, _templateObject1$2, _templateObject10$2, _templateObject11$2, _templateObject12$2, _templateObject13$2, _templateObject14$2, _templateObject15$2, _templateObject16$1, _templateObject17$1, _templateObject18$1, _templateObject19$1, _templateObject20$1, _templateObject21, _templateObject22, _templateObject23, _templateObject24, _templateObject25, _templateObject26, _templateObject27, _templateObject28, _templateObject29, _templateObject30, _templateObject31, _templateObject32, _templateObject33, _templateObject34, _templateObject35, _templateObject36, _templateObject37, _templateObject38, _templateObject39, _templateObject40, _templateObject41, _templateObject42, _templateObject43, _templateObject44, _templateObject45, _templateObject46, _templateObject47, _templateObject48, _templateObject49, _templateObject50, _templateObject51, _templateObject52, _templateObject53, _templateObject54, _templateObject55, _templateObject56, _templateObject57, _templateObject58, _templateObject59, _templateObject60, _templateObject61, _templateObject62, _templateObject63, _templateObject64, _templateObject65, _templateObject66, _templateObject67, _templateObject68, _templateObject69, _templateObject70, _templateObject71, _templateObject72, _templateObject73, _templateObject74, _templateObject75, _templateObject76, _templateObject77, _templateObject78, _templateObject79, _templateObject80;
+var _templateObject$j, _templateObject2$e, _templateObject3$a, _templateObject4$9, _templateObject5$5, _templateObject6$3, _templateObject7$3, _templateObject8$2, _templateObject9$2, _templateObject0$2, _templateObject1$2, _templateObject10$2, _templateObject11$2, _templateObject12$2, _templateObject13$2, _templateObject14$2, _templateObject15$2, _templateObject16$1, _templateObject17$1, _templateObject18$1, _templateObject19$1, _templateObject20$1, _templateObject21, _templateObject22, _templateObject23, _templateObject24, _templateObject25, _templateObject26, _templateObject27, _templateObject28, _templateObject29, _templateObject30, _templateObject31, _templateObject32, _templateObject33, _templateObject34, _templateObject35, _templateObject36, _templateObject37, _templateObject38, _templateObject39, _templateObject40, _templateObject41, _templateObject42, _templateObject43, _templateObject44, _templateObject45, _templateObject46, _templateObject47, _templateObject48, _templateObject49, _templateObject50, _templateObject51, _templateObject52, _templateObject53, _templateObject54, _templateObject55, _templateObject56, _templateObject57, _templateObject58, _templateObject59, _templateObject60, _templateObject61, _templateObject62, _templateObject63, _templateObject64, _templateObject65, _templateObject66, _templateObject67, _templateObject68, _templateObject69, _templateObject70, _templateObject71, _templateObject72, _templateObject73, _templateObject74, _templateObject75, _templateObject76, _templateObject77, _templateObject78, _templateObject79, _templateObject80;
 var FORCE_REFRESH_REQUIREMENT = new Requirement([], {
   forceUpdate: true
 });
@@ -4030,11 +4030,11 @@ var Outfit = /*#__PURE__*/function () {
   }, {
     key: "equipNonAccessory",
     value: function equipNonAccessory(item, slot) {
-      if ($slots(_templateObject$i || (_templateObject$i = _taggedTemplateLiteral(["acc1, acc2, acc3"]))).includes(kolmafia.toSlot(item))) return false;
+      if ($slots(_templateObject$j || (_templateObject$j = _taggedTemplateLiteral(["acc1, acc2, acc3"]))).includes(kolmafia.toSlot(item))) return false;
       if (slot !== undefined && slot !== kolmafia.toSlot(item)) return false;
       if (this.equips.has(kolmafia.toSlot(item))) return false;
       switch (kolmafia.toSlot(item)) {
-        case $slot(_templateObject2$d || (_templateObject2$d = _taggedTemplateLiteral(["off-hand"]))):
+        case $slot(_templateObject2$e || (_templateObject2$e = _taggedTemplateLiteral(["off-hand"]))):
           if (this.equips.has($slot(_templateObject3$a || (_templateObject3$a = _taggedTemplateLiteral(["weapon"])))) && weaponHands(this.equips.get($slot(_templateObject4$9 || (_templateObject4$9 = _taggedTemplateLiteral(["weapon"]))))) !== 1) {
             return false;
           }
@@ -4845,7 +4845,7 @@ function weaponsCompatible(weapon, offhand) {
   return true;
 }
 
-var _templateObject$h;
+var _templateObject$i;
 var grimoireCCS = "grimoire_macro";
 /**
  * An Engine which allows for custom engine state. Most beginning users should
@@ -5305,7 +5305,7 @@ ContextualEngine.defaultSettings = {
   libramSkillsSoftcore: "none"
 };
 function maxSongs() {
-  return have($skill(_templateObject$h || (_templateObject$h = _taggedTemplateLiteral(["Mariachi Memory"])))) ? 4 : 3;
+  return have($skill(_templateObject$i || (_templateObject$i = _taggedTemplateLiteral(["Mariachi Memory"])))) ? 4 : 3;
 }
 var wanderingNCs = new Set([
 // Halloweener dog noncombats
@@ -5396,7 +5396,7 @@ var TURNS_TO_SAVE_OVERNIGHT = 20;
 var DAY_TOLERANCE = 5;
 var NIGHT_TOLERANCE = TURNS_TO_SAVE_OVERNIGHT + DAY_TOLERANCE;
 
-var _templateObject$g, _templateObject2$c, _templateObject3$9;
+var _templateObject$h, _templateObject2$d, _templateObject3$9;
 
 /**
  * PirateRealm refuses to start a voyage below this many adventures --
@@ -5420,7 +5420,7 @@ var PIRATEREALM_MIN_ADVENTURES = 40;
  * -- the whole day's diet -- which is precisely what we're trying not to do
  * to garbo.
  */
-var TOP_UP_FOODS = [$item(_templateObject$g || (_templateObject$g = _taggedTemplateLiteral(["roasted vegetable focaccia"]))), $item(_templateObject2$c || (_templateObject2$c = _taggedTemplateLiteral(["baked veggie ricotta casserole"])))];
+var TOP_UP_FOODS = [$item(_templateObject$h || (_templateObject$h = _taggedTemplateLiteral(["roasted vegetable focaccia"]))), $item(_templateObject2$d || (_templateObject2$d = _taggedTemplateLiteral(["baked veggie ricotta casserole"])))];
 
 /** Used once before each food: worth +1 adventure per point of fullness. */
 var TOP_UP_HELPER = $item(_templateObject3$9 || (_templateObject3$9 = _taggedTemplateLiteral(["mini kiwi aioli"])));
@@ -5524,7 +5524,7 @@ function ensureAdventuresForPirateRealm() {
   return false;
 }
 
-var _templateObject$f, _templateObject2$b, _templateObject3$8, _templateObject4$8;
+var _templateObject$g, _templateObject2$c, _templateObject3$8, _templateObject4$8;
 
 /**
  * Prices the realm decisions and ticket buying run on. Each can be pinned with
@@ -5534,7 +5534,7 @@ var _templateObject$f, _templateObject2$b, _templateObject3$8, _templateObject4$
  *
  *   set cap_lylecoGuideOverride = 2000000
  */
-var OVERRIDE_SETTINGS = [[$item(_templateObject$f || (_templateObject$f = _taggedTemplateLiteral(["PirateRealm guest pass"]))), "cap_pirateRealmGuestPassOverride"], [$item(_templateObject2$b || (_templateObject2$b = _taggedTemplateLiteral(["FantasyRealm guest pass"]))), "cap_fantasyRealmGuestPassOverride"], [$item(_templateObject3$8 || (_templateObject3$8 = _taggedTemplateLiteral(["LyleCo Contractor's Manual"]))), "cap_lylecoGuideOverride"], [$item(_templateObject4$8 || (_templateObject4$8 = _taggedTemplateLiteral(["windicle"]))), "cap_windicleOverride"]];
+var OVERRIDE_SETTINGS = [[$item(_templateObject$g || (_templateObject$g = _taggedTemplateLiteral(["PirateRealm guest pass"]))), "cap_pirateRealmGuestPassOverride"], [$item(_templateObject2$c || (_templateObject2$c = _taggedTemplateLiteral(["FantasyRealm guest pass"]))), "cap_fantasyRealmGuestPassOverride"], [$item(_templateObject3$8 || (_templateObject3$8 = _taggedTemplateLiteral(["LyleCo Contractor's Manual"]))), "cap_lylecoGuideOverride"], [$item(_templateObject4$8 || (_templateObject4$8 = _taggedTemplateLiteral(["windicle"]))), "cap_windicleOverride"]];
 
 /** The override set for this item, if any. */
 function overrideFor(item) {
@@ -5560,7 +5560,7 @@ var OVERRIDABLE = OVERRIDE_SETTINGS.map(_ref3 => {
   return it;
 });
 
-var _templateObject$e, _templateObject2$a, _templateObject3$7, _templateObject4$7;
+var _templateObject$f, _templateObject2$b, _templateObject3$7, _templateObject4$7;
 
 /**
  * Whether the realms are worth their turns: estimate the meat a realm turn
@@ -5599,9 +5599,9 @@ function k(meat) {
   return "".concat(Math.round(meat / 1000), "k");
 }
 function pirateRealmEstimate() {
-  var meatPerFun = realmPrice($item(_templateObject$e || (_templateObject$e = _taggedTemplateLiteral(["PirateRealm guest pass"])))) / PR_PASS_FUN;
+  var meatPerFun = realmPrice($item(_templateObject$f || (_templateObject$f = _taggedTemplateLiteral(["PirateRealm guest pass"])))) / PR_PASS_FUN;
   var fun = PR_LEG.fun * meatPerFun;
-  var windicles = PR_LEG.windicles * realmPrice($item(_templateObject2$a || (_templateObject2$a = _taggedTemplateLiteral(["windicle"]))));
+  var windicles = PR_LEG.windicles * realmPrice($item(_templateObject2$b || (_templateObject2$b = _taggedTemplateLiteral(["windicle"]))));
   var total = fun + windicles + PR_LEG.meat;
   return {
     perTurn: Math.round(total / PR_LEG.turns),
@@ -5663,7 +5663,7 @@ function goToFantasyRealm() {
   return false;
 }
 
-var _templateObject$d, _templateObject2$9, _templateObject3$6, _templateObject4$6;
+var _templateObject$e, _templateObject2$a, _templateObject3$6, _templateObject4$6;
 
 /**
  * Garbo sets up and runs the PirateRealm cockroach leg itself when its target
@@ -5681,7 +5681,7 @@ var ISLAND_REACHED_STEP = 4;
 function pastTrashIsland() {
   var step = questStep("_questPirateRealm");
   if (step < ISLAND_REACHED_STEP) return false;
-  return step === 999 || get("_lastPirateRealmIsland") !== $location(_templateObject$d || (_templateObject$d = _taggedTemplateLiteral(["Trash Island"])));
+  return step === 999 || get("_lastPirateRealmIsland") !== $location(_templateObject$e || (_templateObject$e = _taggedTemplateLiteral(["Trash Island"])));
 }
 
 /**
@@ -5712,7 +5712,7 @@ function assertReachedTrashIsland(target) {
 
 /** Only spend a Dinsey ticket on garbo if there's enough day left to use it. */
 function checkWorthGarboing() {
-  var alreadyHaveAccess = kolmafia.isAccessible($coinmaster(_templateObject2$9 || (_templateObject2$9 = _taggedTemplateLiteral(["The Dinsey Company Store"]))));
+  var alreadyHaveAccess = kolmafia.isAccessible($coinmaster(_templateObject2$a || (_templateObject2$a = _taggedTemplateLiteral(["The Dinsey Company Store"]))));
   var haveTurns = kolmafia.myAdventures() > 50;
   var guessAtLimit = 9;
   var spareInebriety = kolmafia.inebrietyLimit() - kolmafia.myInebriety();
@@ -5831,17 +5831,17 @@ function run(command) {
   }
 }
 
-var _templateObject$c, _templateObject2$8;
+var _templateObject$d, _templateObject2$9;
 
 /** Ported from general/open_beach.ash. */
 function openBeach() {
   // Get access to the beach if we don't have it
-  if (kolmafia.itemAmount($item(_templateObject$c || (_templateObject$c = _taggedTemplateLiteral(["bitchin' meatcar"])))) === 0) {
-    kolmafia.create($item(_templateObject2$8 || (_templateObject2$8 = _taggedTemplateLiteral(["bitchin' meatcar"]))));
+  if (kolmafia.itemAmount($item(_templateObject$d || (_templateObject$d = _taggedTemplateLiteral(["bitchin' meatcar"])))) === 0) {
+    kolmafia.create($item(_templateObject2$9 || (_templateObject2$9 = _taggedTemplateLiteral(["bitchin' meatcar"]))));
   }
 }
 
-var _templateObject$b, _templateObject2$7, _templateObject3$5, _templateObject4$5, _templateObject5$4, _templateObject6$2, _templateObject7$2;
+var _templateObject$c, _templateObject2$8, _templateObject3$5, _templateObject4$5, _templateObject5$4, _templateObject6$2, _templateObject7$2;
 
 /**
  * Ported from general/pick_lock.ash. Uses withChoice instead of the
@@ -5853,11 +5853,11 @@ var _templateObject$b, _templateObject2$7, _templateObject3$5, _templateObject4$
  * callback throws.
  */
 function pickLock() {
-  if (kolmafia.haveSkill($skill(_templateObject$b || (_templateObject$b = _taggedTemplateLiteral(["Lock Picking"])))) && !get("lockPicked")) {
+  if (kolmafia.haveSkill($skill(_templateObject$c || (_templateObject$c = _taggedTemplateLiteral(["Lock Picking"])))) && !get("lockPicked")) {
     var keyChoice = 1 + Math.floor(Math.random() * 3);
     withChoice(1414, keyChoice, () => kolmafia.cliExecute("cast lock picking"));
   }
-  if (kolmafia.itemAmount($item(_templateObject2$7 || (_templateObject2$7 = _taggedTemplateLiteral(["Boris's key"])))) > 0) {
+  if (kolmafia.itemAmount($item(_templateObject2$8 || (_templateObject2$8 = _taggedTemplateLiteral(["Boris's key"])))) > 0) {
     kolmafia.create($item(_templateObject3$5 || (_templateObject3$5 = _taggedTemplateLiteral(["Boris's key lime pie"]))));
   }
   if (kolmafia.itemAmount($item(_templateObject4$5 || (_templateObject4$5 = _taggedTemplateLiteral(["Jarlsberg's key"])))) > 0) {
@@ -5886,7 +5886,7 @@ function genericLoopStuff() {
   run("clan_peridot");
 }
 
-var _templateObject$a;
+var _templateObject$b;
 
 /** Ported from general/stooper_drink.ash. */
 function stooperDrink() {
@@ -5894,11 +5894,11 @@ function stooperDrink() {
     kolmafia.print("we may have overdrunk with stooper already?");
     return;
   }
-  kolmafia.useFamiliar($familiar(_templateObject$a || (_templateObject$a = _taggedTemplateLiteral(["Stooper"]))));
+  kolmafia.useFamiliar($familiar(_templateObject$b || (_templateObject$b = _taggedTemplateLiteral(["Stooper"]))));
   kolmafia.cliExecute("drink stillsuit distillate");
 }
 
-var _templateObject$9, _templateObject2$6;
+var _templateObject$a, _templateObject2$7;
 
 /** Ported from general/use_censer.ash. */
 function useCenser() {
@@ -5907,7 +5907,7 @@ function useCenser() {
 
   // todo see if this is still needed if garbo uses
   kolmafia.print("buying ".concat(mouthwashDesired, " mouthwash!"));
-  kolmafia.buy($coinmaster(_templateObject$9 || (_templateObject$9 = _taggedTemplateLiteral(["Sept-Ember Censer"]))), mouthwashDesired, $item(_templateObject2$6 || (_templateObject2$6 = _taggedTemplateLiteral(["Mmm-brr! brand mouthwash"]))));
+  kolmafia.buy($coinmaster(_templateObject$a || (_templateObject$a = _taggedTemplateLiteral(["Sept-Ember Censer"]))), mouthwashDesired, $item(_templateObject2$7 || (_templateObject2$7 = _taggedTemplateLiteral(["Mmm-brr! brand mouthwash"]))));
 }
 
 /**
@@ -6004,11 +6004,11 @@ function trickOrTreat(isMorning) {
   useCenser();
 }
 
-var _templateObject$8;
+var _templateObject$9;
 
 /** Ported from daily-cap.ash's clear_pledge(). */
 function clearPledge() {
-  var awkwardPledge = $effect(_templateObject$8 || (_templateObject$8 = _taggedTemplateLiteral(["Citizen of a Zone"])));
+  var awkwardPledge = $effect(_templateObject$9 || (_templateObject$9 = _taggedTemplateLiteral(["Citizen of a Zone"])));
   if (kolmafia.haveEffect(awkwardPledge) > 0) {
     kolmafia.cliExecute("shrug ".concat(awkwardPledge.name));
     _set("_citizenZone", "");
@@ -6077,16 +6077,16 @@ function joinRaffle() {
   kolmafia.cliExecute("raffle ".concat(raffleTicketsToBuy()));
 }
 
-var _templateObject$7, _templateObject2$5, _templateObject3$4, _templateObject4$4, _templateObject5$3, _templateObject6$1, _templateObject7$1, _templateObject8$1, _templateObject9$1, _templateObject0$1, _templateObject1$1, _templateObject10$1, _templateObject11$1, _templateObject12$1, _templateObject13$1, _templateObject14$1, _templateObject15$1;
+var _templateObject$8, _templateObject2$6, _templateObject3$4, _templateObject4$4, _templateObject5$3, _templateObject6$1, _templateObject7$1, _templateObject8$1, _templateObject9$1, _templateObject0$1, _templateObject1$1, _templateObject10$1, _templateObject11$1, _templateObject12$1, _templateObject13$1, _templateObject14$1, _templateObject15$1;
 
 // The ASH source writes these item names with the HTML entity "&trade;"
 // ($item[Rubee&trade;]) -- libram's $item wants the real Unicode ™
 // character instead; the entity spelling would silently resolve to no item.
 
 function checkDinseyTickets(buyTickets) {
-  kolmafia.print("You have funfunds: ".concat(kolmafia.itemAmount($item(_templateObject$7 || (_templateObject$7 = _taggedTemplateLiteral(["FunFunds\u2122"]))))));
+  kolmafia.print("You have funfunds: ".concat(kolmafia.itemAmount($item(_templateObject$8 || (_templateObject$8 = _taggedTemplateLiteral(["FunFunds\u2122"]))))));
   if (buyTickets) {
-    var availableFunds = kolmafia.availableAmount($item(_templateObject2$5 || (_templateObject2$5 = _taggedTemplateLiteral(["FunFunds\u2122"]))));
+    var availableFunds = kolmafia.availableAmount($item(_templateObject2$6 || (_templateObject2$6 = _taggedTemplateLiteral(["FunFunds\u2122"]))));
     var ticketsDesired = Math.trunc(availableFunds / 20);
     kolmafia.print("buying ".concat(ticketsDesired, " dinseyland tickets!"));
     kolmafia.buy($coinmaster(_templateObject3$4 || (_templateObject3$4 = _taggedTemplateLiteral(["The Dinsey Company Store"]))), ticketsDesired, $item(_templateObject4$4 || (_templateObject4$4 = _taggedTemplateLiteral(["one-day ticket to Dinseylandfill"]))));
@@ -6139,11 +6139,11 @@ function checkTickets(buyTickets) {
   checkFantasyTickets(buyTickets);
 }
 
-var _templateObject$6, _templateObject2$4, _templateObject3$3, _templateObject4$3, _templateObject5$2;
+var _templateObject$7, _templateObject2$5, _templateObject3$3, _templateObject4$3, _templateObject5$2;
 function buyMeatGolem() {
   var golemMax = 15000;
-  if (kolmafia.mallPrice($item(_templateObject$6 || (_templateObject$6 = _taggedTemplateLiteral(["Meat Golem"])))) <= golemMax) {
-    if (kolmafia.itemAmount($item(_templateObject2$4 || (_templateObject2$4 = _taggedTemplateLiteral(["Meat Golem"])))) === 0) {
+  if (kolmafia.mallPrice($item(_templateObject$7 || (_templateObject$7 = _taggedTemplateLiteral(["Meat Golem"])))) <= golemMax) {
+    if (kolmafia.itemAmount($item(_templateObject2$5 || (_templateObject2$5 = _taggedTemplateLiteral(["Meat Golem"])))) === 0) {
       if (kolmafia.create($item(_templateObject3$3 || (_templateObject3$3 = _taggedTemplateLiteral(["Meat Golem"]))))) {
         kolmafia.print("crafted meat golem");
       } else {
@@ -6173,15 +6173,15 @@ function endOfDay(valueOfAdventure, adventureTolerance) {
   checkTickets(true);
 }
 
-var _templateObject$5, _templateObject2$3, _templateObject3$2, _templateObject4$2;
+var _templateObject$6, _templateObject2$4, _templateObject3$2, _templateObject4$2;
 
 /** Ported from general/take_meteorite_ade.ash. */
 function takeMeteoriteAde() {
   var acceptableCost = 25000;
-  if (kolmafia.mallPrice($item(_templateObject$5 || (_templateObject$5 = _taggedTemplateLiteral(["Meteorite-Ade"])))) > acceptableCost) {
+  if (kolmafia.mallPrice($item(_templateObject$6 || (_templateObject$6 = _taggedTemplateLiteral(["Meteorite-Ade"])))) > acceptableCost) {
     throw new Error("The price of Meteorite-ade is too damn high!");
   }
-  if (kolmafia.itemAmount($item(_templateObject2$3 || (_templateObject2$3 = _taggedTemplateLiteral(["Meteorite-Ade"])))) < 3) {
+  if (kolmafia.itemAmount($item(_templateObject2$4 || (_templateObject2$4 = _taggedTemplateLiteral(["Meteorite-Ade"])))) < 3) {
     if (kolmafia.buy($item(_templateObject3$2 || (_templateObject3$2 = _taggedTemplateLiteral(["Meteorite-Ade"]))), 3)) {
       kolmafia.print("successfully bought Meteorite-Ade");
     } else {
@@ -6236,7 +6236,7 @@ function doPvp() {
   }
 }
 
-var _templateObject$4;
+var _templateObject$5;
 
 /**
  * Ported from general/set_sit_course.ash. withChoice instead of manual
@@ -6244,10 +6244,10 @@ var _templateObject$4;
  */
 function setSitCourse() {
   var insectologyPreset = 2;
-  withChoice(1494, insectologyPreset, () => kolmafia.use($item(_templateObject$4 || (_templateObject$4 = _taggedTemplateLiteral(["S.I.T. Course Completion Certificate"])))));
+  withChoice(1494, insectologyPreset, () => kolmafia.use($item(_templateObject$5 || (_templateObject$5 = _taggedTemplateLiteral(["S.I.T. Course Completion Certificate"])))));
 }
 
-var _templateObject$3, _templateObject2$2, _templateObject3$1, _templateObject4$1, _templateObject5$1, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject0, _templateObject1, _templateObject10, _templateObject11, _templateObject12, _templateObject13, _templateObject14, _templateObject15, _templateObject16, _templateObject17, _templateObject18, _templateObject19, _templateObject20;
+var _templateObject$4, _templateObject2$3, _templateObject3$1, _templateObject4$1, _templateObject5$1, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject0, _templateObject1, _templateObject10, _templateObject11, _templateObject12, _templateObject13, _templateObject14, _templateObject15, _templateObject16, _templateObject17, _templateObject18, _templateObject19, _templateObject20;
 
 /**
  * Everything mall-prices tracks, and the source of truth for the sheet's
@@ -6270,10 +6270,10 @@ var TRACKED_SETTING = "cap_mallTracked";
 
 /** What the preference starts out as. Edits go through the preference, not here. */
 var DEFAULT_TRACKED = [{
-  item: $item(_templateObject$3 || (_templateObject$3 = _taggedTemplateLiteral(["Mr. Accessory"]))),
+  item: $item(_templateObject$4 || (_templateObject$4 = _taggedTemplateLiteral(["Mr. Accessory"]))),
   kind: "currency"
 }, {
-  item: $item(_templateObject2$2 || (_templateObject2$2 = _taggedTemplateLiteral(["Uncle Buck"]))),
+  item: $item(_templateObject2$3 || (_templateObject2$3 = _taggedTemplateLiteral(["Uncle Buck"]))),
   kind: "currency"
 }, {
   item: $item(_templateObject3$1 || (_templateObject3$1 = _taggedTemplateLiteral(["Comprehensive Cartographic Compendium"]))),
@@ -6389,7 +6389,7 @@ function getTracked() {
   return list;
 }
 
-var _templateObject$2;
+var _templateObject$3;
 
 /**
  * Ported from mall/check_mall_prices.ash. Purely informational -- prints
@@ -6495,7 +6495,7 @@ var OVERRIDE_DRIFT = 0.25;
 
 /** Prices that only matter if they cross a line -- red means go change something. */
 function checkReminders() {
-  var garbagePrice = kolmafia.mallPrice($item(_templateObject$2 || (_templateObject$2 = _taggedTemplateLiteral(["bag of park garbage"]))));
+  var garbagePrice = kolmafia.mallPrice($item(_templateObject$3 || (_templateObject$3 = _taggedTemplateLiteral(["bag of park garbage"]))));
   kolmafia.print("Garbage price: ".concat(garbagePrice, " meat"), garbagePrice > 200 ? "red" : "gray");
 
   // The realm prices. Red when an override has drifted well away from the
@@ -6593,7 +6593,7 @@ function triggerStandardAscension(isHardcore, standardClass) {
   return true;
 }
 
-var _templateObject$1, _templateObject2$1, _templateObject3, _templateObject4, _templateObject5;
+var _templateObject$2, _templateObject2$2, _templateObject3, _templateObject4, _templateObject5;
 
 /**
  * Brightfeather's day, ported line for line from brightfeather-volcano.ash.
@@ -6601,11 +6601,11 @@ var _templateObject$1, _templateObject2$1, _templateObject3, _templateObject4, _
  * optimised -- keep it doing exactly what the ASH did.
  */
 
-var VOLCANO_TICKET = $item(_templateObject$1 || (_templateObject$1 = _taggedTemplateLiteral(["one-day ticket to That 70s Volcano"])));
+var VOLCANO_TICKET = $item(_templateObject$2 || (_templateObject$2 = _taggedTemplateLiteral(["one-day ticket to That 70s Volcano"])));
 var SAFE_HP = 200;
 var SAFE_ADVS = 50;
 function checkVolcanoTickets(buyTickets) {
-  kolmafia.print("You have volcoinos: ".concat(kolmafia.itemAmount($item(_templateObject2$1 || (_templateObject2$1 = _taggedTemplateLiteral(["Volcoino"]))))));
+  kolmafia.print("You have volcoinos: ".concat(kolmafia.itemAmount($item(_templateObject2$2 || (_templateObject2$2 = _taggedTemplateLiteral(["Volcoino"]))))));
   {
     var availableFunds = kolmafia.availableAmount($item(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["Volcoino"]))));
     var ticketsDesired = Math.floor(availableFunds / 3);
@@ -6660,6 +6660,146 @@ function brightfeatherVolcano() {
 /** myName() comes back however the name was typed at login, so compare lowercased. */
 function isCharacter(name) {
   return kolmafia.myName().toLowerCase() === name.toLowerCase();
+}
+
+var _templateObject$1, _templateObject2$1;
+
+/**
+ * The Eternity Codpiece's five gem sockets, which mafia treats as equipment
+ * slots codpiece1..codpiece5.
+ *
+ * The preferred socketing lives in cap_codpieceGems: five comma-separated item
+ * ids, one per socket, blank for a socket that should stay empty -- e.g.
+ * "11979,,11979,11982,11979". Unset means no preference, so nothing is reset.
+ * Set it from the "Cap Codpiece" relay page or `codpiece save` in the gCLI.
+ */
+var CODPIECE = $item(_templateObject$1 || (_templateObject$1 = _taggedTemplateLiteral(["The Eternity Codpiece"])));
+var SOCKETS = $slots(_templateObject2$1 || (_templateObject2$1 = _taggedTemplateLiteral(["codpiece1, codpiece2, codpiece3, codpiece4, codpiece5"])));
+var GEMS_SETTING = "cap_codpieceGems";
+function haveCodpiece() {
+  return kolmafia.itemAmount(CODPIECE) + kolmafia.equippedAmount(CODPIECE) > 0;
+}
+
+/** What's in each socket now. */
+function currentGems() {
+  return SOCKETS.map(slot => kolmafia.equippedItem(slot));
+}
+
+/** The preferred gem per socket, or null if none has been set. */
+function preferredGems() {
+  var value = kolmafia.getProperty(GEMS_SETTING);
+  if (!value) return null;
+  var ids = value.split(",");
+  return SOCKETS.map((_, i) => {
+    var id = Number(ids[i] ?? "");
+    return id > 0 ? kolmafia.toItem(id) : $item.none;
+  });
+}
+
+/** Sockets (0-based) whose gem isn't the preferred one. */
+function mismatchedSockets(preferred) {
+  var current = currentGems();
+  return SOCKETS.map((_, i) => i).filter(i => current[i] !== preferred[i]);
+}
+
+/** Gets one of a gem into inventory, from the closet or (out of ronin)
+ * Hagnk's. Never buys. */
+function fetchGem(gem) {
+  if (kolmafia.itemAmount(gem) > 0) return true;
+  if (kolmafia.closetAmount(gem) > 0 && kolmafia.takeCloset(1, gem)) return true;
+  if (kolmafia.canInteract() && kolmafia.storageAmount(gem) > 0 && kolmafia.takeStorage(1, gem)) return true;
+  return false;
+}
+
+/**
+ * Puts the preferred gems back. Empties the wrong sockets first, so a gem
+ * that's in the wrong socket comes back to inventory and can go in the right
+ * one. Returns the sockets still wrong afterwards (empty means all good).
+ */
+function resetCodpiece() {
+  var preferred = preferredGems();
+  if (!preferred) {
+    kolmafia.print("No preferred codpiece socketing set (".concat(GEMS_SETTING, "); leaving it alone."), "gray");
+    return [];
+  }
+  if (!haveCodpiece()) {
+    kolmafia.print("The Eternity Codpiece isn't in inventory or equipped; can't check its sockets.", "red");
+    return [];
+  }
+  var wrong = mismatchedSockets(preferred);
+  if (wrong.length === 0) {
+    kolmafia.print("Codpiece sockets are as preferred.", "gray");
+    return [];
+  }
+  var _iterator = _createForOfIteratorHelper(wrong),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var i = _step.value;
+      if (kolmafia.equippedItem(SOCKETS[i]) !== $item.none) kolmafia.equip(SOCKETS[i], $item.none);
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  var _iterator2 = _createForOfIteratorHelper(wrong),
+    _step2;
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var _i = _step2.value;
+      var gem = preferred[_i];
+      if (gem === $item.none) continue;
+      if (!fetchGem(gem)) {
+        kolmafia.print("No ".concat(gem.name, " to put in socket ").concat(_i + 1, " (checked inventory, closet and Hagnk's)."), "red");
+        continue;
+      }
+      kolmafia.print("Socketing ".concat(gem.name, " in codpiece socket ").concat(_i + 1, "."), "blue");
+      kolmafia.equip(SOCKETS[_i], gem);
+    }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
+  }
+  var stillWrong = mismatchedSockets(preferred);
+  var _iterator3 = _createForOfIteratorHelper(stillWrong),
+    _step3;
+  try {
+    for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+      var _i2 = _step3.value;
+      var want = preferred[_i2] === $item.none ? "empty" : preferred[_i2].name;
+      var have = kolmafia.equippedItem(SOCKETS[_i2]);
+      kolmafia.print("Codpiece socket ".concat(_i2 + 1, " should be ").concat(want, " but is ").concat(have === $item.none ? "empty" : have.name, "."), "red");
+    }
+  } catch (err) {
+    _iterator3.e(err);
+  } finally {
+    _iterator3.f();
+  }
+  if (stillWrong.length === 0) kolmafia.print("Codpiece sockets reset.", "green");
+  return stillWrong;
+}
+
+/** Base Mysticality above this means the leveling is overshooting and the
+ * InstantSCCS settings want changing. */
+var BASE_MYS_LIMIT = 200;
+
+/** Reports the Mysticality we had when InstantSCCS ran the Mysticality test.
+ * The values are saved by our InstantSCCS fork in logRelevantStats(). */
+function reportMysTest() {
+  var base = kolmafia.getProperty("_cap_instantMysticalityTestBase");
+  var buffed = kolmafia.getProperty("_cap_instantMysticalityTestBuffed");
+  if (base === "") {
+    kolmafia.print("No Mysticality test recorded today", "gray");
+    return;
+  }
+  var message = "Mysticality test: base Mys ".concat(base, "; buffed Mys ").concat(buffed);
+  if (Number(base) > BASE_MYS_LIMIT) {
+    kolmafia.print("<b>".concat(message, " -- over ").concat(BASE_MYS_LIMIT, ", change it!</b>"), "red");
+  } else {
+    kolmafia.print(message, "blue");
+  }
 }
 
 var _templateObject, _templateObject2;
@@ -6828,6 +6968,12 @@ function main(command) {
     if (!(runningBoris || runningStandard)) {
       run("sccs_preparation");
     }
+
+    // Before the manual stop too, so a hand-run ascension starts right. The
+    // run's own snapshot (InstantSCCS's _instant_codpieceGems) is taken after
+    // ascending, so this is the socketing it restores at the end. Problems
+    // are printed, not thrown: a missing gem shouldn't cost the ascension.
+    resetCodpiece();
     if (args.manual) {
       throw new Error("Manual ascension requested");
     }
@@ -6941,6 +7087,7 @@ function main(command) {
   kolmafia.cliExecute("philter");
   run("pvp-safety");
   checkMallPrices();
+  reportMysTest();
 }
 
 exports.args = args;
