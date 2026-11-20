@@ -476,7 +476,7 @@ function trackedTables() {
   return KINDS.map(kind => {
     var rows = tracked.filter(t => t.kind === kind).map(_ref => {
       var item = _ref.item;
-      return "\n    <tr>\n      <td class=\"id\">".concat(item.id, "</td>\n      <td>").concat(escape(item.name), "</td>\n      <td class=\"remove\">\n        <form method=\"post\" action=\"").concat(SELF, "\">\n          <input type=\"hidden\" name=\"action\" value=\"remove\">\n          <input type=\"hidden\" name=\"item\" value=\"").concat(item.id, "\">\n          <button type=\"submit\" title=\"Stop tracking ").concat(escape(item.name), "\">Remove</button>\n        </form>\n      </td>\n    </tr>");
+      return "\n    <tr>\n      <td class=\"id\">".concat(item.id, "</td>\n      <td>").concat(escape(item.name), "</td>\n      <td class=\"remove\">\n        <form method=\"post\" action=\"").concat(SELF, "\" data-name=\"").concat(escape(item.name), "\"\n          onsubmit=\"return confirm('Stop tracking ' + this.dataset.name + '?')\">\n          <input type=\"hidden\" name=\"action\" value=\"remove\">\n          <input type=\"hidden\" name=\"item\" value=\"").concat(item.id, "\">\n          <button type=\"submit\" title=\"Stop tracking ").concat(escape(item.name), "\">Remove</button>\n        </form>\n      </td>\n    </tr>");
     }).join("");
     return "\n<h2>".concat(KIND_LABELS[kind], "</h2>\n").concat(rows ? "<table>".concat(rows, "</table>") : "<p class=\"empty\">Nothing here.</p>");
   }).join("");
