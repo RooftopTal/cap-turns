@@ -1920,7 +1920,7 @@ createSingleConstant(kolmafia.Thrall, kolmafia.toThrall);
  */
 createPluralConstant(kolmafia.Thrall);
 
-var _templateObject$k, _templateObject10$4, _templateObject11$4, _templateObject12$4, _templateObject13$4, _templateObject14$4, _templateObject15$4, _templateObject16$3, _templateObject17$3, _templateObject18$3, _templateObject19$3, _templateObject20$2, _templateObject21$2, _templateObject22$2, _templateObject23$2, _templateObject24$2, _templateObject25$2, _templateObject26$2, _templateObject27$2, _templateObject28$2, _templateObject29$2, _templateObject30$2, _templateObject31$2, _templateObject32$2, _templateObject33$2, _templateObject34$2, _templateObject35$2, _templateObject48$2, _templateObject49$1, _templateObject50$1, _templateObject51$1, _templateObject52$1, _templateObject53$1;
+var _templateObject$k, _templateObject10$4, _templateObject11$4, _templateObject12$4, _templateObject13$4, _templateObject14$4, _templateObject15$4, _templateObject16$3, _templateObject17$3, _templateObject18$3, _templateObject19$3, _templateObject20$3, _templateObject21$2, _templateObject22$2, _templateObject23$2, _templateObject24$2, _templateObject25$2, _templateObject26$2, _templateObject27$2, _templateObject28$2, _templateObject29$2, _templateObject30$2, _templateObject31$2, _templateObject32$2, _templateObject33$2, _templateObject34$2, _templateObject35$2, _templateObject48$2, _templateObject49$1, _templateObject50$1, _templateObject51$1, _templateObject52$1, _templateObject53$1;
 /**
  * Determine whether the Skill or Effect provided is an Accordion Thief song
  *
@@ -2081,7 +2081,7 @@ function getTodaysHolidayWanderers() {
   return kolmafia.holiday().split("/").flatMap(holiday => holidayWanderers.get(holiday) ?? []);
 }
 new Map([["standing around flexing their muscles and using grip exercisers", $stat(_templateObject13$4 || (_templateObject13$4 = _taggedTemplateLiteral(["Muscle"])))], ["sitting around playing chess and solving complicated-looking logic puzzles", $stat(_templateObject14$4 || (_templateObject14$4 = _taggedTemplateLiteral(["Mysticality"])))], ["all wearing sunglasses and dancing", $stat(_templateObject15$4 || (_templateObject15$4 = _taggedTemplateLiteral(["Moxie"])))]]);
-new Map([["people, all of whom appear to be on fire", $element(_templateObject16$3 || (_templateObject16$3 = _taggedTemplateLiteral(["hot"])))], ["people, surrounded by a cloud of eldritch mist", $element(_templateObject17$3 || (_templateObject17$3 = _taggedTemplateLiteral(["spooky"])))], ["greasy-looking people furtively skulking around", $element(_templateObject18$3 || (_templateObject18$3 = _taggedTemplateLiteral(["sleaze"])))], ["people, surrounded by garbage and clouds of flies", $element(_templateObject19$3 || (_templateObject19$3 = _taggedTemplateLiteral(["stench"])))], ["people, clustered around a group of igloos", $element(_templateObject20$2 || (_templateObject20$2 = _taggedTemplateLiteral(["cold"])))]]);
+new Map([["people, all of whom appear to be on fire", $element(_templateObject16$3 || (_templateObject16$3 = _taggedTemplateLiteral(["hot"])))], ["people, surrounded by a cloud of eldritch mist", $element(_templateObject17$3 || (_templateObject17$3 = _taggedTemplateLiteral(["spooky"])))], ["greasy-looking people furtively skulking around", $element(_templateObject18$3 || (_templateObject18$3 = _taggedTemplateLiteral(["sleaze"])))], ["people, surrounded by garbage and clouds of flies", $element(_templateObject19$3 || (_templateObject19$3 = _taggedTemplateLiteral(["stench"])))], ["people, clustered around a group of igloos", $element(_templateObject20$3 || (_templateObject20$3 = _taggedTemplateLiteral(["cold"])))]]);
 new Map([["smoldering bushes on the outskirts of a hedge maze", $element(_templateObject21$2 || (_templateObject21$2 = _taggedTemplateLiteral(["hot"])))], ["creepy-looking black bushes on the outskirts of a hedge maze", $element(_templateObject22$2 || (_templateObject22$2 = _taggedTemplateLiteral(["spooky"])))], ["purplish, greasy-looking hedges", $element(_templateObject23$2 || (_templateObject23$2 = _taggedTemplateLiteral(["sleaze"])))], ["nasty-looking, dripping green bushes on the outskirts of a hedge maze", $element(_templateObject24$2 || (_templateObject24$2 = _taggedTemplateLiteral(["stench"])))], ["frost-rimed bushes on the outskirts of a hedge maze", $element(_templateObject25$2 || (_templateObject25$2 = _taggedTemplateLiteral(["cold"])))]]);
 new Map([["smoke rising from deeper within the maze", $element(_templateObject26$2 || (_templateObject26$2 = _taggedTemplateLiteral(["hot"])))], ["a miasma of eldritch vapors rising from deeper within the maze", $element(_templateObject27$2 || (_templateObject27$2 = _taggedTemplateLiteral(["spooky"])))], ["a greasy purple cloud hanging over the center of the maze", $element(_templateObject28$2 || (_templateObject28$2 = _taggedTemplateLiteral(["sleaze"])))], ["a cloud of green gas hovering over the maze", $element(_templateObject29$2 || (_templateObject29$2 = _taggedTemplateLiteral(["stench"])))], ["wintry mists rising from deeper within the maze", $element(_templateObject30$2 || (_templateObject30$2 = _taggedTemplateLiteral(["cold"])))]]);
 new Map([["with lava slowly oozing out of it", $element(_templateObject31$2 || (_templateObject31$2 = _taggedTemplateLiteral(["hot"])))], ["surrounded by creepy black mist", $element(_templateObject32$2 || (_templateObject32$2 = _taggedTemplateLiteral(["spooky"])))], ["that occasionally vomits out a greasy ball of hair", $element(_templateObject33$2 || (_templateObject33$2 = _taggedTemplateLiteral(["sleaze"])))], ["disgorging a really surprising amount of sewage", $element(_templateObject34$2 || (_templateObject34$2 = _taggedTemplateLiteral(["stench"])))], ["occasionally disgorging a bunch of ice cubes", $element(_templateObject35$2 || (_templateObject35$2 = _taggedTemplateLiteral(["cold"])))]]);
@@ -2875,7 +2875,7 @@ _defineProperty(Macro, "SAVED_MACRO_PROPERTY", "libram_savedMacro");
 _defineProperty(Macro, "cachedMacroIds", new Map());
 _defineProperty(Macro, "cachedAutoAttacks", new Map());
 
-var _templateObject$j, _templateObject2$e, _templateObject3$b, _templateObject4$a, _templateObject5$6, _templateObject6$4, _templateObject7$4, _templateObject8$3, _templateObject9$3, _templateObject0$3, _templateObject1$3, _templateObject10$3, _templateObject11$3, _templateObject12$3, _templateObject13$3, _templateObject14$3, _templateObject15$3, _templateObject16$2, _templateObject17$2, _templateObject18$2, _templateObject19$2, _templateObject20$1, _templateObject21$1, _templateObject22$1, _templateObject23$1, _templateObject24$1, _templateObject25$1, _templateObject26$1, _templateObject27$1, _templateObject28$1, _templateObject29$1, _templateObject30$1, _templateObject31$1, _templateObject32$1, _templateObject33$1, _templateObject34$1, _templateObject35$1, _templateObject36$1, _templateObject37$1, _templateObject38$1, _templateObject39$1, _templateObject40$1, _templateObject41$1, _templateObject42$1, _templateObject43$1, _templateObject44$1, _templateObject45$1, _templateObject46$1, _templateObject47$1, _templateObject48$1;
+var _templateObject$j, _templateObject2$e, _templateObject3$b, _templateObject4$a, _templateObject5$6, _templateObject6$4, _templateObject7$4, _templateObject8$3, _templateObject9$3, _templateObject0$3, _templateObject1$3, _templateObject10$3, _templateObject11$3, _templateObject12$3, _templateObject13$3, _templateObject14$3, _templateObject15$3, _templateObject16$2, _templateObject17$2, _templateObject18$2, _templateObject19$2, _templateObject20$2, _templateObject21$1, _templateObject22$1, _templateObject23$1, _templateObject24$1, _templateObject25$1, _templateObject26$1, _templateObject27$1, _templateObject28$1, _templateObject29$1, _templateObject30$1, _templateObject31$1, _templateObject32$1, _templateObject33$1, _templateObject34$1, _templateObject35$1, _templateObject36$1, _templateObject37$1, _templateObject38$1, _templateObject39$1, _templateObject40$1, _templateObject41$1, _templateObject42$1, _templateObject43$1, _templateObject44$1, _templateObject45$1, _templateObject46$1, _templateObject47$1, _templateObject48$1;
 function toMaximizerName(_ref) {
   var name = _ref.name,
     id = _ref.id;
@@ -3158,7 +3158,7 @@ function applyCached(entry, options) {
   }
   applyModes(_objectSpread2(_objectSpread2({}, entry.modes), options.modes));
 }
-var slotStructure = [$slots(_templateObject16$2 || (_templateObject16$2 = _taggedTemplateLiteral(["hat"]))), $slots(_templateObject17$2 || (_templateObject17$2 = _taggedTemplateLiteral(["back"]))), $slots(_templateObject18$2 || (_templateObject18$2 = _taggedTemplateLiteral(["shirt"]))), $slots(_templateObject19$2 || (_templateObject19$2 = _taggedTemplateLiteral(["weapon, off-hand"]))), $slots(_templateObject20$1 || (_templateObject20$1 = _taggedTemplateLiteral(["pants"]))), $slots(_templateObject21$1 || (_templateObject21$1 = _taggedTemplateLiteral(["acc1, acc2, acc3"]))), $slots(_templateObject22$1 || (_templateObject22$1 = _taggedTemplateLiteral(["familiar"])))];
+var slotStructure = [$slots(_templateObject16$2 || (_templateObject16$2 = _taggedTemplateLiteral(["hat"]))), $slots(_templateObject17$2 || (_templateObject17$2 = _taggedTemplateLiteral(["back"]))), $slots(_templateObject18$2 || (_templateObject18$2 = _taggedTemplateLiteral(["shirt"]))), $slots(_templateObject19$2 || (_templateObject19$2 = _taggedTemplateLiteral(["weapon, off-hand"]))), $slots(_templateObject20$2 || (_templateObject20$2 = _taggedTemplateLiteral(["pants"]))), $slots(_templateObject21$1 || (_templateObject21$1 = _taggedTemplateLiteral(["acc1, acc2, acc3"]))), $slots(_templateObject22$1 || (_templateObject22$1 = _taggedTemplateLiteral(["familiar"])))];
 /**
  * Verifies that a CacheEntry was applied successfully.
  *
@@ -3968,7 +3968,7 @@ var CombatResources = /*#__PURE__*/function () {
   }]);
 }();
 
-var _templateObject$i, _templateObject2$d, _templateObject3$a, _templateObject4$9, _templateObject5$5, _templateObject6$3, _templateObject7$3, _templateObject8$2, _templateObject9$2, _templateObject0$2, _templateObject1$2, _templateObject10$2, _templateObject11$2, _templateObject12$2, _templateObject13$2, _templateObject14$2, _templateObject15$2, _templateObject16$1, _templateObject17$1, _templateObject18$1, _templateObject19$1, _templateObject20, _templateObject21, _templateObject22, _templateObject23, _templateObject24, _templateObject25, _templateObject26, _templateObject27, _templateObject28, _templateObject29, _templateObject30, _templateObject31, _templateObject32, _templateObject33, _templateObject34, _templateObject35, _templateObject36, _templateObject37, _templateObject38, _templateObject39, _templateObject40, _templateObject41, _templateObject42, _templateObject43, _templateObject44, _templateObject45, _templateObject46, _templateObject47, _templateObject48, _templateObject49, _templateObject50, _templateObject51, _templateObject52, _templateObject53, _templateObject54, _templateObject55, _templateObject56, _templateObject57, _templateObject58, _templateObject59, _templateObject60, _templateObject61, _templateObject62, _templateObject63, _templateObject64, _templateObject65, _templateObject66, _templateObject67, _templateObject68, _templateObject69, _templateObject70, _templateObject71, _templateObject72, _templateObject73, _templateObject74, _templateObject75, _templateObject76, _templateObject77, _templateObject78, _templateObject79, _templateObject80;
+var _templateObject$i, _templateObject2$d, _templateObject3$a, _templateObject4$9, _templateObject5$5, _templateObject6$3, _templateObject7$3, _templateObject8$2, _templateObject9$2, _templateObject0$2, _templateObject1$2, _templateObject10$2, _templateObject11$2, _templateObject12$2, _templateObject13$2, _templateObject14$2, _templateObject15$2, _templateObject16$1, _templateObject17$1, _templateObject18$1, _templateObject19$1, _templateObject20$1, _templateObject21, _templateObject22, _templateObject23, _templateObject24, _templateObject25, _templateObject26, _templateObject27, _templateObject28, _templateObject29, _templateObject30, _templateObject31, _templateObject32, _templateObject33, _templateObject34, _templateObject35, _templateObject36, _templateObject37, _templateObject38, _templateObject39, _templateObject40, _templateObject41, _templateObject42, _templateObject43, _templateObject44, _templateObject45, _templateObject46, _templateObject47, _templateObject48, _templateObject49, _templateObject50, _templateObject51, _templateObject52, _templateObject53, _templateObject54, _templateObject55, _templateObject56, _templateObject57, _templateObject58, _templateObject59, _templateObject60, _templateObject61, _templateObject62, _templateObject63, _templateObject64, _templateObject65, _templateObject66, _templateObject67, _templateObject68, _templateObject69, _templateObject70, _templateObject71, _templateObject72, _templateObject73, _templateObject74, _templateObject75, _templateObject76, _templateObject77, _templateObject78, _templateObject79, _templateObject80;
 var FORCE_REFRESH_REQUIREMENT = new Requirement([], {
   forceUpdate: true
 });
@@ -4089,7 +4089,7 @@ var Outfit = /*#__PURE__*/function () {
       switch (kolmafia.toSlot(item)) {
         case $slot(_templateObject18$1 || (_templateObject18$1 = _taggedTemplateLiteral(["weapon"]))):
           return $familiar(_templateObject19$1 || (_templateObject19$1 = _taggedTemplateLiteral(["Disembodied Hand"])));
-        case $slot(_templateObject20 || (_templateObject20 = _taggedTemplateLiteral(["off-hand"]))):
+        case $slot(_templateObject20$1 || (_templateObject20$1 = _taggedTemplateLiteral(["off-hand"]))):
           return $familiar(_templateObject21 || (_templateObject21 = _taggedTemplateLiteral(["Left-Hand Man"])));
         case $slot(_templateObject22 || (_templateObject22 = _taggedTemplateLiteral(["pants"]))):
           return $familiar(_templateObject23 || (_templateObject23 = _taggedTemplateLiteral(["Fancypants Scarecrow"])));
@@ -6247,7 +6247,7 @@ function setSitCourse() {
   withChoice(1494, insectologyPreset, () => kolmafia.use($item(_templateObject$4 || (_templateObject$4 = _taggedTemplateLiteral(["S.I.T. Course Completion Certificate"])))));
 }
 
-var _templateObject$3, _templateObject2$2, _templateObject3$1, _templateObject4$1, _templateObject5$1, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject0, _templateObject1, _templateObject10, _templateObject11, _templateObject12, _templateObject13, _templateObject14, _templateObject15, _templateObject16, _templateObject17, _templateObject18, _templateObject19;
+var _templateObject$3, _templateObject2$2, _templateObject3$1, _templateObject4$1, _templateObject5$1, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject0, _templateObject1, _templateObject10, _templateObject11, _templateObject12, _templateObject13, _templateObject14, _templateObject15, _templateObject16, _templateObject17, _templateObject18, _templateObject19, _templateObject20;
 
 /**
  * Everything mall-prices tracks, and the source of truth for the sheet's
@@ -6258,9 +6258,18 @@ var _templateObject$3, _templateObject2$2, _templateObject3$1, _templateObject4$
  *   purchase" is the first one.
  * - sell: held only to sell later.
  * - keep: could sell, probably won't.
+ *
+ * The list lives in the cap_mallTracked preference as comma-separated
+ * itemId:kind pairs, in order, e.g. "12391:sell,9529:want". Edit it from the
+ * "Cap Mall Prices" relay page or `mall-prices add|remove|list` in the gCLI.
+ * The first time it's read, it's seeded from DEFAULT_TRACKED below.
  */
 
-var TRACKED = [{
+var KINDS = ["currency", "want", "sell", "keep"];
+var TRACKED_SETTING = "cap_mallTracked";
+
+/** What the preference starts out as. Edits go through the preference, not here. */
+var DEFAULT_TRACKED = [{
   item: $item(_templateObject$3 || (_templateObject$3 = _taggedTemplateLiteral(["Mr. Accessory"]))),
   kind: "currency"
 }, {
@@ -6315,15 +6324,70 @@ var TRACKED = [{
   item: $item(_templateObject16 || (_templateObject16 = _taggedTemplateLiteral(["black rosebud"]))),
   kind: "sell"
 }, {
-  item: $item(_templateObject17 || (_templateObject17 = _taggedTemplateLiteral(["ice sickle"]))),
+  item: $item(_templateObject17 || (_templateObject17 = _taggedTemplateLiteral(["unopened legendary acorndion"]))),
+  kind: "sell"
+}, {
+  item: $item(_templateObject18 || (_templateObject18 = _taggedTemplateLiteral(["ice sickle"]))),
   kind: "keep"
 }, {
-  item: $item(_templateObject18 || (_templateObject18 = _taggedTemplateLiteral(["haiku katana"]))),
+  item: $item(_templateObject19 || (_templateObject19 = _taggedTemplateLiteral(["haiku katana"]))),
   kind: "keep"
 }, {
-  item: $item(_templateObject19 || (_templateObject19 = _taggedTemplateLiteral(["Too Cold to Hold: How to Be Cool - A Memoir"]))),
+  item: $item(_templateObject20 || (_templateObject20 = _taggedTemplateLiteral(["Too Cold to Hold: How to Be Cool - A Memoir"]))),
   kind: "keep"
 }];
+function isKind(value) {
+  return KINDS.includes(value);
+}
+
+/** An item from a number or a name; null if mafia doesn't know it. */
+function parseItem(value) {
+  var text = value.trim();
+  if (!text) return null;
+  var item = /^\d+$/.test(text) ? kolmafia.toItem(Number(text)) : kolmafia.toItem(text);
+  return item === $item.none ? null : item;
+}
+function serialise(list) {
+  return list.map(_ref => {
+    var item = _ref.item,
+      kind = _ref.kind;
+    return "".concat(item.id, ":").concat(kind);
+  }).join(",");
+}
+
+/** The tracked list, in order. Entries mafia can't resolve are skipped. */
+function getTracked() {
+  if (!kolmafia.propertyExists(TRACKED_SETTING)) {
+    kolmafia.setProperty(TRACKED_SETTING, serialise(DEFAULT_TRACKED));
+  }
+  var list = [];
+  var _iterator = _createForOfIteratorHelper(kolmafia.getProperty(TRACKED_SETTING).split(",")),
+    _step;
+  try {
+    var _loop = function _loop() {
+      var entry = _step.value;
+      var _entry$trim$split = entry.trim().split(":"),
+        _entry$trim$split2 = _slicedToArray(_entry$trim$split, 2),
+        id = _entry$trim$split2[0],
+        kind = _entry$trim$split2[1];
+      var item = parseItem(id ?? "");
+      if (item && kind && isKind(kind) && !list.some(t => t.item === item)) {
+        list.push({
+          item,
+          kind
+        });
+      }
+    };
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      _loop();
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  return list;
+}
 
 var _templateObject$2;
 
@@ -6390,6 +6454,7 @@ var SECTIONS = [{
   title: "MIGHT SELL"
 }];
 function checkTracked() {
+  var tracked = getTracked();
   var rows = [];
   var _iterator = _createForOfIteratorHelper(SECTIONS),
     _step;
@@ -6400,7 +6465,7 @@ function checkTracked() {
         title = _step$value.title;
       kolmafia.print(" ");
       kolmafia.print("=== ".concat(title, " ==="));
-      TRACKED.filter(t => t.kind === kind).forEach((_ref, i) => {
+      tracked.filter(t => t.kind === kind).forEach((_ref, i) => {
         var item = _ref.item;
         var row = {
           name: item.name,

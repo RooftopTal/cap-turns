@@ -150,6 +150,9 @@ function _taggedTemplateLiteral(e, t) {
     }
   }));
 }
+function _toArray(r) {
+  return _arrayWithHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableRest();
+}
 function _toConsumableArray(r) {
   return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread();
 }
@@ -847,7 +850,7 @@ function fantasyRealmEstimate() {
   };
 }
 
-var _templateObject$1, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject0, _templateObject1, _templateObject10, _templateObject11, _templateObject12, _templateObject13, _templateObject14, _templateObject15, _templateObject16, _templateObject17, _templateObject18, _templateObject19;
+var _templateObject$1, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject0, _templateObject1, _templateObject10, _templateObject11, _templateObject12, _templateObject13, _templateObject14, _templateObject15, _templateObject16, _templateObject17, _templateObject18, _templateObject19, _templateObject20;
 
 /**
  * Everything mall-prices tracks, and the source of truth for the sheet's
@@ -858,9 +861,18 @@ var _templateObject$1, _templateObject2, _templateObject3, _templateObject4, _te
  *   purchase" is the first one.
  * - sell: held only to sell later.
  * - keep: could sell, probably won't.
+ *
+ * The list lives in the cap_mallTracked preference as comma-separated
+ * itemId:kind pairs, in order, e.g. "12391:sell,9529:want". Edit it from the
+ * "Cap Mall Prices" relay page or `mall-prices add|remove|list` in the gCLI.
+ * The first time it's read, it's seeded from DEFAULT_TRACKED below.
  */
 
-var TRACKED = [{
+var KINDS = ["currency", "want", "sell", "keep"];
+var TRACKED_SETTING = "cap_mallTracked";
+
+/** What the preference starts out as. Edits go through the preference, not here. */
+var DEFAULT_TRACKED = [{
   item: $item(_templateObject$1 || (_templateObject$1 = _taggedTemplateLiteral(["Mr. Accessory"]))),
   kind: "currency"
 }, {
@@ -915,15 +927,102 @@ var TRACKED = [{
   item: $item(_templateObject16 || (_templateObject16 = _taggedTemplateLiteral(["black rosebud"]))),
   kind: "sell"
 }, {
-  item: $item(_templateObject17 || (_templateObject17 = _taggedTemplateLiteral(["ice sickle"]))),
+  item: $item(_templateObject17 || (_templateObject17 = _taggedTemplateLiteral(["unopened legendary acorndion"]))),
+  kind: "sell"
+}, {
+  item: $item(_templateObject18 || (_templateObject18 = _taggedTemplateLiteral(["ice sickle"]))),
   kind: "keep"
 }, {
-  item: $item(_templateObject18 || (_templateObject18 = _taggedTemplateLiteral(["haiku katana"]))),
+  item: $item(_templateObject19 || (_templateObject19 = _taggedTemplateLiteral(["haiku katana"]))),
   kind: "keep"
 }, {
-  item: $item(_templateObject19 || (_templateObject19 = _taggedTemplateLiteral(["Too Cold to Hold: How to Be Cool - A Memoir"]))),
+  item: $item(_templateObject20 || (_templateObject20 = _taggedTemplateLiteral(["Too Cold to Hold: How to Be Cool - A Memoir"]))),
   kind: "keep"
 }];
+function isKind(value) {
+  return KINDS.includes(value);
+}
+
+/** An item from a number or a name; null if mafia doesn't know it. */
+function parseItem(value) {
+  var text = value.trim();
+  if (!text) return null;
+  var item = /^\d+$/.test(text) ? kolmafia.toItem(Number(text)) : kolmafia.toItem(text);
+  return item === $item.none ? null : item;
+}
+function serialise(list) {
+  return list.map(_ref => {
+    var item = _ref.item,
+      kind = _ref.kind;
+    return "".concat(item.id, ":").concat(kind);
+  }).join(",");
+}
+
+/** The tracked list, in order. Entries mafia can't resolve are skipped. */
+function getTracked() {
+  if (!kolmafia.propertyExists(TRACKED_SETTING)) {
+    kolmafia.setProperty(TRACKED_SETTING, serialise(DEFAULT_TRACKED));
+  }
+  var list = [];
+  var _iterator = _createForOfIteratorHelper(kolmafia.getProperty(TRACKED_SETTING).split(",")),
+    _step;
+  try {
+    var _loop = function _loop() {
+      var entry = _step.value;
+      var _entry$trim$split = entry.trim().split(":"),
+        _entry$trim$split2 = _slicedToArray(_entry$trim$split, 2),
+        id = _entry$trim$split2[0],
+        kind = _entry$trim$split2[1];
+      var item = parseItem(id ?? "");
+      if (item && kind && isKind(kind) && !list.some(t => t.item === item)) {
+        list.push({
+          item,
+          kind
+        });
+      }
+    };
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      _loop();
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  return list;
+}
+function save(list) {
+  kolmafia.setProperty(TRACKED_SETTING, serialise(list));
+}
+
+/**
+ * Tracks an item, at the end of its kind's section (so a new want goes last
+ * in the priority order). An item already tracked just has its kind changed.
+ */
+function addTracked(item, kind) {
+  var list = getTracked().filter(t => t.item !== item);
+  var at = list.length;
+  for (var i = list.length - 1; i >= 0; i--) {
+    if (list[i].kind === kind) {
+      at = i + 1;
+      break;
+    }
+  }
+  list.splice(at, 0, {
+    item,
+    kind
+  });
+  save(list);
+}
+
+/** Stops tracking an item. False if it wasn't tracked. */
+function removeTracked(item) {
+  var list = getTracked();
+  var kept = list.filter(t => t.item !== item);
+  if (kept.length === list.length) return false;
+  save(kept);
+  return true;
+}
 
 var _templateObject;
 
@@ -990,6 +1089,7 @@ var SECTIONS = [{
   title: "MIGHT SELL"
 }];
 function checkTracked() {
+  var tracked = getTracked();
   var rows = [];
   var _iterator = _createForOfIteratorHelper(SECTIONS),
     _step;
@@ -1000,7 +1100,7 @@ function checkTracked() {
         title = _step$value.title;
       kolmafia.print(" ");
       kolmafia.print("=== ".concat(title, " ==="));
-      TRACKED.filter(t => t.kind === kind).forEach((_ref, i) => {
+      tracked.filter(t => t.kind === kind).forEach((_ref, i) => {
         var item = _ref.item;
         var row = {
           name: item.name,
@@ -1142,9 +1242,70 @@ function updateSheet(rows) {
 
 /** `mall-prices` in the gCLI: just the price report, without a whole cap day.
  * Not named check_mall_prices -- mafia resolves scripts by filename across the
- * whole scripts tree, and the ASH original still lives in scripts/cap/mall/. */
+ * whole scripts tree, and the ASH original still lives in scripts/cap/mall/.
+ *
+ * Also edits what it tracks (the relay page "Cap Mall Prices" does the same):
+ *   mall-prices list
+ *   mall-prices add 12391 sell      (item number or name; kind defaults to want)
+ *   mall-prices remove 12391 */
 function main() {
-  updateSheet(checkMallPrices());
+  var command = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+  var _command$trim$split = command.trim().split(/\s+/),
+    _command$trim$split2 = _toArray(_command$trim$split),
+    verb = _command$trim$split2[0],
+    rest = _arrayLikeToArray(_command$trim$split2).slice(1);
+  switch (verb.toLowerCase()) {
+    case "":
+      updateSheet(checkMallPrices());
+      return;
+    case "list":
+      return list();
+    case "add":
+      return add(rest);
+    case "remove":
+      return remove(rest.join(" "));
+    default:
+      kolmafia.print("Usage: mall-prices [list | add <item> [".concat(KINDS.join("|"), "] | remove <item>]"), "red");
+  }
+}
+function list() {
+  var _iterator = _createForOfIteratorHelper(getTracked()),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var _step$value = _step.value,
+        item = _step$value.item,
+        kind = _step$value.kind;
+      kolmafia.print("".concat(item.id, "  ").concat(item.name, "  (").concat(kind, ")"));
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+}
+function add(words) {
+  var _words;
+  // The kind is optional and last, so item names with spaces still work.
+  var last = ((_words = words[words.length - 1]) === null || _words === void 0 ? void 0 : _words.toLowerCase()) ?? "";
+  var kind = isKind(last) ? last : "want";
+  var item = parseItem((isKind(last) ? words.slice(0, -1) : words).join(" "));
+  if (!item) {
+    kolmafia.print("Don't know that item.", "red");
+    return;
+  }
+  addTracked(item, kind);
+  kolmafia.print("Tracking ".concat(item.name, " (").concat(kind, ")."), "green");
+}
+function remove(text) {
+  var item = parseItem(text);
+  if (!item) {
+    kolmafia.print("Don't know that item.", "red");
+  } else if (removeTracked(item)) {
+    kolmafia.print("No longer tracking ".concat(item.name, "."), "green");
+  } else {
+    kolmafia.print("".concat(item.name, " wasn't tracked."), "red");
+  }
 }
 
 exports.main = main;
