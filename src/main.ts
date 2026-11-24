@@ -75,6 +75,12 @@ export const args = Args.create("cap", "Captain Yaksworth's daily turns.", {
     help: "Run PirateRealm/FantasyRealm after garbo, holding back turns for them. false gives garbo every turn.",
     default: true,
   }),
+  // Persisted via the cap_meteoriteade setting: `set cap_meteoriteade = false`
+  // for seasons where the extra fights aren't worth it.
+  meteoriteade: Args.boolean({
+    help: "Drink Meteorite-Ade for extra PvP fights. false fights with only the day's natural fights.",
+    default: true,
+  }),
 });
 
 /** What this run was asked to do, as daily-cap.ash used to print it --
@@ -86,6 +92,7 @@ function printChoices(): void {
   flag("Manual", Boolean(args.manual));
   print(`Farm = ${args.farm}`, args.farm === "none" ? "blue" : "green");
   flag("Realms", args.realms);
+  flag("Meteorite-Ade", args.meteoriteade);
   flag("Skip ween", Boolean(args.skipween));
   const overridden = getProperty("cap_valueMorning") !== "" || getProperty("cap_valueEvening") !== "";
   print(`Value of adventure = ${VALUE_MORNING} / ${VALUE_EVENING}${overridden ? " (overridden)" : ""}`, "blue");
@@ -214,7 +221,7 @@ export function main(command?: string): void {
       print("No day available", "red");
     }
 
-    doPvp();
+    doPvp(args.meteoriteade);
 
     // smol has no specific prep yet, so it just grabs the same food as sccs;
     // boris and standard need no prep at all.
@@ -336,7 +343,7 @@ export function main(command?: string): void {
     print("No day available", "red");
   }
 
-  doPvp();
+  doPvp(args.meteoriteade);
 
   // Last bits
   endOfDay(VALUE_NIGHTCAP, NIGHT_TOLERANCE);

@@ -26,7 +26,7 @@ function seasonNeedsSetup(): boolean {
  * command are other people's scripts the original called unchecked, so
  * they stay best-effort here too.
  */
-export function doPvp(): void {
+export function doPvp(useMeteoriteAde: boolean): void {
   if (get(SKIP_SETTING, false)) {
     print(`Skipping PvP today (${SKIP_SETTING} is set)`, "orange");
     return;
@@ -44,7 +44,11 @@ export function doPvp(): void {
           `(peevpee.php), then run cap again. Or \`set ${SKIP_SETTING} = true\` to skip PvP today.`,
       );
     }
-    takeMeteoriteAde();
+    if (useMeteoriteAde) {
+      takeMeteoriteAde();
+    } else {
+      print("Skipping Meteorite-Ade (cap_meteoriteade is false)", "orange");
+    }
 
     cliExecute("UberPVPOptimizer");
     cliExecute("pvp loot ASCII-7 of the moment");

@@ -137,6 +137,11 @@ drinking Meteorite-Ade. Pledge at peevpee.php and run `cap` again, or
 `set _capSkipPvp = true` to skip PvP for the rest of today (it clears at
 rollover).
 
+Meteorite-Ade (3 a day, for extra fights) is on by default. For seasons where
+it isn't worth it, `set cap_meteoriteade = false` to fight with only the
+natural fights; `set cap_meteoriteade = true` to turn it back on. A one-off
+`cap meteoriteade=false` overrides it for a single run.
+
 ## Realm decisions
 
 Before garbo, `cap` decides whether to finish the PirateRealm voyage (after
