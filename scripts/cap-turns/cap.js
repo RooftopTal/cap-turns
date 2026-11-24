@@ -6214,7 +6214,7 @@ function seasonNeedsSetup() {
  * command are other people's scripts the original called unchecked, so
  * they stay best-effort here too.
  */
-function doPvp() {
+function doPvp(useMeteoriteAde) {
   if (get(SKIP_SETTING, false)) {
     kolmafia.print("Skipping PvP today (".concat(SKIP_SETTING, " is set)"), "orange");
     return;
@@ -6228,7 +6228,11 @@ function doPvp() {
     if (seasonNeedsSetup()) {
       throw new Error("PvP isn't ready -- probably a new season: pledge a clan alignment at the Colosseum " + "(peevpee.php), then run cap again. Or `set ".concat(SKIP_SETTING, " = true` to skip PvP today."));
     }
-    takeMeteoriteAde();
+    if (useMeteoriteAde) {
+      takeMeteoriteAde();
+    } else {
+      kolmafia.print("Skipping Meteorite-Ade (cap_meteoriteade is false)", "orange");
+    }
     kolmafia.cliExecute("UberPVPOptimizer");
     kolmafia.cliExecute("pvp loot ASCII-7 of the moment");
   } else {
@@ -6837,6 +6841,12 @@ var args = Args.create("cap", "Captain Yaksworth's daily turns.", {
   realms: Args["boolean"]({
     help: "Run PirateRealm/FantasyRealm after garbo, holding back turns for them. false gives garbo every turn.",
     "default": true
+  }),
+  // Persisted via the cap_meteoriteade setting: `set cap_meteoriteade = false`
+  // for seasons where the extra fights aren't worth it.
+  meteoriteade: Args["boolean"]({
+    help: "Drink Meteorite-Ade for extra PvP fights. false fights with only the day's natural fights.",
+    "default": true
   })
 });
 
@@ -6849,6 +6859,7 @@ function printChoices() {
   flag("Manual", Boolean(args.manual));
   kolmafia.print("Farm = ".concat(args.farm), args.farm === "none" ? "blue" : "green");
   flag("Realms", args.realms);
+  flag("Meteorite-Ade", args.meteoriteade);
   flag("Skip ween", Boolean(args.skipween));
   var overridden = kolmafia.getProperty("cap_valueMorning") !== "" || kolmafia.getProperty("cap_valueEvening") !== "";
   kolmafia.print("Value of adventure = ".concat(VALUE_MORNING, " / ").concat(VALUE_EVENING).concat(overridden ? " (overridden)" : ""), "blue");
@@ -6961,7 +6972,7 @@ function main(command) {
     } else {
       kolmafia.print("No day available", "red");
     }
-    doPvp();
+    doPvp(args.meteoriteade);
 
     // smol has no specific prep yet, so it just grabs the same food as sccs;
     // boris and standard need no prep at all.
@@ -7075,7 +7086,7 @@ function main(command) {
   } else {
     kolmafia.print("No day available", "red");
   }
-  doPvp();
+  doPvp(args.meteoriteade);
 
   // Last bits
   endOfDay(VALUE_NIGHTCAP, NIGHT_TOLERANCE);
