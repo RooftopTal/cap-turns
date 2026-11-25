@@ -2,3 +2,4 @@ node_modules/
 *.log
 .rollup.cache/
 KoLmafia/
+__pycache__/

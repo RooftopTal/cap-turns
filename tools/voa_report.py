@@ -1,17 +1,29 @@
-"""What were garbo turns worth? Three views from KoLmafia session logs, per day
-and per half (morning/evening garbo run). See docs/voa-experiment.md.
+"""What is an adventure worth at the end of each leg? Late-run meat per
+adventure from KoLmafia session logs. See docs/voa-experiment.md.
 
-1. garbo's own "Marginal MPA" line, printed at the end of each run.
-2. Our own count: meat + items dropped in the last N turn-taking Barf
-   Mountain fights of the run (lower bound), and the same window with the
-   free fights inside it added (upper bound). Items are valued at the higher
-   of mall price (mafia's data/mallprices.txt) and autosell.
-3. The day's totals: everything garbo generated across all its runs.
+Each log day has three legs, split on markers cap always prints:
+  morning    sober garbo turns, up to the nightcap ("Your ideal diet")
+  overdrunk  garbo turns after the nightcap, up to the ascension
+  evening    garbo turns after the ascension ("Successfully ascended!")
+A leg can be several garbo runs (a restart after an abort); they're joined.
+
+Per leg:
+  lower   meat + items from the last N turn-taking Barf Mountain
+          adventures, per adventure. This is the measure to judge VoA on.
+  upper   the same window plus every free fight and free adventure inside
+          it, over the same turns. Some of those are daily allowances that
+          don't scale with turns, so this overstates.
+  garbo   garbo's own "Marginal MPA" for the leg's longest run. Its items
+          follow garbo's prices, which spike (knucklebones on Nov 6).
+Items are valued at the higher of mall price (mafia's data/mallprices.txt,
+the lowest current listing) and autosell. Any single drop worth at least
+--outlier meat (default 100k) is left out and counted, since a rare drop
+says nothing about what the next adventure is worth.
 
 Usage:
   python -I tools/voa_report.py SESSIONS_DIR [--from YYYYMMDD] [--to YYYYMMDD]
-      [--last 50] [--items PATH/items.txt] [--prices PATH/mallprices.txt]
-      [--player captain_yaksworth]
+      [--last 50] [--outlier 100000] [--items PATH/items.txt]
+      [--prices PATH/mallprices.txt] [--player captain_yaksworth]
 """
 import argparse
 import collections
@@ -22,14 +34,22 @@ import re
 import statistics
 
 ADV = re.compile(r"^\[(\d+)\] (.+)$")
-RUN = re.compile(r"This run of garbo, across ([\d,]+) turns you generated ([-\d,]+) meat")
+RUN = re.compile(r"This run of garbo, across ([\d,]+) turns")
 MPA = re.compile(r"Marginal MPA: ([-\d,.NaN]+) \[raw\] \+ ([-\d,.NaN]+) \[items\].*= ([-\d,.NaN]+) \[total\]")
 MEAT = re.compile(r"You gain ([\d,]+) Meat")
 ITEM = re.compile(r"You acquire an item: (.+?)(?: \(([\d,]+)\))?$")
 ITEMS = re.compile(r"You acquire (.+) \(([\d,]+)\)$")
-# A main garbo run is a few hundred turns; the short pre-ascension (overdrunk)
-# runs are under 150.
-MORNING_MIN, EVENING_MIN = 450, 250
+FAMILIAR = re.compile(r"^familiar (.+?) \(\d+ lbs?\)$")
+LEGS = ("morning", "overdrunk", "evening")
+# Familiars whose drops stop at a daily cap. Garbo can run one right up to
+# the end of a leg, but one more adventure would go to a different familiar,
+# so their turns aren't marginal and are left out of the window.
+CAPPED_FAMILIARS = {"Skeleton of Crimbo Past"}
+# Lines that start a command rather than continue an adventure; anything
+# gained after one (autosell meat, crafted items) isn't a drop.
+COMMANDS = ("> ", "use ", "Create ", "buy ", "eat ", "drink ", "chew ", "autosell ", "mallsell",
+            "sell ", "closet ", "equip ", "familiar ", "cast ", "acquire ", "pull ", "craft ",
+            "cook ", "mix ", "smith ", "hermit ", "trade ", "put ", "take ", "mallsearch")
 
 
 def num(s):
@@ -51,60 +71,69 @@ def load_values(items_path, prices_path):
     return lambda name: max(mall.get(ids.get(html.unescape(name)), 0), autosell.get(ids.get(html.unescape(name)), 0))
 
 
-def half(turns):
-    return "morning" if turns > MORNING_MIN else "evening" if turns > EVENING_MIN else None
-
-
-def parse_day(path, value, last):
-    """Yield one dict per main garbo run in this log."""
+def parse_day(path, value, last, outlier):
+    """Yield one dict per leg that has enough Barf Mountain turns."""
     lines = open(path, encoding="utf-8", errors="replace").read().split("\n")
-    blocks, cur, prev_turn, run = [], None, None, None
-    totals = {"turns": 0, "meat": 0}
+    legs = {name: {"blocks": [], "runs": []} for name in LEGS}
+    leg, cur, prev, familiar = "morning", None, None, None
     for line in lines:
+        m = FAMILIAR.match(line)
+        if m:
+            familiar = m.group(1)
         m = ADV.match(line)
         if m:
             t = int(m.group(1))
-            paid = prev_turn is not None and t > prev_turn
-            cur = {"turn": t, "loc": m.group(2), "paid": paid, "value": 0, "meat": 0}
-            prev_turn = t
-            blocks.append(cur)
+            # An adventure took a turn if the counter moved by the next one.
+            if prev is not None:
+                prev["paid"] = t > prev["turn"]
+            cur = {"turn": t, "loc": m.group(2), "paid": False, "value": 0, "outliers": 0,
+                   "capped": familiar in CAPPED_FAMILIARS}
+            prev = cur
+            legs[leg]["blocks"].append(cur)
             continue
+        if line.startswith("> Your ideal diet") and leg == "morning":
+            leg = "overdrunk"
+        elif line.startswith("> Successfully ascended"):
+            leg, prev = "evening", None
         m = RUN.search(line)
         if m:
-            turns = int(m.group(1).replace(",", ""))
-            totals["turns"] += turns
-            totals["meat"] += int(m.group(2).replace(",", ""))
-            run = {"half": half(turns), "turns": turns, "garbo": None}
-            barf = [b for b in blocks if b["loc"] == "Barf Mountain" and b["paid"]]
-            if run["half"] and len(barf) >= last:
-                first = barf[-last]
-                window = blocks[blocks.index(first):]
-                span = barf[-1]["turn"] - first["turn"] + 1
-                run["lower"] = sum(b["meat"] + b["value"] for b in barf[-last:]) / last
-                run["upper"] = sum(b["meat"] + b["value"] for b in window) / span
-            blocks, cur = [], None
-            continue
+            legs[leg]["runs"].append({"turns": int(m.group(1).replace(",", "")), "garbo": float("nan")})
         m = MPA.search(line)
-        if m and run is not None:
-            run["garbo"] = num(m.group(3))
-            if run["half"]:
-                yield run
-            run = None
-            continue
-        # Commands between fights (buying, crafting, using) aren't drops.
-        if line.startswith(("> ", "use ", "Create ", "buy ", "eat ", "drink ", "chew ")):
+        if m and legs[leg]["runs"]:
+            legs[leg]["runs"][-1]["garbo"] = num(m.group(3))
+        if line.startswith(COMMANDS):
             cur = None
             continue
         if cur is None:
             continue
-        stripped = line.replace("After Battle: ", "")
-        m = MEAT.match(stripped)
+        gained = 0
+        m = MEAT.match(line.replace("After Battle: ", ""))
         if m:
-            cur["meat"] += int(m.group(1).replace(",", ""))
+            gained = int(m.group(1).replace(",", ""))
         m = ITEM.match(line) or ITEMS.match(line)
         if m:
-            cur["value"] += value(m.group(1)) * int((m.group(2) or "1").replace(",", ""))
-    yield {"half": "day", **totals}
+            gained = value(m.group(1)) * int((m.group(2) or "1").replace(",", ""))
+        if gained >= outlier:
+            cur["outliers"] += 1
+        else:
+            cur["value"] += gained
+
+    for name in LEGS:
+        blocks, runs = legs[name]["blocks"], legs[name]["runs"]
+        barf = [b for b in blocks if b["loc"] == "Barf Mountain" and b["paid"] and not b["capped"]]
+        if not runs or len(barf) < last:
+            continue
+        first = barf[-last]
+        window = [b for b in blocks[blocks.index(first):blocks.index(barf[-1]) + 1] if not b["capped"]]
+        span = sum(b["paid"] for b in window)
+        yield {
+            "leg": name,
+            "turns": sum(r["turns"] for r in runs),
+            "garbo": max(runs, key=lambda r: r["turns"])["garbo"],
+            "lower": sum(b["value"] for b in barf[-last:]) / last,
+            "upper": sum(b["value"] for b in window) / span,
+            "outliers": sum(b["outliers"] for b in window),
+        }
 
 
 def med(xs):
@@ -118,36 +147,30 @@ def main():
     ap.add_argument("--from", dest="start", default="00000000")
     ap.add_argument("--to", dest="end", default="99999999")
     ap.add_argument("--last", type=int, default=50)
+    ap.add_argument("--outlier", type=int, default=100000)
     ap.add_argument("--player", default="captain_yaksworth")
     ap.add_argument("--items", default="C:/work/kolmafia/src/main/resources/data/items.txt")
     ap.add_argument("--prices", default="C:/work/kolmafia/data/mallprices.txt")
     a = ap.parse_args()
     value = load_values(a.items, a.prices)
 
-    by_half = collections.defaultdict(list)
-    print(f"{'day':8} {'half':7} {'garbo':>6} {'lower':>6} {'upper':>6}")
+    by_leg = collections.defaultdict(list)
+    print(f"{'day':8} {'leg':9} {'turns':>5} {'lower':>6} {'upper':>6} {'garbo':>6} outliers")
     for path in sorted(glob.glob(os.path.join(a.sessions, f"{a.player}_2*.txt"))):
         day = os.path.basename(path)[-12:-4]
         if not (a.start <= day <= a.end):
             continue
-        for r in parse_day(path, value, a.last):
-            by_half[r["half"]].append(r)
-            if r["half"] == "day":
-                print(f"{day:8} {'total':7} {r['meat']:>12,.0f} meat over {r['turns']} garbo turns")
-            else:
-                print(f"{day:8} {r['half']:7} {r['garbo']:6.0f} {r.get('lower', float('nan')):6.0f} {r.get('upper', float('nan')):6.0f}")
+        for r in parse_day(path, value, a.last, a.outlier):
+            by_leg[r["leg"]].append(r)
+            print(f"{day:8} {r['leg']:9} {r['turns']:5} {r['lower']:6.0f} {r['upper']:6.0f} "
+                  f"{r['garbo']:6.0f} {r['outliers'] or ''}")
 
     print("\nmedians")
-    for h in ("morning", "evening"):
-        rs = by_half[h]
+    for name in LEGS:
+        rs = by_leg[name]
         if rs:
-            print(f"  {h:7} n={len(rs):2}  garbo {med(r['garbo'] for r in rs):5.0f}  "
-                  f"lower {med(r.get('lower', float('nan')) for r in rs):5.0f}  "
-                  f"upper {med(r.get('upper', float('nan')) for r in rs):5.0f}")
-    days = by_half["day"]
-    if days:
-        print(f"  day     n={len(days):2}  garbo generated {med(d['meat'] for d in days):,.0f} meat "
-              f"over {med(d['turns'] for d in days):.0f} turns")
+            print(f"  {name:9} n={len(rs):2}  lower {med(r['lower'] for r in rs):5.0f}  "
+                  f"upper {med(r['upper'] for r in rs):5.0f}  garbo {med(r['garbo'] for r in rs):5.0f}")
 
 
 if __name__ == "__main__":
