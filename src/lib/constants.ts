@@ -14,16 +14,21 @@ function numberPref(name: string, fallback: number): number {
   return value > 0 ? value : fallback;
 }
 
-/** valueOfAdventure for the first half of the loop. `cap_valueMorning`
- * overrides it, for trying other values (see docs/voa-experiment.md). */
+/*
+ * Defaults come from the Oct-Nov 2026 experiment (docs/voa-experiment.md):
+ * roughly what the last Barf Mountain adventures of each leg earn. Each has
+ * a preference to override it.
+ */
+
+/** valueOfAdventure for the first half of the loop; `cap_valueMorning`. */
 export const VALUE_MORNING = numberPref("cap_valueMorning", 6500);
 
-/** valueOfAdventure for the second half of the loop; `cap_valueEvening`
- * overrides it. */
-export const VALUE_EVENING = numberPref("cap_valueEvening", 6000);
+/** valueOfAdventure for the second half of the loop; `cap_valueEvening`. */
+export const VALUE_EVENING = numberPref("cap_valueEvening", 6500);
 
-/** Can be set separately if we don't just want to base this on tomorrow's turns. */
-export const VALUE_OVERDRUNK = VALUE_EVENING;
+/** valueOfAdventure for the overdrunk `garbo ascend` run, which earns ~500
+ * less a turn than a sober one; `cap_valueOverdrunk`. */
+export const VALUE_OVERDRUNK = numberPref("cap_valueOverdrunk", 6000);
 
 export const VALUE_NIGHTCAP = VALUE_MORNING;
 

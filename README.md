@@ -456,18 +456,19 @@ each one is re-checked and the loop stops the moment 40 is in hand.
 
 ### Post-ascension adventure value (2026-09-09)
 
-The loop values a turn at `VALUE_MORNING` (6500) in the first half of the
-day and `VALUE_EVENING` (6000) in the second. A day that finishes a
+The loop values a turn at `VALUE_MORNING` in the first half of the day and
+`VALUE_EVENING` in the second (6500 each since 2026-11-25; 6500 / 6000
+when this was written). A day that finishes a
 multi-day ascension fits neither: `main()` skips the morning leg entirely to
 resume the ascension, so the leg that runs afterwards is the day's *first*
 farming even though it occupies the evening slot -- full day's turns ahead
 of it, but it still ends at the nightcap.
 
-`VALUE_POST_ASCENSION` (the midpoint, 6250) is used for exactly that leg.
+`VALUE_POST_ASCENSION` (the midpoint, then 6250) is used for exactly that leg.
 `resumingAscension` is the test: reaching the evening leg with it set means
 the ascension we resumed from a previous day also *finished* this run, since
 an unfinished one returns early at the rest-day check above. A normal day
-exits its ascension into the genuine second half and keeps 6000; the
+exits its ascension into the genuine second half and keeps the evening value; the
 following day's morning leg isn't exiting an ascension at all and keeps
 6500.
 

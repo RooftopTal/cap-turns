@@ -10,6 +10,7 @@ import {
   VALUE_EVENING,
   VALUE_MORNING,
   VALUE_NIGHTCAP,
+  VALUE_OVERDRUNK,
   VALUE_POST_ASCENSION,
 } from "./lib/constants";
 import { dayAhead } from "./daily/day";
@@ -94,8 +95,11 @@ function printChoices(): void {
   flag("Realms", args.realms);
   flag("Meteorite-Ade", args.meteoriteade);
   flag("Skip ween", Boolean(args.skipween));
-  const overridden = getProperty("cap_valueMorning") !== "" || getProperty("cap_valueEvening") !== "";
-  print(`Value of adventure = ${VALUE_MORNING} / ${VALUE_EVENING}${overridden ? " (overridden)" : ""}`, "blue");
+  const overridden = ["cap_valueMorning", "cap_valueEvening", "cap_valueOverdrunk"].some((p) => getProperty(p) !== "");
+  print(
+    `Value of adventure = ${VALUE_MORNING} / ${VALUE_EVENING} / ${VALUE_OVERDRUNK} overdrunk${overridden ? " (overridden)" : ""}`,
+    "blue",
+  );
 }
 
 /** Ported from daily-cap.ash's trick_or_treat/crimbone/aftercore_actions
