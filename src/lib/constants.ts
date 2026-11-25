@@ -48,8 +48,16 @@ export const TURNS_FLEX = 5;
 /** When to redo garbo, or else just skip. */
 export const WORTHWHILE_ADVS = 7;
 
-/** Held back overnight so the day starts closer to 200 adventures. */
-export const TURNS_TO_SAVE_OVERNIGHT = 20;
+/**
+ * Adventures the evening leg holds back for tomorrow. This was 20, on the
+ * idea that the morning's turns were worth more, but the VoA experiment
+ * found the last adventures of each leg earn about the same, so there's
+ * nothing to gain by moving them. Rollover lands well under the 200 cap
+ * either way (~160-170 with none held back).
+ */
+export const TURNS_TO_SAVE_OVERNIGHT = 0;
 
 export const DAY_TOLERANCE = 5;
-export const NIGHT_TOLERANCE = TURNS_TO_SAVE_OVERNIGHT + DAY_TOLERANCE;
+/** A leg can end with up to WORTHWHILE_ADVS left, since fewer aren't worth
+ * another garbo call; the end-of-day check has to allow for that. */
+export const NIGHT_TOLERANCE = TURNS_TO_SAVE_OVERNIGHT + WORTHWHILE_ADVS;

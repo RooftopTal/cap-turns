@@ -44,7 +44,7 @@ export function aftercoreActions(isMorning: boolean, doRealms: boolean, valueOve
     const half = valueOverride === undefined ? "second half of loop" : "first farming of the day, in the evening slot";
     print(`${half}; value is: ${value}`);
     set("valueOfAdventure", value);
-    turnsToSave = TURNS_TO_SAVE_OVERNIGHT; // save turns overnight to start day closer to 200 advs
+    turnsToSave = TURNS_TO_SAVE_OVERNIGHT; // see constants.ts; currently none
   }
 
   genericLoopStuff();

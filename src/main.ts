@@ -339,8 +339,8 @@ export function main(command?: string): void {
   // day's *first* farming rather than its second -- the morning leg was
   // skipped at the top to resume the ascension instead -- so the turns are
   // worth more than an evening's. Value them between the two halves.
-  // Everything else about the leg is unchanged: it still holds back the
-  // overnight turns and ends at the nightcap.
+  // Everything else about the leg is unchanged: it ends at the nightcap
+  // like any evening.
   if (dayAhead(NIGHT_TOLERANCE)) {
     runAftercoreLoop(false, farmingWeen, farmingCrimbo, resumingAscension ? VALUE_POST_ASCENSION : undefined);
   } else {

@@ -472,8 +472,8 @@ exits its ascension into the genuine second half and keeps the evening value; th
 following day's morning leg isn't exiting an ascension at all and keeps
 6500.
 
-Value only. The leg still holds back `TURNS_TO_SAVE_OVERNIGHT` and still
-ends with the nightcap at `VALUE_NIGHTCAP`; `valueOverride` threads through
+Value only. The leg still holds back `TURNS_TO_SAVE_OVERNIGHT` (0 since
+2026-11-25) and still ends with the nightcap at `VALUE_NIGHTCAP`; `valueOverride` threads through
 `runAftercoreLoop` into `aftercoreActions` and touches nothing else. The
 seasonal farm modes (`--farm ween`/`crimbo`) set their own value and ignore
 it.
