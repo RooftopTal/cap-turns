@@ -5364,16 +5364,21 @@ function numberPref(name, fallback) {
   return value > 0 ? value : fallback;
 }
 
-/** valueOfAdventure for the first half of the loop. `cap_valueMorning`
- * overrides it, for trying other values (see docs/voa-experiment.md). */
+/*
+ * Defaults come from the Oct-Nov 2026 experiment (docs/voa-experiment.md):
+ * roughly what the last Barf Mountain adventures of each leg earn. Each has
+ * a preference to override it.
+ */
+
+/** valueOfAdventure for the first half of the loop; `cap_valueMorning`. */
 var VALUE_MORNING = numberPref("cap_valueMorning", 6500);
 
-/** valueOfAdventure for the second half of the loop; `cap_valueEvening`
- * overrides it. */
-var VALUE_EVENING = numberPref("cap_valueEvening", 6000);
+/** valueOfAdventure for the second half of the loop; `cap_valueEvening`. */
+var VALUE_EVENING = numberPref("cap_valueEvening", 6500);
 
-/** Can be set separately if we don't just want to base this on tomorrow's turns. */
-var VALUE_OVERDRUNK = VALUE_EVENING;
+/** valueOfAdventure for the overdrunk `garbo ascend` run, which earns ~500
+ * less a turn than a sober one; `cap_valueOverdrunk`. */
+var VALUE_OVERDRUNK = numberPref("cap_valueOverdrunk", 6000);
 var VALUE_NIGHTCAP = VALUE_MORNING;
 
 /**
@@ -5391,10 +5396,18 @@ var TURNS_FLEX = 5;
 /** When to redo garbo, or else just skip. */
 var WORTHWHILE_ADVS = 7;
 
-/** Held back overnight so the day starts closer to 200 adventures. */
-var TURNS_TO_SAVE_OVERNIGHT = 20;
+/**
+ * Adventures the evening leg holds back for tomorrow. This was 20, on the
+ * idea that the morning's turns were worth more, but the VoA experiment
+ * found the last adventures of each leg earn about the same, so there's
+ * nothing to gain by moving them. Rollover lands well under the 200 cap
+ * either way (~160-170 with none held back).
+ */
+var TURNS_TO_SAVE_OVERNIGHT = 0;
 var DAY_TOLERANCE = 5;
-var NIGHT_TOLERANCE = TURNS_TO_SAVE_OVERNIGHT + DAY_TOLERANCE;
+/** A leg can end with up to WORTHWHILE_ADVS left, since fewer aren't worth
+ * another garbo call; the end-of-day check has to allow for that. */
+var NIGHT_TOLERANCE = TURNS_TO_SAVE_OVERNIGHT + WORTHWHILE_ADVS;
 
 var _templateObject$h, _templateObject2$d, _templateObject3$9;
 
@@ -5940,7 +5953,7 @@ function aftercoreActions(isMorning, doRealms, valueOverride) {
     var half = valueOverride === undefined ? "second half of loop" : "first farming of the day, in the evening slot";
     kolmafia.print("".concat(half, "; value is: ").concat(_value));
     _set("valueOfAdventure", _value);
-    turnsToSave = TURNS_TO_SAVE_OVERNIGHT; // save turns overnight to start day closer to 200 advs
+    turnsToSave = TURNS_TO_SAVE_OVERNIGHT; // see constants.ts; currently none
   }
   genericLoopStuff();
   safeGarbo(turnsToSave, doRealms, !isMorning);
@@ -6861,8 +6874,8 @@ function printChoices() {
   flag("Realms", args.realms);
   flag("Meteorite-Ade", args.meteoriteade);
   flag("Skip ween", Boolean(args.skipween));
-  var overridden = kolmafia.getProperty("cap_valueMorning") !== "" || kolmafia.getProperty("cap_valueEvening") !== "";
-  kolmafia.print("Value of adventure = ".concat(VALUE_MORNING, " / ").concat(VALUE_EVENING).concat(overridden ? " (overridden)" : ""), "blue");
+  var overridden = ["cap_valueMorning", "cap_valueEvening", "cap_valueOverdrunk"].some(p => kolmafia.getProperty(p) !== "");
+  kolmafia.print("Value of adventure = ".concat(VALUE_MORNING, " / ").concat(VALUE_EVENING, " / ").concat(VALUE_OVERDRUNK, " overdrunk").concat(overridden ? " (overridden)" : ""), "blue");
 }
 
 /** Ported from daily-cap.ash's trick_or_treat/crimbone/aftercore_actions
@@ -7079,8 +7092,8 @@ function main(command) {
   // day's *first* farming rather than its second -- the morning leg was
   // skipped at the top to resume the ascension instead -- so the turns are
   // worth more than an evening's. Value them between the two halves.
-  // Everything else about the leg is unchanged: it still holds back the
-  // overnight turns and ends at the nightcap.
+  // Everything else about the leg is unchanged: it ends at the nightcap
+  // like any evening.
   if (dayAhead(NIGHT_TOLERANCE)) {
     runAftercoreLoop(false, farmingWeen, farmingCrimbo, resumingAscension ? VALUE_POST_ASCENSION : undefined);
   } else {
