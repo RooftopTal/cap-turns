@@ -6798,12 +6798,9 @@ function resetCodpiece() {
   return stillWrong;
 }
 
-/** Base Mysticality above this means the leveling is overshooting and the
- * InstantSCCS settings want changing. */
-var BASE_MYS_LIMIT = 200;
-
-/** Reports the Mysticality we had when InstantSCCS ran the Mysticality test.
- * The values are saved by our InstantSCCS fork in logRelevantStats(). */
+/** Reports the Mysticality we had when InstantSCCS ran the Mysticality test,
+ * in gray: nothing acts on it, but a sudden change is worth a look. The values
+ * are saved by our InstantSCCS fork in logRelevantStats(). */
 function reportMysTest() {
   var base = kolmafia.getProperty("_cap_instantMysticalityTestBase");
   var buffed = kolmafia.getProperty("_cap_instantMysticalityTestBuffed");
@@ -6811,12 +6808,7 @@ function reportMysTest() {
     kolmafia.print("No Mysticality test recorded today", "gray");
     return;
   }
-  var message = "Mysticality test: base Mys ".concat(base, "; buffed Mys ").concat(buffed);
-  if (Number(base) > BASE_MYS_LIMIT) {
-    kolmafia.print("<b>".concat(message, " -- over ").concat(BASE_MYS_LIMIT, ", change it!</b>"), "red");
-  } else {
-    kolmafia.print(message, "blue");
-  }
+  kolmafia.print("Mysticality test: base Mys ".concat(base, "; buffed Mys ").concat(buffed), "gray");
 }
 
 var _templateObject, _templateObject2;
