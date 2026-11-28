@@ -128,6 +128,7 @@ function checkKnuckleboneStore(): void {
   } else {
     print("Couldn't find skellie special!", "red");
   }
+  print(`Knucklebones: ${itemAmount($item`knucklebone`)}`, "green");
 }
 
 export function checkMallPrices(): PriceRow[] {
