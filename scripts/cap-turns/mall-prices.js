@@ -754,7 +754,7 @@ createSingleConstant(kolmafia.Stat, kolmafia.toStat);
  */
 createSingleConstant(kolmafia.Thrall, kolmafia.toThrall);
 
-var _templateObject$3, _templateObject2$2, _templateObject3$2, _templateObject4$2;
+var _templateObject$3, _templateObject2$3, _templateObject3$2, _templateObject4$2;
 
 /**
  * Prices the realm decisions and ticket buying run on. Each can be pinned with
@@ -764,7 +764,7 @@ var _templateObject$3, _templateObject2$2, _templateObject3$2, _templateObject4$
  *
  *   set cap_lylecoGuideOverride = 2000000
  */
-var OVERRIDE_SETTINGS = [[$item(_templateObject$3 || (_templateObject$3 = _taggedTemplateLiteral(["PirateRealm guest pass"]))), "cap_pirateRealmGuestPassOverride"], [$item(_templateObject2$2 || (_templateObject2$2 = _taggedTemplateLiteral(["FantasyRealm guest pass"]))), "cap_fantasyRealmGuestPassOverride"], [$item(_templateObject3$2 || (_templateObject3$2 = _taggedTemplateLiteral(["LyleCo Contractor's Manual"]))), "cap_lylecoGuideOverride"], [$item(_templateObject4$2 || (_templateObject4$2 = _taggedTemplateLiteral(["windicle"]))), "cap_windicleOverride"]];
+var OVERRIDE_SETTINGS = [[$item(_templateObject$3 || (_templateObject$3 = _taggedTemplateLiteral(["PirateRealm guest pass"]))), "cap_pirateRealmGuestPassOverride"], [$item(_templateObject2$3 || (_templateObject2$3 = _taggedTemplateLiteral(["FantasyRealm guest pass"]))), "cap_fantasyRealmGuestPassOverride"], [$item(_templateObject3$2 || (_templateObject3$2 = _taggedTemplateLiteral(["LyleCo Contractor's Manual"]))), "cap_lylecoGuideOverride"], [$item(_templateObject4$2 || (_templateObject4$2 = _taggedTemplateLiteral(["windicle"]))), "cap_windicleOverride"]];
 
 /** The override set for this item, if any. */
 function overrideFor(item) {
@@ -790,7 +790,7 @@ var OVERRIDABLE = OVERRIDE_SETTINGS.map(_ref3 => {
   return it;
 });
 
-var _templateObject$2, _templateObject2$1, _templateObject3$1, _templateObject4$1;
+var _templateObject$2, _templateObject2$2, _templateObject3$1, _templateObject4$1;
 
 /**
  * Whether the realms are worth their turns: estimate the meat a realm turn
@@ -831,7 +831,7 @@ function k(meat) {
 function pirateRealmEstimate() {
   var meatPerFun = realmPrice($item(_templateObject$2 || (_templateObject$2 = _taggedTemplateLiteral(["PirateRealm guest pass"])))) / PR_PASS_FUN;
   var fun = PR_LEG.fun * meatPerFun;
-  var windicles = PR_LEG.windicles * realmPrice($item(_templateObject2$1 || (_templateObject2$1 = _taggedTemplateLiteral(["windicle"]))));
+  var windicles = PR_LEG.windicles * realmPrice($item(_templateObject2$2 || (_templateObject2$2 = _taggedTemplateLiteral(["windicle"]))));
   var total = fun + windicles + PR_LEG.meat;
   return {
     perTurn: Math.round(total / PR_LEG.turns),
@@ -850,7 +850,7 @@ function fantasyRealmEstimate() {
   };
 }
 
-var _templateObject$1, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject0, _templateObject1, _templateObject10, _templateObject11, _templateObject12, _templateObject13, _templateObject14, _templateObject15, _templateObject16, _templateObject17, _templateObject18, _templateObject19, _templateObject20;
+var _templateObject$1, _templateObject2$1, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject0, _templateObject1, _templateObject10, _templateObject11, _templateObject12, _templateObject13, _templateObject14, _templateObject15, _templateObject16, _templateObject17, _templateObject18, _templateObject19, _templateObject20;
 
 /**
  * Everything mall-prices tracks, and the source of truth for the sheet's
@@ -876,7 +876,7 @@ var DEFAULT_TRACKED = [{
   item: $item(_templateObject$1 || (_templateObject$1 = _taggedTemplateLiteral(["Mr. Accessory"]))),
   kind: "currency"
 }, {
-  item: $item(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["Uncle Buck"]))),
+  item: $item(_templateObject2$1 || (_templateObject2$1 = _taggedTemplateLiteral(["Uncle Buck"]))),
   kind: "currency"
 }, {
   item: $item(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["Comprehensive Cartographic Compendium"]))),
@@ -1024,7 +1024,7 @@ function removeTracked(item) {
   return true;
 }
 
-var _templateObject;
+var _templateObject, _templateObject2;
 
 /**
  * Ported from mall/check_mall_prices.ash. Purely informational -- prints
@@ -1180,6 +1180,7 @@ function checkKnuckleboneStore() {
   } else {
     kolmafia.print("Couldn't find skellie special!", "red");
   }
+  kolmafia.print("Knucklebones: ".concat(kolmafia.itemAmount($item(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["knucklebone"]))))), "green");
 }
 function checkMallPrices() {
   var rows = checkTracked();
